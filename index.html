@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v24</title>
+    <title>Domemory v26</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         html, body { overflow-x: hidden; position: relative; width: 100%; height: 100%; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; color: var(--text); padding-bottom: 100px; user-select: text !important; -webkit-user-select: text !important; }
 
-        /* 下部ナビゲーション */
         .menu { background: #222; color: #fff; position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 12px 0 30px 0; z-index: 2000; box-shadow: 0 -2px 10px rgba(0,0,0,0.3); }
         .menu button { background: none; color: #ccc; font-size: 11px; border: none; display: flex; flex-direction: column; align-items: center; gap: 4px; flex:1; }
         .menu button.active-nav { color: var(--p); font-weight: bold; }
@@ -19,14 +18,15 @@
         .active { display: block; }
         .card { background: #fff; padding: 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 15px; }
 
-        /* 入力欄：16px以上に固定してズームを無効化 */
         input, select { width: 100%; padding: 14px; margin: 8px 0; font-size: 16px !important; border: 2px solid #eee; border-radius: 8px; outline: none; background: #fff; appearance: none; }
         .main-btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-p { background: var(--p); color: #fff; }
-        .btn-sub { background: #eee; color: #333; padding: 6px 10px; font-size: 12px; border-radius: 6px; border: none; }
-        .btn-d { background: var(--danger); color: #fff; padding: 6px 10px; border-radius: 6px; border: none; font-size: 12px; }
+        .btn-sub { background: #eee; color: #333; padding: 8px 12px; font-size: 12px; border-radius: 6px; border: none; }
+        .btn-d { background: var(--danger); color: #fff; padding: 8px 12px; border-radius: 6px; border: none; font-size: 12px; }
 
         .q-text { font-size: 32px; font-weight: bold; margin: 30px 0; text-align: center; word-break: break-all; }
+        .countdown { font-size: 80px; color: var(--p); text-align: center; font-weight: bold; margin: 20px 0; }
+        
         .tabs { display: flex; overflow-x: auto; gap: 8px; padding: 10px 0; -webkit-overflow-scrolling: touch; }
         .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
         .tab-active { background: var(--p); color: white; }
@@ -34,9 +34,23 @@
         .li-item { display: flex; justify-content: space-between; align-items: flex-start; border-left: 6px solid var(--p); }
         .li-info { flex: 1; user-select: text !important; -webkit-user-select: text !important; }
         .action-btns { display: flex; flex-direction: column; gap: 8px; margin-left: 10px; }
+
+        #list-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:3000; align-items:center; justify-content:center; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
+
+    <div id="list-modal">
+        <div class="card" style="width:85%; max-width:350px;">
+            <h3 style="margin-top:0">追加先のリストを選択</h3>
+            <select id="modal-pl-select"></select>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button class="main-btn" style="background:#ccc; flex:1;" onclick="closeModal()">戻る</button>
+                <button class="main-btn btn-p" style="flex:1;" onclick="executeAddToList()">追加</button>
+            </div>
+        </div>
+    </div>
 
     <div id="page-add" class="page">
         <div class="card">
@@ -51,6 +65,7 @@
 
     <div id="page-quiz" class="page active">
         <div class="card">
+            <div id="count-area" class="countdown hidden"></div>
             <div id="q-display" class="q-text">練習を始める</div>
             <div id="quiz-ui" class="hidden">
                 <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;" autocomplete="off">
@@ -62,6 +77,7 @@
                     <button class="main-btn" style="background:var(--new); color:#fff" onclick="startQuiz('new')">新規</button>
                     <button class="main-btn" style="background:var(--acc); color:#fff" onclick="startQuiz('srs')">復習</button>
                 </div>
+                <button class="main-btn btn-p" style="margin-top:10px; background:var(--danger)" onclick="startQuiz('miss')">苦手特訓モード</button>
                 <button class="main-btn btn-p" style="margin-top:10px" onclick="startQuiz('all')">全問シャッフル</button>
             </div>
         </div>
@@ -69,6 +85,8 @@
 
     <div id="page-list" class="page">
         <div class="card">
+            <label style="font-size:12px; color:#666;">🔍 単語を検索</label>
+            <input id="search-in" type="text" placeholder="英単語 or 日本語..." oninput="renderWordList()" style="margin-bottom:15px; border-color:var(--p);">
             <div style="display:flex; gap:8px;">
                 <input id="new-pl-input" placeholder="新しいリスト名" style="flex:1; margin:0">
                 <button class="btn-p" style="padding:0 15px; border-radius:8px;" onclick="createNewPlaylist()">作成</button>
@@ -88,11 +106,9 @@
         const STORAGE_KEY = "domemory_v20_stable";
         let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { playlists: ["デフォルト", "間違えた単語"], words: [] };
         let currentViewingPL = "デフォルト";
-        let quizPool = [], quizIdx = 0;
+        let quizPool = [], quizIdx = 0, tempWord = null, currentQuizMode = "";
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-
-        // ズレ防止：画面を一番上に戻す
         function resetView() { window.scrollTo(0, 0); }
 
         function showPage(id) {
@@ -109,6 +125,7 @@
             const opts = data.playlists.map(p => `<option value="${p}">${p}</option>`).join('');
             document.getElementById('add-to-playlist').innerHTML = opts;
             document.getElementById('quiz-from-playlist').innerHTML = opts;
+            document.getElementById('modal-pl-select').innerHTML = opts;
             document.getElementById('playlist-tabs').innerHTML = data.playlists.map(p => 
                 `<div class="tab ${p === currentViewingPL ? 'tab-active' : ''}" onclick="changeViewPL('${p}')">${p}</div>`
             ).join('');
@@ -121,51 +138,37 @@
             const ja = document.getElementById('ja-in').value.trim();
             const pl = document.getElementById('add-to-playlist').value;
             if(!en || !ja) return;
-
             const newWord = { en, ja, pl, iv: 0, due: Date.now(), isNew: true, level: 0 };
             data.words.push(newWord);
-            
-            // デフォルト以外ならデフォルトにも追加（標準化）
-            if(pl !== "デフォルト") {
-                data.words.push({ ...newWord, pl: "デフォルト" });
-            }
-
+            if(pl !== "デフォルト") data.words.push({ ...newWord, pl: "デフォルト" });
             saveData(); 
-            document.getElementById('en-in').value = ""; 
-            document.getElementById('ja-in').value = "";
-            alert("保存しました");
-            resetView();
+            document.getElementById('en-in').value = ""; document.getElementById('ja-in').value = "";
+            alert("保存しました"); resetView();
         }
 
-        function copyWordToOtherList(wordObj) {
-            const targetPL = prompt("コピー先のリスト名を入力してください", "デフォルト");
-            if (!targetPL || !data.playlists.includes(targetPL)) return alert("リストが見つかりません");
-            
-            // 重複チェック
-            if (data.words.some(w => w.en === wordObj.en && w.pl === targetPL)) {
-                return alert("既にそのリストに存在します");
-            }
-
-            data.words.push({ ...wordObj, pl: targetPL });
-            saveData();
-            alert(`${targetPL} に追加しました`);
+        function openAddModal(word) { tempWord = word; document.getElementById('list-modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('list-modal').style.display = 'none'; }
+        function executeAddToList() {
+            const targetPL = document.getElementById('modal-pl-select').value;
+            if (data.words.some(w => w.en === tempWord.en && w.pl === targetPL)) return alert("既に存在します");
+            data.words.push({ ...tempWord, pl: targetPL });
+            saveData(); closeModal(); alert(targetPL + " に追加しました"); renderWordList();
         }
 
         function renderWordList() {
             const listEl = document.getElementById('word-list-view');
+            const search = document.getElementById('search-in').value.toLowerCase();
             listEl.innerHTML = "";
-            const filtered = data.words.filter(w => w.pl === currentViewingPL);
-
+            const filtered = data.words.filter(w => 
+                w.pl === currentViewingPL && (w.en.toLowerCase().includes(search) || w.ja.includes(search))
+            );
             filtered.forEach((w) => {
                 const li = document.createElement('div');
                 li.className = 'card li-item';
                 li.innerHTML = `
-                    <div class="li-info">
-                        <b style="font-size:18px;">${w.en}</b><br>
-                        <span>${w.ja}</span>
-                    </div>
+                    <div class="li-info"><b style="font-size:18px;">${w.en}</b><br><span>${w.ja}</span></div>
                     <div class="action-btns">
-                        <button class="btn-sub" onclick='copyWordToOtherList(${JSON.stringify(w)})'>追加</button>
+                        <button class="btn-sub" onclick='openAddModal(${JSON.stringify(w)})'>追加</button>
                         <button class="btn-d" onclick="deleteWord('${w.en}', '${w.pl}')">削除</button>
                     </div>
                 `;
@@ -179,15 +182,25 @@
             saveData(); renderWordList();
         }
 
-        function startQuiz(mode) {
+        async function startQuiz(mode) {
+            currentQuizMode = mode;
             const target = document.getElementById('quiz-from-playlist').value;
-            quizPool = data.words.filter(w => w.pl === target);
-            if(mode === 'new') quizPool = quizPool.filter(w => w.isNew);
-            if(mode === 'srs') quizPool = quizPool.filter(w => !w.isNew && w.due <= Date.now());
+            if(mode === 'miss') quizPool = data.words.filter(w => w.pl === "間違えた単語");
+            else {
+                quizPool = data.words.filter(w => w.pl === target);
+                if(mode === 'new') quizPool = quizPool.filter(w => w.isNew);
+                if(mode === 'srs') quizPool = quizPool.filter(w => !w.isNew && w.due <= Date.now());
+            }
 
             if(!quizPool.length) return alert("対象の単語がありません");
-            quizPool.sort(() => Math.random() - 0.5); quizIdx = 0;
             document.getElementById('quiz-setup').classList.add('hidden');
+            document.getElementById('q-display').classList.add('hidden');
+            const countEl = document.getElementById('count-area');
+            countEl.classList.remove('hidden');
+            for(let i=3; i>0; i--) { countEl.textContent = i; await new Promise(r => setTimeout(r, 800)); }
+            countEl.classList.add('hidden');
+            document.getElementById('q-display').classList.remove('hidden');
+            quizPool.sort(() => Math.random() - 0.5); quizIdx = 0;
             document.getElementById('quiz-ui').classList.remove('hidden');
             nextQ();
         }
@@ -207,17 +220,21 @@
         function handleCheck() {
             const ans = document.getElementById('ans-in').value.trim();
             const target = quizPool[quizIdx];
+            
             if(ans === target.ja) {
                 alert("正解！");
+                // 全リストの同単語を学習済みに更新
                 data.words.forEach(w => { if(w.en === target.en) { w.level++; w.isNew = false; w.due = Date.now() + 86400000; } });
+                // 「間違えた単語」リストから削除
+                data.words = data.words.filter(w => !(w.en === target.en && w.pl === "間違えた単語"));
             } else {
-                alert("正解は: " + target.ja);
+                alert("ミス！正解は: " + target.ja);
+                // 「間違えた単語」リストに無ければ追加
                 if(!data.words.some(w => w.en === target.en && w.pl === "間違えた単語")) {
-                    data.words.push({...target, pl: "間違えた単語"});
+                    data.words.push({...target, pl: "間違えた単語", isNew: true, level: 0, due: Date.now()});
                 }
             }
-            saveData(); quizIdx++; nextQ();
-            resetView();
+            saveData(); quizIdx++; nextQ(); resetView();
         }
 
         function createNewPlaylist() {
