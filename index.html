@@ -7,21 +7,22 @@
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; }
         
-        /* ズーム防止とコピー許可 */
+        /* ズーム防止とコピー許可の設定 */
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        html, body { overflow-x: hidden; position: relative; width: 100%; height: 100%; }
+        html, body { overflow-x: hidden; position: relative; width: 100%; -webkit-overflow-scrolling: touch; }
         
         body { 
             font-family: -apple-system, sans-serif; 
             background: var(--bg); margin: 0; color: var(--text); 
-            padding-bottom: 90px;
-            user-select: text !important; -webkit-user-select: text !important; /* コピーを許可 */
+            padding-bottom: 100px; /* 下部メニューとの被り防止 */
+            user-select: text !important; -webkit-user-select: text !important;
         }
 
+        /* 下部メニューを確実に固定 */
         .menu { 
             background: #222; color: #fff; position: fixed; bottom: 0; left: 0; right: 0; 
-            display: flex; justify-content: space-around; padding: 12px 0 25px 0; 
-            z-index: 2000; box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            display: flex; justify-content: space-around; padding: 12px 0 30px 0; 
+            z-index: 9999; box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
         }
         .menu button { 
             background: none; color: #ccc; font-size: 11px; border: none; 
@@ -33,21 +34,22 @@
         .active { display: block; }
         .card { background: #fff; padding: 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 15px; }
 
-        /* 入力時にズームされないよう16px以上を維持 */
+        /* 入力欄：16px以上にすることでiOSの勝手なズームを防止 */
         input, select { 
-            width: 100%; padding: 14px; margin: 8px 0; font-size: 16px; 
+            width: 100%; padding: 14px; margin: 8px 0; font-size: 16px !important; 
             border: 2px solid #eee; border-radius: 8px; outline: none;
             background: #fff; appearance: none;
         }
         .main-btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-p { background: var(--p); color: #fff; }
-        .btn-d { background: var(--danger); color: #fff; padding: 5px 12px; border-radius: 6px; border: none; font-size: 12px; }
+        .btn-d { background: var(--danger); color: #fff; padding: 6px 12px; border-radius: 6px; border: none; font-size: 12px; }
 
         .q-text { font-size: 32px; font-weight: bold; margin: 30px 0; text-align: center; word-break: break-all; }
         .tabs { display: flex; overflow-x: auto; gap: 8px; padding: 10px 0; -webkit-overflow-scrolling: touch; }
         .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
         .tab-active { background: var(--p); color: white; }
 
+        /* リストのコピーを有効化 */
         .li-item { display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--p); }
         .li-info { color: #333; flex: 1; user-select: text !important; -webkit-user-select: text !important; } 
         .status { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 10px; color: #fff; margin-top: 5px; }
@@ -59,7 +61,7 @@
     <div id="page-add" class="page">
         <div class="card">
             <h2 style="margin:0 0 10px 0">単語を登録</h2>
-            <label style="font-size:12px; color:#888">追加先（デフォルトにも自動保存されます）</label>
+            <label style="font-size:11px; color:#888">※「デフォルト」リストにも自動保存されます</label>
             <select id="add-to-playlist"></select>
             <input id="en-in" type="text" placeholder="English" autocomplete="off" inputmode="latin">
             <input id="ja-in" type="text" placeholder="日本語" autocomplete="off">
@@ -69,10 +71,9 @@
 
     <div id="page-quiz" class="page active">
         <div class="card">
-            <div id="count" style="text-align:center; font-size:40px; color:var(--p); font-weight:bold;"></div>
             <div id="q-display" class="q-text">練習を始める</div>
             <div id="quiz-ui" class="hidden">
-                <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;">
+                <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;" autocomplete="off">
                 <button class="main-btn btn-p" onclick="handleCheck()">決定</button>
             </div>
             <div id="quiz-setup">
@@ -98,9 +99,9 @@
     </div>
 
     <nav class="menu">
-        <button id="nav-add" onclick="showPage('add')"><span>➕</span>登録</button>
-        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')"><span>📝</span>クイズ</button>
-        <button id="nav-list" onclick="showPage('list')"><span>📚</span>リスト</button>
+        <button id="nav-add" onclick="showPage('add')">➕登録</button>
+        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')">📝練習</button>
+        <button id="nav-list" onclick="showPage('list')">📚リスト</button>
     </nav>
 
     <script>
@@ -111,12 +112,10 @@
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
-        // ズレ防止：画面位置をリセットする
-        function resetScroll() {
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-                document.body.scrollTop = 0;
-            }, 100);
+        // ズレ防止：入力確定時に強制的に画面位置を戻す
+        function forceResetScroll() {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+            document.body.scrollTop = 0;
         }
 
         function showPage(id) {
@@ -126,7 +125,7 @@
             document.getElementById('nav-' + id).classList.add('active-nav');
             updateUI();
             if(id === 'list') renderWordList();
-            resetScroll();
+            forceResetScroll();
         }
 
         function updateUI() {
@@ -153,10 +152,10 @@
             const selectedPL = document.getElementById('add-to-playlist').value;
             if(!en || !ja) return;
 
-            // 指定リストに追加
+            // 指定リストへ追加
             data.words.push({ en, ja, pl: selectedPL, iv: 0, due: Date.now(), isNew: true, level: 0 });
             
-            // 「デフォルト」以外なら、デフォルトにも保存
+            // 「デフォルト」以外ならデフォルトにも重複保存
             if(selectedPL !== "デフォルト") {
                 data.words.push({ en, ja, pl: "デフォルト", iv: 0, due: Date.now(), isNew: true, level: 0 });
             }
@@ -164,8 +163,8 @@
             saveData(); 
             document.getElementById('en-in').value = ""; 
             document.getElementById('ja-in').value = "";
-            alert("登録完了");
-            resetScroll();
+            alert("保存しました");
+            forceResetScroll();
         }
 
         function renderWordList() {
@@ -214,14 +213,14 @@
 
         function nextQ() {
             if(quizIdx >= quizPool.length) {
-                alert("完了！");
+                alert("練習完了！");
                 document.getElementById('quiz-ui').classList.add('hidden');
                 document.getElementById('quiz-setup').classList.remove('hidden');
                 document.getElementById('q-display').textContent = "練習を始める";
-                isQuizing = false; resetScroll(); return;
+                isQuizing = false; forceResetScroll(); return;
             }
             document.getElementById('q-display').textContent = quizPool[quizIdx].en;
-            document.getElementById('ans-in').value = ""; document.getElementById('ans-in').focus();
+            document.getElementById('ans-in').value = "";
         }
 
         function handleCheck() {
@@ -230,7 +229,12 @@
             if(ans === target.ja) {
                 alert("正解！");
                 data.words.forEach(w => {
-                    if(w.en === target.en) { w.level++; w.isNew = false; w.due = Date.now() + 86400000; }
+                    if(w.en === target.en) { 
+                        w.level++; w.isNew = false; 
+                        // v22の忘却曲線ロジックを簡略化しつつ適用
+                        let days = w.level === 1 ? 1 : w.level === 2 ? 3 : 7;
+                        w.due = Date.now() + (days * 86400000); 
+                    }
                 });
             } else {
                 alert("ミス！正解: " + target.ja);
@@ -239,7 +243,7 @@
                 }
             }
             saveData(); quizIdx++; nextQ();
-            resetScroll();
+            forceResetScroll(); // これがズレ防止の鍵
         }
 
         updateUI();
