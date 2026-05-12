@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v50 - Layout Fixed</title>
+    <title>Domemory v51 - Perfect Fix</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -25,8 +25,8 @@
         input, select { width: 100%; padding: 14px; margin: 8px 0; font-size: 16px !important; border: 2px solid #eee; border-radius: 8px; outline: none; background: #fff; }
         .main-btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-p { background: var(--p); color: #fff; }
-        .btn-sub { background: rgba(0,0,0,0.1); color: #333; padding: 8px 12px; font-size: 12px; border: none; border-radius: 6px; }
-        .btn-d { background: var(--danger); color: #fff; padding: 8px 12px; border: none; border-radius: 6px; font-size: 12px; }
+        .btn-sub { background: rgba(0,0,0,0.1); color: #333; padding: 8px 12px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-d { background: var(--danger); color: #fff; padding: 8px 12px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; }
         
         .q-text { font-size: 32px; font-weight: bold; margin: 30px 0; text-align: center; word-break: break-all; }
         .countdown { font-size: 80px; color: var(--p); text-align: center; font-weight: bold; margin: 20px 0; }
@@ -39,17 +39,17 @@
         .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
         .tab-active { background: var(--p); color: white; }
 
-        /* リストアイテムのレイアウト崩れ防止 */
-        .li-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-        .li-info { flex: 1; min-width: 0; word-break: break-all; } /* 文字が長くてもボタンを押し出さない */
-        .action-btns { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; } /* ボタンのサイズを固定 */
+        /* レイアウト崩れと重なりを完全に防ぐ */
+        .li-item { display: flex; justify-content: space-between; align-items: stretch; gap: 12px; position: relative; }
+        .li-info { flex: 1; min-width: 0; word-break: break-all; pointer-events: none; } 
+        .action-btns { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; justify-content: center; z-index: 10; } 
+        .action-btns button { pointer-events: auto; }
 
         .badge { display: inline-block; padding: 2px 8px; font-size: 11px; border-radius: 4px; margin-top: 6px; font-weight: bold; background: rgba(0,0,0,0.05); }
         .due-timer { font-size: 11px; color: #777; margin-top: 6px; margin-left: 5px; }
 
         #list-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:3000; align-items:center; justify-content:center; }
         .hidden { display: none !important; }
-        
         .abort-container { margin-top: 20px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px; }
     </style>
 </head>
@@ -176,6 +176,7 @@
             const missSet = new Set(data.words.filter(w => w.pl === "間違えた単語").map(w => w.en + w.ja));
             const filtered = data.words.filter(w => w.pl === currentViewingPL && (w.en.toLowerCase().includes(search) || w.ja.includes(search)));
             const now = Date.now();
+
             filtered.forEach((w) => {
                 const li = document.createElement('div');
                 let statusClass = "status-new", statusName = "未学習", timeInfo = "";
@@ -185,23 +186,39 @@
                     statusClass = "status-wait"; statusName = "復習待ち";
                     const diff = w.due - now;
                     if (diff > 0) {
-                        const days = Math.floor(diff / 86400000), hours = Math.floor((diff % 86400000) / 3600000), mins = Math.floor((diff % 3600000) / 60000);
-                        if (days > 0) timeInfo = `<span class="due-timer">あと ${days}日 ${hours}時間</span>`;
-                        else if (hours > 0) timeInfo = `<span class="due-timer">あと ${hours}時間 ${mins}分</span>`;
-                        else timeInfo = `<span class="due-timer">あと ${mins}分</span>`;
+                        const mins = Math.floor((diff % 3600000) / 60000);
+                        const hours = Math.floor((diff % 86400000) / 3600000);
+                        const days = Math.floor(diff / 86400000);
+                        timeInfo = `<span class="due-timer">あと ${days ? days+'日' : ''}${hours ? hours+'時' : ''}${mins}分</span>`;
                     } else { timeInfo = `<span class="due-timer" style="color:var(--danger); font-weight:bold;">復習可能</span>`; }
                 }
                 li.className = `card li-item ${statusClass}`;
+                
+                // --- 修正の要：データ属性を使って onclick のエラーを回避 ---
+                const addBtn = document.createElement('button');
+                addBtn.className = 'btn-sub';
+                addBtn.textContent = '追加';
+                addBtn.onclick = () => openAddModal(w); // 直接オブジェクトを渡す
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'btn-d';
+                delBtn.textContent = '削除';
+                delBtn.onclick = () => deleteWord(w.en, w.ja, w.pl);
+
                 li.innerHTML = `
                     <div class="li-info">
                         <b style="font-size:18px;">${w.en}</b><br>
                         <span>${w.ja}</span><br>
                         <span class="badge">${statusName}</span>${timeInfo}
                     </div>
-                    <div class="action-btns">
-                        <button class="btn-sub" onclick='openAddModal(${JSON.stringify(w)})'>追加</button>
-                        <button class="btn-d" onclick="deleteWord('${w.en}', '${w.ja}', '${w.pl}')">削除</button>
-                    </div>`;
+                `;
+                
+                const btnArea = document.createElement('div');
+                btnArea.className = 'action-btns';
+                btnArea.appendChild(addBtn);
+                btnArea.appendChild(delBtn);
+                li.appendChild(btnArea);
+
                 listEl.appendChild(li);
             });
         }
@@ -363,12 +380,14 @@
 
         function openAddModal(word) { tempWord = word; document.getElementById('list-modal').style.display = 'flex'; }
         function closeModal() { document.getElementById('list-modal').style.display = 'none'; }
+        
         function executeAddToList() {
             const targetPL = document.getElementById('modal-pl-select').value;
             if (data.words.some(w => w.en === tempWord.en && w.ja === tempWord.ja && w.pl === targetPL)) return alert("既に追加済み");
             data.words.push({ ...tempWord, pl: targetPL });
             saveData(); closeModal(); renderWordList();
         }
+
         function createNewPlaylist() {
             const name = document.getElementById('new-pl-input').value.trim();
             if(!name || data.playlists.includes(name)) return;
