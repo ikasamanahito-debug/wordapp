@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v38</title>
+    <title>Domemory v39</title>
     <style>
-        :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; }
+        :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         html, body { overflow-x: hidden; position: relative; width: 100%; height: 100%; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; color: var(--text); padding-bottom: 100px; user-select: text !important; -webkit-user-select: text !important; }
@@ -35,11 +35,6 @@
         .tabs { display: flex; overflow-x: auto; gap: 8px; padding: 10px 0; -webkit-overflow-scrolling: touch; }
         .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
         .tab-active { background: var(--p); color: white; }
-
-        .status-miss { background-color: #ffcccc !important; border-left: 6px solid var(--danger); }
-        .status-new { background-color: #ffffff !important; border-left: 6px solid #ccc; }
-        .status-wait { background-color: #ffe0b2 !important; border-left: 6px solid var(--acc); }
-        .status-veteran { background-color: #fff9c4 !important; border-left: 6px solid var(--gold); border: 2px solid var(--gold); }
 
         .li-item { display: flex; justify-content: space-between; align-items: flex-start; }
         .li-info { flex: 1; }
@@ -99,7 +94,11 @@
                     <button class="main-btn" style="background:var(--acc); color:#fff" onclick="startQuiz('srs')">復習(6択)</button>
                 </div>
                 <button class="main-btn btn-p" style="background:var(--danger); margin-bottom:10px" onclick="startQuiz('miss')">苦手特訓モード(入力)</button>
-                <button class="main-btn btn-p" onclick="startQuiz('all')">既習全問シャッフル(入力)</button>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="main-btn" style="background:var(--shuffle); color:#fff" onclick="startQuiz('all_choice')">既習全問(4択)</button>
+                    <button class="main-btn" style="background:var(--shuffle); color:#fff" onclick="startQuiz('all')">既習全問(入力)</button>
+                </div>
             </div>
         </div>
     </div>
@@ -128,7 +127,7 @@
         let currentViewingPL = "デフォルト";
         let quizPool = [], quizIdx = 0, tempWord = null, currentQuizMode = "";
         let waitInterval = null;
-        let isCountingDown = false; // カウントダウン中フラグ
+        let isCountingDown = false;
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
         function resetView() { window.scrollTo(0, 0); }
@@ -168,7 +167,7 @@
             if(pl !== "デフォルト") data.words.push({ ...newWord, pl: "デフォルト" });
             saveData(); 
             enIn.value = ""; jaIn.value = "";
-            enIn.focus(); // English入力へ戻す
+            enIn.focus();
             updateUI();
         }
 
@@ -216,11 +215,11 @@
                 const baseWords = data.words.filter(w => w.pl === target);
                 if(mode === 'new') quizPool = baseWords.filter(w => w.isNew);
                 else if(mode === 'srs') quizPool = baseWords.filter(w => !w.isNew && w.due <= Date.now());
-                else if(mode === 'all') quizPool = baseWords.filter(w => !w.isNew);
+                else if(mode === 'all' || mode === 'all_choice') quizPool = baseWords.filter(w => !w.isNew);
             }
 
             if(!quizPool.length) {
-                const msg = mode === 'new' ? "新しい単語がありません" : "学習済みの対象単語がありません。まずは「新規」で学習してください。";
+                const msg = mode === 'new' ? "新しい単語がありません" : "学習済みの対象単語がありません。";
                 return alert(msg);
             }
 
@@ -245,10 +244,13 @@
             const target = quizPool[quizIdx];
             document.getElementById('q-display').textContent = target.en;
             
-            if(currentQuizMode === 'new' || currentQuizMode === 'srs') {
+            if(currentQuizMode === 'new' || currentQuizMode === 'srs' || currentQuizMode === 'all_choice') {
                 document.getElementById('quiz-ui').classList.add('hidden');
                 document.getElementById('choice-ui').classList.remove('hidden');
-                startWaitTimer();
+                
+                // all_choice の場合は待ち時間をなしにする（テンポ重視）
+                if(currentQuizMode === 'all_choice') skipWait();
+                else startWaitTimer();
             } else {
                 document.getElementById('quiz-ui').classList.remove('hidden');
                 document.getElementById('choice-ui').classList.add('hidden');
@@ -284,7 +286,8 @@
         function showChoices() {
             const grid = document.getElementById('choices-grid');
             grid.innerHTML = "";
-            const num = currentQuizMode === 'new' ? 4 : 6;
+            // all_choice は 4択固定
+            const num = (currentQuizMode === 'new' || currentQuizMode === 'all_choice') ? 4 : 6;
             const correct = quizPool[quizIdx];
             let learnedWords = data.words.filter(w => w.pl === "デフォルト" && !w.isNew && w.en !== correct.en);
             if (learnedWords.length < num) {
@@ -304,10 +307,10 @@
         }
 
         function handleCheck() {
-            if(isCountingDown) return; // カウントダウン中はガード
+            if(isCountingDown) return;
             const ansIn = document.getElementById('ans-in');
             const ans = ansIn.value.trim();
-            if(!ans) return; // 空なら何もしない
+            if(!ans) return;
             const target = quizPool[quizIdx];
             handleFinalCheck(ans === target.ja, target.ja);
         }
@@ -315,9 +318,8 @@
         function handleFinalCheck(isCorrect, correctJa) {
             const target = quizPool[quizIdx];
             if(isCorrect) {
-                // 正解時はalertを出さず、瞬間的に進むよう設計することも可能ですが
-                // 今回はalertを残し、alert後のフォーカスを自動化します
                 alert("正解！");
+                // 忘却曲線に干渉するのは new と srs のみ
                 if(currentQuizMode === 'new' || currentQuizMode === 'srs') {
                     data.words.forEach(w => {
                         if(w.en === target.en) {
