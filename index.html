@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v37</title>
+    <title>Domemory v38</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -68,8 +68,8 @@
         <div class="card">
             <h2 style="margin:0">単語を登録</h2>
             <select id="add-to-playlist"></select>
-            <input id="en-in" type="text" placeholder="English" autocomplete="off" inputmode="latin">
-            <input id="ja-in" type="text" placeholder="日本語" autocomplete="off">
+            <input id="en-in" type="text" placeholder="English" autocomplete="off" inputmode="latin" onkeydown="if(event.key==='Enter') document.getElementById('ja-in').focus()">
+            <input id="ja-in" type="text" placeholder="日本語" autocomplete="off" onkeydown="if(event.key==='Enter') saveWord()">
             <button class="main-btn btn-p" onclick="saveWord()">保存する</button>
         </div>
     </div>
@@ -80,7 +80,7 @@
             <div id="q-display" class="q-text">練習を始める</div>
             
             <div id="quiz-ui" class="hidden">
-                <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;" autocomplete="off">
+                <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;" autocomplete="off" onkeydown="if(event.key==='Enter') handleCheck()">
                 <button class="main-btn btn-p" onclick="handleCheck()">決定</button>
             </div>
 
@@ -128,6 +128,7 @@
         let currentViewingPL = "デフォルト";
         let quizPool = [], quizIdx = 0, tempWord = null, currentQuizMode = "";
         let waitInterval = null;
+        let isCountingDown = false; // カウントダウン中フラグ
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
         function resetView() { window.scrollTo(0, 0); }
@@ -139,6 +140,7 @@
             document.getElementById('nav-' + id).classList.add('active-nav');
             updateUI();
             if(id === 'list') renderWordList();
+            if(id === 'add') setTimeout(()=>document.getElementById('en-in').focus(), 100);
             resetView();
         }
 
@@ -155,16 +157,19 @@
         function changeViewPL(name) { currentViewingPL = name; renderWordList(); updateUI(); }
 
         function saveWord() {
-            const en = document.getElementById('en-in').value.trim();
-            const ja = document.getElementById('ja-in').value.trim();
+            const enIn = document.getElementById('en-in');
+            const jaIn = document.getElementById('ja-in');
+            const en = enIn.value.trim();
+            const ja = jaIn.value.trim();
             const pl = document.getElementById('add-to-playlist').value;
             if(!en || !ja) return;
             const newWord = { en, ja, pl, iv: 0, due: Date.now(), isNew: true, level: 0 };
             data.words.push(newWord);
             if(pl !== "デフォルト") data.words.push({ ...newWord, pl: "デフォルト" });
             saveData(); 
-            document.getElementById('en-in').value = ""; document.getElementById('ja-in').value = "";
-            updateUI(); alert("保存しました"); resetView();
+            enIn.value = ""; jaIn.value = "";
+            enIn.focus(); // English入力へ戻す
+            updateUI();
         }
 
         function renderWordList() {
@@ -205,22 +210,13 @@
             currentQuizMode = mode; 
             const target = document.getElementById('quiz-from-playlist').value;
             
-            // フィルタリングロジックの強化
             if(mode === 'miss') {
-                // 苦手特訓でも、新規で一度も解いていない単語は出さない（本来あり得ないが安全のため）
                 quizPool = data.words.filter(w => w.pl === "間違えた単語" && !w.isNew);
             } else {
                 const baseWords = data.words.filter(w => w.pl === target);
-                if(mode === 'new') {
-                    // 新規モードは「isNew」がtrueの単語のみ
-                    quizPool = baseWords.filter(w => w.isNew);
-                } else if(mode === 'srs') {
-                    // 復習モードは「既習(isNew:false)」かつ「復習期限」
-                    quizPool = baseWords.filter(w => !w.isNew && w.due <= Date.now());
-                } else if(mode === 'all') {
-                    // 全問シャッフルは「既習(isNew:false)」のみ
-                    quizPool = baseWords.filter(w => !w.isNew);
-                }
+                if(mode === 'new') quizPool = baseWords.filter(w => w.isNew);
+                else if(mode === 'srs') quizPool = baseWords.filter(w => !w.isNew && w.due <= Date.now());
+                else if(mode === 'all') quizPool = baseWords.filter(w => !w.isNew);
             }
 
             if(!quizPool.length) {
@@ -232,7 +228,9 @@
             document.getElementById('q-display').classList.add('hidden');
             const countEl = document.getElementById('count-area');
             countEl.classList.remove('hidden');
+            isCountingDown = true;
             for(let i=3; i>0; i--) { countEl.textContent = i; await new Promise(r => setTimeout(r, 800)); }
+            isCountingDown = false;
             countEl.classList.add('hidden');
             document.getElementById('q-display').classList.remove('hidden');
             quizPool.sort(() => Math.random() - 0.5); quizIdx = 0;
@@ -288,12 +286,10 @@
             grid.innerHTML = "";
             const num = currentQuizMode === 'new' ? 4 : 6;
             const correct = quizPool[quizIdx];
-            // 選択肢のダミーも既習単語から優先的に出す（なければ全体から）
             let learnedWords = data.words.filter(w => w.pl === "デフォルト" && !w.isNew && w.en !== correct.en);
             if (learnedWords.length < num) {
                 learnedWords = data.words.filter(w => w.pl === "デフォルト" && w.en !== correct.en);
             }
-            
             let others = learnedWords.map(w => w.ja).filter((v, i, a) => a.indexOf(v) === i);
             others.sort(() => Math.random() - 0.5);
             let choices = [correct.ja, ...others.slice(0, num - 1)];
@@ -308,7 +304,10 @@
         }
 
         function handleCheck() {
-            const ans = document.getElementById('ans-in').value.trim();
+            if(isCountingDown) return; // カウントダウン中はガード
+            const ansIn = document.getElementById('ans-in');
+            const ans = ansIn.value.trim();
+            if(!ans) return; // 空なら何もしない
             const target = quizPool[quizIdx];
             handleFinalCheck(ans === target.ja, target.ja);
         }
@@ -316,6 +315,8 @@
         function handleFinalCheck(isCorrect, correctJa) {
             const target = quizPool[quizIdx];
             if(isCorrect) {
+                // 正解時はalertを出さず、瞬間的に進むよう設計することも可能ですが
+                // 今回はalertを残し、alert後のフォーカスを自動化します
                 alert("正解！");
                 if(currentQuizMode === 'new' || currentQuizMode === 'srs') {
                     data.words.forEach(w => {
