@@ -3,47 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v39</title>
+    <title>Domemory v43 - Abort Fixed</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        html, body { overflow-x: hidden; position: relative; width: 100%; height: 100%; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; color: var(--text); padding-bottom: 100px; user-select: text !important; -webkit-user-select: text !important; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; color: var(--text); padding-bottom: 100px; }
 
-        .menu { background: #222; color: #fff; position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 12px 0 30px 0; z-index: 2000; box-shadow: 0 -2px 10px rgba(0,0,0,0.3); }
+        .menu { background: #222; color: #fff; position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 12px 0 30px 0; z-index: 2000; }
         .menu button { background: none; color: #ccc; font-size: 11px; border: none; display: flex; flex-direction: column; align-items: center; gap: 4px; flex:1; }
         .menu button.active-nav { color: var(--p); font-weight: bold; }
 
         .page { padding: 15px; max-width: 500px; margin: 0 auto; display: none; }
         .active { display: block; }
-        .card { background: #fff; padding: 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        .card { background: #fff; padding: 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid transparent; }
 
-        input, select { width: 100%; padding: 14px; margin: 8px 0; font-size: 16px !important; border: 2px solid #eee; border-radius: 8px; outline: none; background: #fff; appearance: none; }
-        .main-btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .status-miss { background-color: #ffebee !important; border-left: 6px solid var(--danger); }
+        .status-new { background-color: #ffffff !important; border-left: 6px solid #ccc; }
+        .status-wait { background-color: #fff3e0 !important; border-left: 6px solid var(--acc); }
+        .status-veteran { background-color: #fffde7 !important; border-left: 6px solid var(--gold); border: 1px solid var(--gold); }
+
+        input, select { width: 100%; padding: 14px; margin: 8px 0; font-size: 16px !important; border: 2px solid #eee; border-radius: 8px; outline: none; background: #fff; }
+        .main-btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-p { background: var(--p); color: #fff; }
-        .btn-sub { background: rgba(0,0,0,0.05); color: #333; padding: 8px 12px; font-size: 12px; border-radius: 6px; border: none; }
-        .btn-d { background: var(--danger); color: #fff; padding: 8px 12px; border-radius: 6px; border: none; font-size: 12px; }
+        .btn-sub { background: rgba(0,0,0,0.1); color: #333; padding: 8px 12px; font-size: 12px; border: none; border-radius: 6px; }
+        .btn-d { background: var(--danger); color: #fff; padding: 8px 12px; border: none; border-radius: 6px; font-size: 12px; }
         
         .q-text { font-size: 32px; font-weight: bold; margin: 30px 0; text-align: center; word-break: break-all; }
         .countdown { font-size: 80px; color: var(--p); text-align: center; font-weight: bold; margin: 20px 0; }
         
         .choices-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
         .choice-btn { background: #fff; border: 2px solid #eee; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; text-align: center; }
-        .choice-btn:active { background: #eee; }
         .wait-timer { font-size: 14px; color: var(--acc); text-align: center; margin-bottom: 10px; font-weight: bold; }
 
-        .tabs { display: flex; overflow-x: auto; gap: 8px; padding: 10px 0; -webkit-overflow-scrolling: touch; }
+        .tabs { display: flex; overflow-x: auto; gap: 8px; padding: 10px 0; }
         .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
         .tab-active { background: var(--p); color: white; }
 
         .li-item { display: flex; justify-content: space-between; align-items: flex-start; }
-        .li-info { flex: 1; }
-        .badge { display: inline-block; padding: 2px 8px; font-size: 11px; border-radius: 4px; margin-top: 6px; font-weight: bold; }
-        .badge-status { background: rgba(255,255,255,0.5); color: #444; border: 1px solid rgba(0,0,0,0.1); }
-        .badge-due { background: rgba(255,255,255,0.7); color: #e67e22; margin-left: 5px; }
+        .badge { display: inline-block; padding: 2px 8px; font-size: 11px; border-radius: 4px; margin-top: 6px; font-weight: bold; background: rgba(0,0,0,0.05); }
+        .due-timer { font-size: 11px; color: #777; margin-top: 6px; margin-left: 5px; }
 
         #list-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:3000; align-items:center; justify-content:center; }
         .hidden { display: none !important; }
+        
+        /* 中止ボタン用 */
+        .abort-container { margin-top: 20px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px; }
     </style>
 </head>
 <body>
@@ -63,8 +67,10 @@
         <div class="card">
             <h2 style="margin:0">単語を登録</h2>
             <select id="add-to-playlist"></select>
-            <input id="en-in" type="text" placeholder="English" autocomplete="off" inputmode="latin" onkeydown="if(event.key==='Enter') document.getElementById('ja-in').focus()">
-            <input id="ja-in" type="text" placeholder="日本語" autocomplete="off" onkeydown="if(event.key==='Enter') saveWord()">
+            <input id="en-in" type="text" placeholder="English" autocomplete="off" 
+                onkeydown="if(event.key==='Enter' && this.value.trim() !== '') document.getElementById('ja-in').focus()">
+            <input id="ja-in" type="text" placeholder="日本語" autocomplete="off" 
+                onkeydown="if(event.key==='Enter') saveWord()">
             <button class="main-btn btn-p" onclick="saveWord()">保存する</button>
         </div>
     </div>
@@ -87,18 +93,23 @@
                 <div id="choices-grid" class="choices-grid hidden"></div>
             </div>
 
+            <div id="abort-ui" class="abort-container hidden">
+                <button class="btn-sub" style="background:none; color:#999; text-decoration:underline;" onclick="abortQuiz()">クイズを中止する</button>
+            </div>
+
             <div id="quiz-setup">
                 <p style="text-align:center">対象: <select id="quiz-from-playlist" style="width:auto;"></select></p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:10px;">
                     <button class="main-btn" style="background:var(--new); color:#fff" onclick="startQuiz('new')">新規(4択)</button>
                     <button class="main-btn" style="background:var(--acc); color:#fff" onclick="startQuiz('srs')">復習(6択)</button>
                 </div>
-                <button class="main-btn btn-p" style="background:var(--danger); margin-bottom:10px" onclick="startQuiz('miss')">苦手特訓モード(入力)</button>
+                <button class="main-btn btn-p" style="background:var(--danger); margin-bottom:10px" onclick="startQuiz('miss')">苦手特訓(入力)</button>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="main-btn" style="background:var(--shuffle); color:#fff" onclick="startQuiz('all_choice')">既習全問(4択)</button>
-                    <button class="main-btn" style="background:var(--shuffle); color:#fff" onclick="startQuiz('all')">既習全問(入力)</button>
+                    <button class="main-btn" style="background:var(--shuffle); color:#fff" onclick="startQuiz('all_choice')">既習(選択)</button>
+                    <button class="main-btn" style="background:var(--shuffle); color:#fff" onclick="startQuiz('all')">既習(入力)</button>
                 </div>
+                <p id="limit-msg" style="font-size:11px; color:#999; text-align:center; margin-top:10px; font-weight:bold;">※4単語以上の登録で開始できます</p>
             </div>
         </div>
     </div>
@@ -126,11 +137,9 @@
         let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { playlists: ["デフォルト", "間違えた単語"], words: [] };
         let currentViewingPL = "デフォルト";
         let quizPool = [], quizIdx = 0, tempWord = null, currentQuizMode = "";
-        let waitInterval = null;
-        let isCountingDown = false;
+        let waitInterval = null, isCountingDown = false;
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-        function resetView() { window.scrollTo(0, 0); }
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -139,8 +148,8 @@
             document.getElementById('nav-' + id).classList.add('active-nav');
             updateUI();
             if(id === 'list') renderWordList();
-            if(id === 'add') setTimeout(()=>document.getElementById('en-in').focus(), 100);
-            resetView();
+            if(id === 'add') document.getElementById('en-in').focus();
+            window.scrollTo(0, 0);
         }
 
         function updateUI() {
@@ -166,9 +175,7 @@
             data.words.push(newWord);
             if(pl !== "デフォルト") data.words.push({ ...newWord, pl: "デフォルト" });
             saveData(); 
-            enIn.value = ""; jaIn.value = "";
-            enIn.focus();
-            updateUI();
+            enIn.value = ""; jaIn.value = ""; enIn.focus(); updateUI();
         }
 
         function renderWordList() {
@@ -177,35 +184,38 @@
             listEl.innerHTML = "";
             const missSet = new Set(data.words.filter(w => w.pl === "間違えた単語").map(w => w.en));
             const filtered = data.words.filter(w => w.pl === currentViewingPL && (w.en.toLowerCase().includes(search) || w.ja.includes(search)));
-
             filtered.forEach((w) => {
                 const li = document.createElement('div');
                 let statusClass = "status-new", statusName = "未学習";
                 if(missSet.has(w.en)) { statusClass = "status-miss"; statusName = "苦手"; }
                 else if(w.level >= 5) { statusClass = "status-veteran"; statusName = "ベテラン"; }
                 else if(w.level > 0) { statusClass = "status-wait"; statusName = "復習待ち"; }
-                
-                const diffDays = Math.ceil((w.due - Date.now()) / (1000 * 60 * 60 * 24));
-                const dueText = diffDays <= 0 ? "復習OK" : `あと ${diffDays} 日`;
-
                 li.className = `card li-item ${statusClass}`;
-                li.innerHTML = `
-                    <div class="li-info">
-                        <b style="font-size:18px;">${w.en}</b><br>
-                        <span>${w.ja}</span><br>
-                        <span class="badge badge-status">${statusName}</span>
-                        ${statusName !== "未学習" ? `<span class="badge badge-due">${dueText}</span>` : ''}
-                    </div>
-                    <div class="action-btns">
-                        <button class="btn-sub" onclick='openAddModal(${JSON.stringify(w)})'>追加</button>
-                        <button class="btn-d" onclick="deleteWord('${w.en}', '${w.pl}')">削除</button>
-                    </div>
-                `;
+                li.innerHTML = `<div class="li-info"><b style="font-size:18px;">${w.en}</b><br><span>${w.ja}</span><br><span class="badge">${statusName}</span></div>
+                    <div class="action-btns"><button class="btn-sub" onclick='openAddModal(${JSON.stringify(w)})'>追加</button>
+                    <button class="btn-d" onclick="deleteWord('${w.en}', '${w.pl}')">削除</button></div>`;
                 listEl.appendChild(li);
             });
         }
 
+        // クイズ中止処理
+        function abortQuiz() {
+            if(!confirm("クイズを途中で中止して戻りますか？（進行状況は保存されません）")) return;
+            clearInterval(waitInterval);
+            // UIのリセット
+            document.getElementById('quiz-setup').classList.remove('hidden');
+            document.getElementById('abort-ui').classList.add('hidden');
+            document.getElementById('quiz-ui').classList.add('hidden');
+            document.getElementById('choice-ui').classList.add('hidden');
+            document.getElementById('q-display').textContent = "練習を始める";
+            quizPool = [];
+            quizIdx = 0;
+        }
+
         async function startQuiz(mode) {
+            const totalWords = data.words.filter(w => w.pl === "デフォルト").length;
+            if(totalWords < 4) { alert(`単語数が足りません。最低4語登録してください。`); return showPage('add'); }
+
             currentQuizMode = mode; 
             const target = document.getElementById('quiz-from-playlist').value;
             
@@ -218,17 +228,18 @@
                 else if(mode === 'all' || mode === 'all_choice') quizPool = baseWords.filter(w => !w.isNew);
             }
 
-            if(!quizPool.length) {
-                const msg = mode === 'new' ? "新しい単語がありません" : "学習済みの対象単語がありません。";
-                return alert(msg);
-            }
+            if(!quizPool.length) return alert("対象の単語がありません。");
 
             document.getElementById('quiz-setup').classList.add('hidden');
+            document.getElementById('abort-ui').classList.remove('hidden'); // 中止ボタンを表示
             document.getElementById('q-display').classList.add('hidden');
             const countEl = document.getElementById('count-area');
             countEl.classList.remove('hidden');
             isCountingDown = true;
-            for(let i=3; i>0; i--) { countEl.textContent = i; await new Promise(r => setTimeout(r, 800)); }
+            for(let i=3; i>0; i--) { 
+                if(!isCountingDown) return; // 中断チェック
+                countEl.textContent = i; await new Promise(r => setTimeout(r, 800)); 
+            }
             isCountingDown = false;
             countEl.classList.add('hidden');
             document.getElementById('q-display').classList.remove('hidden');
@@ -237,20 +248,22 @@
         }
 
         function nextQ() {
-            if(quizIdx >= quizPool.length) {
-                alert("完了！");
-                location.reload(); return;
+            if(quizIdx >= quizPool.length) { 
+                alert("完了！"); 
+                document.getElementById('abort-ui').classList.add('hidden');
+                document.getElementById('quiz-setup').classList.remove('hidden');
+                document.getElementById('q-display').textContent = "練習を始める";
+                document.getElementById('quiz-ui').classList.add('hidden');
+                document.getElementById('choice-ui').classList.add('hidden');
+                return; 
             }
             const target = quizPool[quizIdx];
             document.getElementById('q-display').textContent = target.en;
-            
-            if(currentQuizMode === 'new' || currentQuizMode === 'srs' || currentQuizMode === 'all_choice') {
+            const isChoiceMode = (currentQuizMode === 'new' || currentQuizMode === 'srs' || currentQuizMode === 'all_choice');
+            if(isChoiceMode) {
                 document.getElementById('quiz-ui').classList.add('hidden');
                 document.getElementById('choice-ui').classList.remove('hidden');
-                
-                // all_choice の場合は待ち時間をなしにする（テンポ重視）
-                if(currentQuizMode === 'all_choice') skipWait();
-                else startWaitTimer();
+                startWaitTimer();
             } else {
                 document.getElementById('quiz-ui').classList.remove('hidden');
                 document.getElementById('choice-ui').classList.add('hidden');
@@ -261,12 +274,10 @@
 
         function startWaitTimer() {
             clearInterval(waitInterval);
-            const waitArea = document.getElementById('wait-area');
-            const grid = document.getElementById('choices-grid');
-            const timerEl = document.getElementById('wait-timer');
-            waitArea.classList.remove('hidden');
-            grid.classList.add('hidden');
+            document.getElementById('wait-area').classList.remove('hidden');
+            document.getElementById('choices-grid').classList.add('hidden');
             let timeLeft = 8;
+            const timerEl = document.getElementById('wait-timer');
             timerEl.textContent = `選択肢表示まであと ${timeLeft} 秒`;
             waitInterval = setInterval(() => {
                 timeLeft--;
@@ -278,26 +289,20 @@
         function skipWait() {
             clearInterval(waitInterval);
             document.getElementById('wait-area').classList.add('hidden');
-            const grid = document.getElementById('choices-grid');
-            grid.classList.remove('hidden');
+            document.getElementById('choices-grid').classList.remove('hidden');
             showChoices();
         }
 
         function showChoices() {
             const grid = document.getElementById('choices-grid');
             grid.innerHTML = "";
-            // all_choice は 4択固定
             const num = (currentQuizMode === 'new' || currentQuizMode === 'all_choice') ? 4 : 6;
             const correct = quizPool[quizIdx];
-            let learnedWords = data.words.filter(w => w.pl === "デフォルト" && !w.isNew && w.en !== correct.en);
-            if (learnedWords.length < num) {
-                learnedWords = data.words.filter(w => w.pl === "デフォルト" && w.en !== correct.en);
-            }
-            let others = learnedWords.map(w => w.ja).filter((v, i, a) => a.indexOf(v) === i);
+            let poolForDistractors = data.words.filter(w => w.pl === "デフォルト" && w.en !== correct.en);
+            let others = poolForDistractors.map(w => w.ja).filter((v, i, a) => a.indexOf(v) === i);
             others.sort(() => Math.random() - 0.5);
             let choices = [correct.ja, ...others.slice(0, num - 1)];
             choices.sort(() => Math.random() - 0.5);
-
             choices.forEach(c => {
                 const b = document.createElement('div');
                 b.className = 'choice-btn'; b.textContent = c;
@@ -307,30 +312,20 @@
         }
 
         function handleCheck() {
-            if(isCountingDown) return;
-            const ansIn = document.getElementById('ans-in');
-            const ans = ansIn.value.trim();
+            const ans = document.getElementById('ans-in').value.trim();
             if(!ans) return;
-            const target = quizPool[quizIdx];
-            handleFinalCheck(ans === target.ja, target.ja);
+            handleFinalCheck(ans === quizPool[quizIdx].ja, quizPool[quizIdx].ja);
         }
 
         function handleFinalCheck(isCorrect, correctJa) {
             const target = quizPool[quizIdx];
             if(isCorrect) {
                 alert("正解！");
-                // 忘却曲線に干渉するのは new と srs のみ
                 if(currentQuizMode === 'new' || currentQuizMode === 'srs') {
                     data.words.forEach(w => {
                         if(w.en === target.en) {
-                            w.isNew = false;
-                            w.level++;
-                            let days = 1;
-                            if(w.level === 2) days = 3;
-                            else if(w.level === 3) days = 7;
-                            else if(w.level === 4) days = 14;
-                            else if(w.level >= 5) days = 30;
-                            w.iv = days;
+                            w.isNew = false; w.level++;
+                            let days = [0,1,3,7,14,30][w.level] || 30;
                             w.due = Date.now() + (days * 86400000);
                         }
                     });
@@ -339,24 +334,26 @@
             } else {
                 alert("ミス！正解は: " + correctJa);
                 if(!data.words.some(w => w.en === target.en && w.pl === "間違えた単語")) {
-                    data.words.push({...target, pl: "間違えた単語"});
+                    data.words.push({...target, pl: "間違えた単語", level: 0, isNew: false});
                 }
             }
             saveData(); quizIdx++; nextQ();
         }
 
         function deleteWord(en, pl) {
-            if(!confirm("削除しますか？")) return;
-            data.words = data.words.filter(w => !(w.en === en && w.pl === pl));
+            if(!confirm(`「${en}」を削除しますか？`)) return;
+            if(pl === "デフォルト") { data.words = data.words.filter(w => w.en !== en); alert("削除しました"); }
+            else { data.words = data.words.filter(w => !(w.en === en && w.pl === pl)); }
             saveData(); renderWordList(); updateUI();
         }
+
         function openAddModal(word) { tempWord = word; document.getElementById('list-modal').style.display = 'flex'; }
         function closeModal() { document.getElementById('list-modal').style.display = 'none'; }
         function executeAddToList() {
             const targetPL = document.getElementById('modal-pl-select').value;
-            if (data.words.some(w => w.en === tempWord.en && w.pl === targetPL)) return alert("既に存在します");
+            if (data.words.some(w => w.en === tempWord.en && w.pl === targetPL)) return alert("既に追加済み");
             data.words.push({ ...tempWord, pl: targetPL });
-            saveData(); closeModal(); alert(targetPL + " に追加しました"); renderWordList();
+            saveData(); closeModal(); renderWordList();
         }
         function createNewPlaylist() {
             const name = document.getElementById('new-pl-input').value.trim();
