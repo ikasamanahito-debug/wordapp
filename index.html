@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v43 - Abort Fixed</title>
+    <title>Domemory v47 - Standard SRS</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -46,7 +46,6 @@
         #list-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:3000; align-items:center; justify-content:center; }
         .hidden { display: none !important; }
         
-        /* 中止ボタン用 */
         .abort-container { margin-top: 20px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px; }
     </style>
 </head>
@@ -123,6 +122,9 @@
             </div>
         </div>
         <div id="playlist-tabs" class="tabs"></div>
+        <div id="pl-manage-area" style="margin-bottom: 15px; text-align: right;">
+            <button id="delete-pl-btn" class="btn-d" style="display:none;" onclick="deleteCurrentPlaylist()">現在のリストを削除</button>
+        </div>
         <div id="word-list-view"></div>
     </div>
 
@@ -160,23 +162,18 @@
             document.getElementById('playlist-tabs').innerHTML = data.playlists.map(p => 
                 `<div class="tab ${p === currentViewingPL ? 'tab-active' : ''}" onclick="changeViewPL('${p}')">${p}</div>`
             ).join('');
+
+            const delBtn = document.getElementById('delete-pl-btn');
+            if (delBtn) {
+                if (currentViewingPL !== "デフォルト" && currentViewingPL !== "間違えた単語") {
+                    delBtn.style.display = "inline-block";
+                } else {
+                    delBtn.style.display = "none";
+                }
+            }
         }
 
         function changeViewPL(name) { currentViewingPL = name; renderWordList(); updateUI(); }
-
-        function saveWord() {
-            const enIn = document.getElementById('en-in');
-            const jaIn = document.getElementById('ja-in');
-            const en = enIn.value.trim();
-            const ja = jaIn.value.trim();
-            const pl = document.getElementById('add-to-playlist').value;
-            if(!en || !ja) return;
-            const newWord = { en, ja, pl, iv: 0, due: Date.now(), isNew: true, level: 0 };
-            data.words.push(newWord);
-            if(pl !== "デフォルト") data.words.push({ ...newWord, pl: "デフォルト" });
-            saveData(); 
-            enIn.value = ""; jaIn.value = ""; enIn.focus(); updateUI();
-        }
 
         function renderWordList() {
             const listEl = document.getElementById('word-list-view');
@@ -184,41 +181,115 @@
             listEl.innerHTML = "";
             const missSet = new Set(data.words.filter(w => w.pl === "間違えた単語").map(w => w.en));
             const filtered = data.words.filter(w => w.pl === currentViewingPL && (w.en.toLowerCase().includes(search) || w.ja.includes(search)));
+            
+            const now = Date.now();
+
             filtered.forEach((w) => {
                 const li = document.createElement('div');
-                let statusClass = "status-new", statusName = "未学習";
-                if(missSet.has(w.en)) { statusClass = "status-miss"; statusName = "苦手"; }
-                else if(w.level >= 5) { statusClass = "status-veteran"; statusName = "ベテラン"; }
-                else if(w.level > 0) { statusClass = "status-wait"; statusName = "復習待ち"; }
+                let statusClass = "status-new", statusName = "未学習", timeInfo = "";
+                
+                if(missSet.has(w.en)) { 
+                    statusClass = "status-miss"; statusName = "苦手"; 
+                } else if(w.level >= 5) { 
+                    statusClass = "status-veteran"; statusName = "ベテラン"; 
+                } else if(w.level > 0) { 
+                    statusClass = "status-wait"; statusName = "復習待ち";
+                    const diff = w.due - now;
+                    if (diff > 0) {
+                        const days = Math.floor(diff / 86400000);
+                        const hours = Math.floor((diff % 86400000) / 3600000);
+                        const mins = Math.floor((diff % 3600000) / 60000);
+                        
+                        if (days > 0) {
+                            timeInfo = `<span class="due-timer">あと ${days}日 ${hours}時間</span>`;
+                        } else if (hours > 0) {
+                            timeInfo = `<span class="due-timer">あと ${hours}時間 ${mins}分</span>`;
+                        } else {
+                            timeInfo = `<span class="due-timer">あと ${mins}分</span>`;
+                        }
+                    } else {
+                        timeInfo = `<span class="due-timer" style="color:var(--danger); font-weight:bold;">復習可能</span>`;
+                    }
+                }
+
                 li.className = `card li-item ${statusClass}`;
-                li.innerHTML = `<div class="li-info"><b style="font-size:18px;">${w.en}</b><br><span>${w.ja}</span><br><span class="badge">${statusName}</span></div>
-                    <div class="action-btns"><button class="btn-sub" onclick='openAddModal(${JSON.stringify(w)})'>追加</button>
-                    <button class="btn-d" onclick="deleteWord('${w.en}', '${w.pl}')">削除</button></div>`;
+                li.innerHTML = `
+                    <div class="li-info">
+                        <b style="font-size:18px;">${w.en}</b><br>
+                        <span>${w.ja}</span><br>
+                        <span class="badge">${statusName}</span>${timeInfo}
+                    </div>
+                    <div class="action-btns">
+                        <button class="btn-sub" onclick='openAddModal(${JSON.stringify(w)})'>追加</button>
+                        <button class="btn-d" onclick="deleteWord('${w.en}', '${w.pl}')">削除</button>
+                    </div>`;
                 listEl.appendChild(li);
             });
         }
 
-        // クイズ中止処理
+        // --- ここを24時間後に修正 ---
+        function handleFinalCheck(isCorrect, correctJa) {
+            const target = quizPool[quizIdx];
+            if(isCorrect) {
+                alert("正解！");
+                if(currentQuizMode === 'new' || currentQuizMode === 'srs') {
+                    data.words.forEach(w => {
+                        if(w.en === target.en) {
+                            w.isNew = false; 
+                            w.level++;
+                            
+                            // 通常の忘却曲線サイクル（レベル1は1日＝24時間後）
+                            let daysArr = [0, 1, 3, 7, 14, 30];
+                            let days = daysArr[w.level] || 30;
+                            w.due = Date.now() + (days * 86400000);
+                        }
+                    });
+                }
+                data.words = data.words.filter(w => !(w.en === target.en && w.pl === "間違えた単語"));
+            } else {
+                alert("ミス！正解は: " + correctJa);
+                if(!data.words.some(w => w.en === target.en && w.pl === "間違えた単語")) {
+                    data.words.push({...target, pl: "間違えた単語", level: 0, isNew: false});
+                }
+            }
+            saveData(); quizIdx++; nextQ();
+        }
+
+        function deleteCurrentPlaylist() {
+            if (currentViewingPL === "デフォルト" || currentViewingPL === "間違えた単語") return alert("このリストは削除できません。");
+            if (!confirm(`リスト「${currentViewingPL}」を削除しますか？\n（このリスト内の単語データのみが削除されます）`)) return;
+            data.playlists = data.playlists.filter(p => p !== currentViewingPL);
+            data.words = data.words.filter(w => w.pl !== currentViewingPL);
+            currentViewingPL = "デフォルト";
+            saveData(); updateUI(); renderWordList();
+        }
+
+        function saveWord() {
+            const enIn = document.getElementById('en-in'), jaIn = document.getElementById('ja-in');
+            const en = enIn.value.trim(), ja = jaIn.value.trim(), pl = document.getElementById('add-to-playlist').value;
+            if(!en || !ja) return;
+            const newWord = { en, ja, pl, due: Date.now(), isNew: true, level: 0 };
+            data.words.push(newWord);
+            if(pl !== "デフォルト") data.words.push({ ...newWord, pl: "デフォルト" });
+            saveData(); enIn.value = ""; jaIn.value = ""; enIn.focus(); updateUI();
+        }
+
         function abortQuiz() {
-            if(!confirm("クイズを途中で中止して戻りますか？（進行状況は保存されません）")) return;
+            if(!confirm("クイズを途中で中止して戻りますか？")) return;
             clearInterval(waitInterval);
-            // UIのリセット
             document.getElementById('quiz-setup').classList.remove('hidden');
             document.getElementById('abort-ui').classList.add('hidden');
             document.getElementById('quiz-ui').classList.add('hidden');
             document.getElementById('choice-ui').classList.add('hidden');
             document.getElementById('q-display').textContent = "練習を始める";
-            quizPool = [];
-            quizIdx = 0;
+            quizPool = []; quizIdx = 0;
         }
 
         async function startQuiz(mode) {
             const totalWords = data.words.filter(w => w.pl === "デフォルト").length;
             if(totalWords < 4) { alert(`単語数が足りません。最低4語登録してください。`); return showPage('add'); }
-
             currentQuizMode = mode; 
             const target = document.getElementById('quiz-from-playlist').value;
-            
             if(mode === 'miss') {
                 quizPool = data.words.filter(w => w.pl === "間違えた単語" && !w.isNew);
             } else {
@@ -227,17 +298,15 @@
                 else if(mode === 'srs') quizPool = baseWords.filter(w => !w.isNew && w.due <= Date.now());
                 else if(mode === 'all' || mode === 'all_choice') quizPool = baseWords.filter(w => !w.isNew);
             }
-
             if(!quizPool.length) return alert("対象の単語がありません。");
-
             document.getElementById('quiz-setup').classList.add('hidden');
-            document.getElementById('abort-ui').classList.remove('hidden'); // 中止ボタンを表示
+            document.getElementById('abort-ui').classList.remove('hidden');
             document.getElementById('q-display').classList.add('hidden');
             const countEl = document.getElementById('count-area');
             countEl.classList.remove('hidden');
             isCountingDown = true;
             for(let i=3; i>0; i--) { 
-                if(!isCountingDown) return; // 中断チェック
+                if(!isCountingDown) return; 
                 countEl.textContent = i; await new Promise(r => setTimeout(r, 800)); 
             }
             isCountingDown = false;
@@ -267,8 +336,7 @@
             } else {
                 document.getElementById('quiz-ui').classList.remove('hidden');
                 document.getElementById('choice-ui').classList.add('hidden');
-                document.getElementById('ans-in').value = "";
-                document.getElementById('ans-in').focus();
+                document.getElementById('ans-in').value = ""; document.getElementById('ans-in').focus();
             }
         }
 
@@ -298,11 +366,9 @@
             grid.innerHTML = "";
             const num = (currentQuizMode === 'new' || currentQuizMode === 'all_choice') ? 4 : 6;
             const correct = quizPool[quizIdx];
-            let poolForDistractors = data.words.filter(w => w.pl === "デフォルト" && w.en !== correct.en);
-            let others = poolForDistractors.map(w => w.ja).filter((v, i, a) => a.indexOf(v) === i);
+            let others = data.words.filter(w => w.pl === "デフォルト" && w.en !== correct.en).map(w => w.ja).filter((v, i, a) => a.indexOf(v) === i);
             others.sort(() => Math.random() - 0.5);
-            let choices = [correct.ja, ...others.slice(0, num - 1)];
-            choices.sort(() => Math.random() - 0.5);
+            let choices = [correct.ja, ...others.slice(0, num - 1)].sort(() => Math.random() - 0.5);
             choices.forEach(c => {
                 const b = document.createElement('div');
                 b.className = 'choice-btn'; b.textContent = c;
@@ -317,33 +383,10 @@
             handleFinalCheck(ans === quizPool[quizIdx].ja, quizPool[quizIdx].ja);
         }
 
-        function handleFinalCheck(isCorrect, correctJa) {
-            const target = quizPool[quizIdx];
-            if(isCorrect) {
-                alert("正解！");
-                if(currentQuizMode === 'new' || currentQuizMode === 'srs') {
-                    data.words.forEach(w => {
-                        if(w.en === target.en) {
-                            w.isNew = false; w.level++;
-                            let days = [0,1,3,7,14,30][w.level] || 30;
-                            w.due = Date.now() + (days * 86400000);
-                        }
-                    });
-                }
-                data.words = data.words.filter(w => !(w.en === target.en && w.pl === "間違えた単語"));
-            } else {
-                alert("ミス！正解は: " + correctJa);
-                if(!data.words.some(w => w.en === target.en && w.pl === "間違えた単語")) {
-                    data.words.push({...target, pl: "間違えた単語", level: 0, isNew: false});
-                }
-            }
-            saveData(); quizIdx++; nextQ();
-        }
-
         function deleteWord(en, pl) {
             if(!confirm(`「${en}」を削除しますか？`)) return;
-            if(pl === "デフォルト") { data.words = data.words.filter(w => w.en !== en); alert("削除しました"); }
-            else { data.words = data.words.filter(w => !(w.en === en && w.pl === pl)); }
+            if(pl === "デフォルト") data.words = data.words.filter(w => w.en !== en);
+            else data.words = data.words.filter(w => !(w.en === en && w.pl === pl));
             saveData(); renderWordList(); updateUI();
         }
 
