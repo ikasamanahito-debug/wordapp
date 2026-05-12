@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v49 - Exact Delete</title>
+    <title>Domemory v50 - Layout Fixed</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -39,7 +39,11 @@
         .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
         .tab-active { background: var(--p); color: white; }
 
-        .li-item { display: flex; justify-content: space-between; align-items: flex-start; }
+        /* リストアイテムのレイアウト崩れ防止 */
+        .li-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .li-info { flex: 1; min-width: 0; word-break: break-all; } /* 文字が長くてもボタンを押し出さない */
+        .action-btns { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; } /* ボタンのサイズを固定 */
+
         .badge { display: inline-block; padding: 2px 8px; font-size: 11px; border-radius: 4px; margin-top: 6px; font-weight: bold; background: rgba(0,0,0,0.05); }
         .due-timer { font-size: 11px; color: #777; margin-top: 6px; margin-left: 5px; }
 
@@ -169,7 +173,7 @@
             const listEl = document.getElementById('word-list-view');
             const search = document.getElementById('search-in').value.toLowerCase();
             listEl.innerHTML = "";
-            const missSet = new Set(data.words.filter(w => w.pl === "間違えた単語").map(w => w.en + w.ja)); // en+jaで判定
+            const missSet = new Set(data.words.filter(w => w.pl === "間違えた単語").map(w => w.en + w.ja));
             const filtered = data.words.filter(w => w.pl === currentViewingPL && (w.en.toLowerCase().includes(search) || w.ja.includes(search)));
             const now = Date.now();
             filtered.forEach((w) => {
@@ -188,9 +192,16 @@
                     } else { timeInfo = `<span class="due-timer" style="color:var(--danger); font-weight:bold;">復習可能</span>`; }
                 }
                 li.className = `card li-item ${statusClass}`;
-                li.innerHTML = `<div class="li-info"><b style="font-size:18px;">${w.en}</b><br><span>${w.ja}</span><br><span class="badge">${statusName}</span>${timeInfo}</div>
-                    <div class="action-btns"><button class="btn-sub" onclick='openAddModal(${JSON.stringify(w)})'>追加</button>
-                    <button class="btn-d" onclick="deleteWord('${w.en}', '${w.ja}', '${w.pl}')">削除</button></div>`;
+                li.innerHTML = `
+                    <div class="li-info">
+                        <b style="font-size:18px;">${w.en}</b><br>
+                        <span>${w.ja}</span><br>
+                        <span class="badge">${statusName}</span>${timeInfo}
+                    </div>
+                    <div class="action-btns">
+                        <button class="btn-sub" onclick='openAddModal(${JSON.stringify(w)})'>追加</button>
+                        <button class="btn-d" onclick="deleteWord('${w.en}', '${w.ja}', '${w.pl}')">削除</button>
+                    </div>`;
                 listEl.appendChild(li);
             });
         }
@@ -201,14 +212,13 @@
                 alert("正解！");
                 if(currentQuizMode === 'new' || currentQuizMode === 'srs') {
                     data.words.forEach(w => {
-                        if(w.en === target.en && w.ja === target.ja) { // en+jaで特定
+                        if(w.en === target.en && w.ja === target.ja) {
                             w.isNew = false; w.level++;
                             let daysArr = [0, 1, 3, 7, 14, 30], days = daysArr[w.level] || 30;
                             w.due = Date.now() + (days * 86400000);
                         }
                     });
                 }
-                // 間違えた単語リストからもen+jaが一致するものだけ消す
                 data.words = data.words.filter(w => !(w.en === target.en && w.ja === target.ja && w.pl === "間違えた単語"));
             } else {
                 alert("ミス！正解は: " + correctJa);
@@ -341,14 +351,11 @@
             handleFinalCheck(ans === quizPool[quizIdx].ja, quizPool[quizIdx].ja);
         }
 
-        // --- 修正：enとjaの両方が一致したときのみ削除 ---
         function deleteWord(en, ja, pl) {
             if(!confirm(`「${en}: ${ja}」を削除しますか？`)) return;
             if(pl === "デフォルト") {
-                // デフォルトから消すときは全リストからそのペアを消去
                 data.words = data.words.filter(w => !(w.en === en && w.ja === ja));
             } else {
-                // 特定リストから消すときはそのリストのそのペアだけ消去
                 data.words = data.words.filter(w => !(w.en === en && w.ja === ja && w.pl === pl));
             }
             saveData(); renderWordList(); updateUI();
