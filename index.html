@@ -2,237 +2,176 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Domemory Mobile v21</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Domemory v24</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; }
-        
-        /* 全体調整：スマホでタップした時の青い枠を消す */
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); margin: 0; color: var(--text); padding-bottom: 70px; /* メニューの高さ分 */ }
+        html, body { overflow-x: hidden; position: relative; width: 100%; height: 100%; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; color: var(--text); padding-bottom: 100px; user-select: text !important; -webkit-user-select: text !important; }
 
-        /* ナビゲーション：スマホで見やすいように下部に配置（親指で届く） */
-        .menu { 
-            background: #222; color: #fff; position: fixed; bottom: 0; left: 0; right: 0; 
-            display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-        .menu button { 
-            background: none; color: #ccc; font-size: 12px; border: none; padding: 5px; 
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-        }
+        /* 下部ナビゲーション */
+        .menu { background: #222; color: #fff; position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 12px 0 30px 0; z-index: 2000; box-shadow: 0 -2px 10px rgba(0,0,0,0.3); }
+        .menu button { background: none; color: #ccc; font-size: 11px; border: none; display: flex; flex-direction: column; align-items: center; gap: 4px; flex:1; }
         .menu button.active-nav { color: var(--p); font-weight: bold; }
 
-        /* メインコンテンツ */
         .page { padding: 15px; max-width: 500px; margin: 0 auto; display: none; }
-        .active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .active { display: block; }
+        .card { background: #fff; padding: 18px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 15px; }
 
-        .card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 15px; }
-
-        /* 入力エリアのスマホ最適化 */
-        input, select { 
-            width: 100%; padding: 14px; margin: 8px 0; font-size: 16px; /* 16px未満だとiPhoneでズームされるのを防止 */
-            border: 2px solid #eee; border-radius: 8px; outline: none; transition: 0.2s;
-        }
-        input:focus { border-color: var(--p); }
-
-        button.main-btn { 
-            width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; 
-            font-weight: bold; cursor: pointer; transition: 0.2s;
-        }
+        /* 入力欄：16px以上に固定してズームを無効化 */
+        input, select { width: 100%; padding: 14px; margin: 8px 0; font-size: 16px !important; border: 2px solid #eee; border-radius: 8px; outline: none; background: #fff; appearance: none; }
+        .main-btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-p { background: var(--p); color: #fff; }
-        .btn-s { background: var(--acc); color: #fff; margin-bottom: 8px; }
-        .btn-d { background: var(--danger); color: #fff; }
-        .btn-n { background: var(--new); color: #fff; margin-bottom: 8px; }
+        .btn-sub { background: #eee; color: #333; padding: 6px 10px; font-size: 12px; border-radius: 6px; border: none; }
+        .btn-d { background: var(--danger); color: #fff; padding: 6px 10px; border-radius: 6px; border: none; font-size: 12px; }
 
-        /* クイズ画面 */
         .q-text { font-size: 32px; font-weight: bold; margin: 30px 0; text-align: center; word-break: break-all; }
-        #count { font-size: 60px; color: var(--p); font-weight: bold; text-align: center; height: 70px; }
-
-        /* リスト表示 */
-        .tabs { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; -webkit-overflow-scrolling: touch; }
-        .tab { 
-            white-space: nowrap; background: #eee; padding: 8px 16px; border-radius: 20px; 
-            font-size: 13px; flex-shrink: 0; color: #666;
-        }
+        .tabs { display: flex; overflow-x: auto; gap: 8px; padding: 10px 0; -webkit-overflow-scrolling: touch; }
+        .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
         .tab-active { background: var(--p); color: white; }
 
-        ul { list-style: none; padding: 0; }
-        li { 
-            background: #fff; margin-bottom: 10px; padding: 15px; border-radius: 10px; 
-            border-left: 5px solid var(--p); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .li-main { display: flex; justify-content: space-between; align-items: flex-start; }
-        .li-info { flex: 1; }
-        .status { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 10px; color: #fff; margin-top: 5px; }
-        .level-badge { background: #eee; color: #666; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 4px; }
-        .time-info { font-size: 11px; color: #999; display: block; margin-top: 4px; }
-
-        .hidden { display: none; }
+        .li-item { display: flex; justify-content: space-between; align-items: flex-start; border-left: 6px solid var(--p); }
+        .li-info { flex: 1; user-select: text !important; -webkit-user-select: text !important; }
+        .action-btns { display: flex; flex-direction: column; gap: 8px; margin-left: 10px; }
     </style>
 </head>
 <body>
 
     <div id="page-add" class="page">
         <div class="card">
-            <h2 style="margin-top:0">単語を登録</h2>
-            <label style="font-size:12px; color:#666">保存先リスト</label>
+            <h2 style="margin:0">単語を登録</h2>
+            <p style="font-size:11px; color:#888; margin:5px 0">※どのリストを選んでも「デフォルト」に同時保存されます</p>
             <select id="add-to-playlist"></select>
-            <input id="en-in" type="text" placeholder="English" autocomplete="off">
+            <input id="en-in" type="text" placeholder="English" autocomplete="off" inputmode="latin">
             <input id="ja-in" type="text" placeholder="日本語" autocomplete="off">
             <button class="main-btn btn-p" onclick="saveWord()">保存する</button>
         </div>
     </div>
 
     <div id="page-quiz" class="page active">
-        <div class="card" style="min-height: 300px; display: flex; flex-direction: column; justify-content: center;">
-            <div id="count"></div>
-            <div id="q-display" class="q-text">モードを選択して開始</div>
-            
+        <div class="card">
+            <div id="q-display" class="q-text">練習を始める</div>
             <div id="quiz-ui" class="hidden">
-                <input id="ans-in" type="text" placeholder="答えを入力" autocomplete="off" style="text-align:center;">
+                <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;" autocomplete="off">
                 <button class="main-btn btn-p" onclick="handleCheck()">決定</button>
             </div>
-
             <div id="quiz-setup">
-                <p style="text-align:center; font-size:14px;">対象: <select id="quiz-from-playlist" style="width:auto; display:inline-block; padding:5px;"></select></p>
+                <p style="text-align:center">対象: <select id="quiz-from-playlist" style="width:auto;"></select></p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="main-btn btn-n" onclick="startQuiz('new')">新規</button>
-                    <button class="main-btn btn-s" onclick="startQuiz('srs')">復習</button>
+                    <button class="main-btn" style="background:var(--new); color:#fff" onclick="startQuiz('new')">新規</button>
+                    <button class="main-btn" style="background:var(--acc); color:#fff" onclick="startQuiz('srs')">復習</button>
                 </div>
-                <button class="main-btn btn-s" style="background:#8e44ad; color:#fff" onclick="startQuiz('miss')">苦手特訓</button>
-                <button class="main-btn btn-p" style="margin-top:10px" onclick="startQuiz('all')">すべての単語</button>
+                <button class="main-btn btn-p" style="margin-top:10px" onclick="startQuiz('all')">全問シャッフル</button>
             </div>
         </div>
     </div>
 
     <div id="page-list" class="page">
         <div class="card">
-            <h3 style="margin-top:0">リスト作成</h3>
             <div style="display:flex; gap:8px;">
-                <input id="new-pl-input" placeholder="リスト名" style="margin:0; flex:1">
-                <button class="btn-p" style="border-radius:8px" onclick="createNewPlaylist()">作成</button>
+                <input id="new-pl-input" placeholder="新しいリスト名" style="flex:1; margin:0">
+                <button class="btn-p" style="padding:0 15px; border-radius:8px;" onclick="createNewPlaylist()">作成</button>
             </div>
         </div>
-        
         <div id="playlist-tabs" class="tabs"></div>
-        
         <div id="word-list-view"></div>
     </div>
 
     <nav class="menu">
-        <button id="nav-add" onclick="showPage('add')"><span>➕</span>登録</button>
-        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')"><span>📝</span>クイズ</button>
-        <button id="nav-list" onclick="showPage('list')"><span>📚</span>リスト</button>
+        <button id="nav-add" onclick="showPage('add')">➕登録</button>
+        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')">📝練習</button>
+        <button id="nav-list" onclick="showPage('list')">📚リスト</button>
     </nav>
 
     <script>
-        const STORAGE_KEY = "domemory_v20_stable"; // データはv20と共有
-        let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
-            playlists: ["デフォルト", "間違えた単語"],
-            words: []
-        };
+        const STORAGE_KEY = "domemory_v20_stable";
+        let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { playlists: ["デフォルト", "間違えた単語"], words: [] };
         let currentViewingPL = "デフォルト";
-        let quizPool = [], quizIdx = 0, isQuizing = false, currentMode = "";
+        let quizPool = [], quizIdx = 0;
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+        // ズレ防止：画面を一番上に戻す
+        function resetView() { window.scrollTo(0, 0); }
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + id).classList.add('active');
-            
             document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active-nav'));
             document.getElementById('nav-' + id).classList.add('active-nav');
-
             updateUI();
             if(id === 'list') renderWordList();
-            window.scrollTo(0,0);
+            resetView();
         }
 
         function updateUI() {
-            const addSel = document.getElementById('add-to-playlist');
-            const quizSel = document.getElementById('quiz-from-playlist');
-            const tabs = document.getElementById('playlist-tabs');
             const opts = data.playlists.map(p => `<option value="${p}">${p}</option>`).join('');
-            if(addSel) addSel.innerHTML = opts;
-            if(quizSel) quizSel.innerHTML = opts;
-            if(tabs) {
-                tabs.innerHTML = data.playlists.map(p => 
-                    `<div class="tab ${p === currentViewingPL ? 'tab-active' : ''}" onclick="changeViewPL('${p}')">${p}</div>`
-                ).join('');
-            }
+            document.getElementById('add-to-playlist').innerHTML = opts;
+            document.getElementById('quiz-from-playlist').innerHTML = opts;
+            document.getElementById('playlist-tabs').innerHTML = data.playlists.map(p => 
+                `<div class="tab ${p === currentViewingPL ? 'tab-active' : ''}" onclick="changeViewPL('${p}')">${p}</div>`
+            ).join('');
         }
 
-        function changeViewPL(name) { currentViewingPL = name; updateUI(); renderWordList(); }
-
-        function createNewPlaylist() {
-            const input = document.getElementById('new-pl-input');
-            const name = input.value.trim();
-            if(!name || data.playlists.includes(name)) return;
-            data.playlists.push(name);
-            input.value = ""; saveData(); updateUI();
-        }
+        function changeViewPL(name) { currentViewingPL = name; renderWordList(); updateUI(); }
 
         function saveWord() {
             const en = document.getElementById('en-in').value.trim();
             const ja = document.getElementById('ja-in').value.trim();
             const pl = document.getElementById('add-to-playlist').value;
             if(!en || !ja) return;
-            data.words.push({ en, ja, pl, iv: 0, due: Date.now(), isNew: true, level: 0 });
+
+            const newWord = { en, ja, pl, iv: 0, due: Date.now(), isNew: true, level: 0 };
+            data.words.push(newWord);
+            
+            // デフォルト以外ならデフォルトにも追加（標準化）
+            if(pl !== "デフォルト") {
+                data.words.push({ ...newWord, pl: "デフォルト" });
+            }
+
             saveData(); 
             document.getElementById('en-in').value = ""; 
             document.getElementById('ja-in').value = "";
-            document.getElementById('en-in').focus();
-            alert("登録しました");
+            alert("保存しました");
+            resetView();
+        }
+
+        function copyWordToOtherList(wordObj) {
+            const targetPL = prompt("コピー先のリスト名を入力してください", "デフォルト");
+            if (!targetPL || !data.playlists.includes(targetPL)) return alert("リストが見つかりません");
+            
+            // 重複チェック
+            if (data.words.some(w => w.en === wordObj.en && w.pl === targetPL)) {
+                return alert("既にそのリストに存在します");
+            }
+
+            data.words.push({ ...wordObj, pl: targetPL });
+            saveData();
+            alert(`${targetPL} に追加しました`);
         }
 
         function renderWordList() {
             const listEl = document.getElementById('word-list-view');
             listEl.innerHTML = "";
-            const now = Date.now();
-
             const filtered = data.words.filter(w => w.pl === currentViewingPL);
-            if(filtered.length === 0) {
-                listEl.innerHTML = "<p style='text-align:center; color:#999; margin-top:20px;'>単語がありません</p>";
-                return;
-            }
 
-            filtered.forEach((w, index) => {
-                let sText = "未学習", sColor = "#3498db", timeInfo = "";
-                if (currentViewingPL === "間違えた単語") {
-                    sText = "要特訓"; sColor = varProp('--acc');
-                } else if (!w.isNew) {
-                    if(w.due <= now) { sText = "復習待ち"; sColor = "#e74c3c"; timeInfo = "すぐに復習！"; }
-                    else { 
-                        sText = "定着中"; sColor = "#2ecc71"; 
-                        const diffH = Math.ceil((w.due - now) / 3600000);
-                        timeInfo = diffH > 24 ? "あと " + Math.ceil(diffH/24) + " 日" : "あと " + diffH + " 時間";
-                    }
-                }
-                
+            filtered.forEach((w) => {
                 const li = document.createElement('div');
-                li.className = 'li-item card';
-                li.style.padding = "15px";
-                li.style.marginBottom = "10px";
+                li.className = 'card li-item';
                 li.innerHTML = `
-                    <div class="li-main">
-                        <div class="li-info">
-                            <b style="font-size:18px">${w.en}</b><br>
-                            <span style="color:#666">${w.ja}</span><br>
-                            <span class="status" style="background:${sColor}">${sText}</span>
-                            ${w.level > 0 ? `<span class="level-badge">Lv.${w.level}</span>` : ""}
-                            <span class="time-info">${timeInfo}</span>
-                        </div>
-                        <button class="btn-d" style="padding:5px 10px; border-radius:5px;" onclick="deleteWord('${w.en}', '${w.pl}')">×</button>
+                    <div class="li-info">
+                        <b style="font-size:18px;">${w.en}</b><br>
+                        <span>${w.ja}</span>
+                    </div>
+                    <div class="action-btns">
+                        <button class="btn-sub" onclick='copyWordToOtherList(${JSON.stringify(w)})'>追加</button>
+                        <button class="btn-d" onclick="deleteWord('${w.en}', '${w.pl}')">削除</button>
                     </div>
                 `;
                 listEl.appendChild(li);
             });
         }
-
-        function varProp(name) { return getComputedStyle(document.documentElement).getPropertyValue(name); }
 
         function deleteWord(en, pl) {
             if(!confirm("削除しますか？")) return;
@@ -240,80 +179,55 @@
             saveData(); renderWordList();
         }
 
-        async function startQuiz(mode) {
-            currentMode = mode;
-            const targetPL = document.getElementById('quiz-from-playlist').value;
-            const now = Date.now();
-            if(mode === 'new') quizPool = data.words.filter(w => w.pl === targetPL && w.isNew);
-            else if(mode === 'srs') quizPool = data.words.filter(w => w.pl === targetPL && !w.isNew && w.due <= now);
-            else if(mode === 'miss') quizPool = data.words.filter(w => w.pl === "間違えた単語");
-            else quizPool = data.words.filter(w => w.pl === targetPL);
+        function startQuiz(mode) {
+            const target = document.getElementById('quiz-from-playlist').value;
+            quizPool = data.words.filter(w => w.pl === target);
+            if(mode === 'new') quizPool = quizPool.filter(w => w.isNew);
+            if(mode === 'srs') quizPool = quizPool.filter(w => !w.isNew && w.due <= Date.now());
 
             if(!quizPool.length) return alert("対象の単語がありません");
             quizPool.sort(() => Math.random() - 0.5); quizIdx = 0;
             document.getElementById('quiz-setup').classList.add('hidden');
-            for(let i=3; i>0; i--) { document.getElementById('count').textContent = i; await new Promise(r => setTimeout(r, 600)); }
-            document.getElementById('count').textContent = ""; isQuizing = true;
-            document.getElementById('quiz-ui').classList.remove('hidden'); nextQ();
+            document.getElementById('quiz-ui').classList.remove('hidden');
+            nextQ();
         }
 
         function nextQ() {
-            if(quizIdx >= quizPool.length) { 
-                document.getElementById('q-display').textContent = "お疲れ様でした！"; 
-                document.getElementById('quiz-ui').classList.add('hidden'); 
-                document.getElementById('quiz-setup').classList.remove('hidden'); 
-                isQuizing = false; return; 
+            if(quizIdx >= quizPool.length) {
+                alert("練習完了！");
+                document.getElementById('quiz-ui').classList.add('hidden');
+                document.getElementById('quiz-setup').classList.remove('hidden');
+                document.getElementById('q-display').textContent = "練習を始める";
+                resetView(); return;
             }
             document.getElementById('q-display').textContent = quizPool[quizIdx].en;
-            document.getElementById('ans-in').value = ""; document.getElementById('ans-in').focus();
+            document.getElementById('ans-in').value = "";
         }
 
         function handleCheck() {
-            if(!isQuizing) return;
-            const userAns = document.getElementById('ans-in').value.trim();
+            const ans = document.getElementById('ans-in').value.trim();
             const target = quizPool[quizIdx];
-
-            if(userAns === target.ja) {
-                data.words.forEach(w => {
-                    if (w.en === target.en && w.pl !== "間違えた単語") {
-                        if (currentMode === 'srs') {
-                            w.level = (w.level || 0) + 1;
-                            w.isNew = false;
-                            let days = 1;
-                            if(w.level === 2) days = 3;
-                            else if(w.level === 3) days = 7;
-                            else if(w.level === 4) days = 14;
-                            else if(w.level > 4) days = w.iv * 2;
-                            w.iv = days;
-                            w.due = Date.now() + (days * 86400000);
-                        } else if (w.isNew) {
-                            w.isNew = false; w.iv = 1; w.due = Date.now() + 86400000;
-                        }
-                    }
-                });
-                const mIdx = data.words.findIndex(w => w.pl === "間違えた単語" && w.en === target.en);
-                if(mIdx !== -1) data.words.splice(mIdx, 1);
+            if(ans === target.ja) {
                 alert("正解！");
+                data.words.forEach(w => { if(w.en === target.en) { w.level++; w.isNew = false; w.due = Date.now() + 86400000; } });
             } else {
                 alert("正解は: " + target.ja);
-                if(!data.words.some(w => w.pl === "間違えた単語" && w.en === target.en)) {
-                    data.words.push({...target, pl: "間違えた単語", iv: 0, due: Date.now(), isNew: true});
+                if(!data.words.some(w => w.en === target.en && w.pl === "間違えた単語")) {
+                    data.words.push({...target, pl: "間違えた単語"});
                 }
             }
             saveData(); quizIdx++; nextQ();
+            resetView();
         }
 
-        // エンターキー対応
-        document.addEventListener('keydown', e => {
-            if(e.key === 'Enter') {
-                const active = document.activeElement.id;
-                if(active === 'ans-in') handleCheck();
-                else if(active === 'en-in') document.getElementById('ja-in').focus();
-                else if(active === 'ja-in') saveWord();
-            }
-        });
+        function createNewPlaylist() {
+            const name = document.getElementById('new-pl-input').value.trim();
+            if(!name || data.playlists.includes(name)) return;
+            data.playlists.push(name);
+            document.getElementById('new-pl-input').value = ""; saveData(); updateUI();
+        }
 
-        showPage('quiz');
+        updateUI();
     </script>
 </body>
 </html>
