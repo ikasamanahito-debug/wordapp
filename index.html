@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v57 - Bulk Add Words</title>
+    <title>Domemory v59 - Prompt Example</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -22,7 +22,8 @@
         .status-wait { background-color: #fff3e0 !important; border-left: 6px solid var(--acc); }
         .status-veteran { background-color: #fffde7 !important; border-left: 6px solid var(--gold); border: 1px solid var(--gold); }
 
-        input, select { width: 100%; padding: 14px; margin: 8px 0; font-size: 16px !important; border: 2px solid #eee; border-radius: 8px; outline: none; background: #fff; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; font-size: 16px !important; border: 2px solid #eee; border-radius: 8px; outline: none; background: #fff; font-family: inherit; }
+        textarea { resize: vertical; min-height: 120px; }
         .main-btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-p { background: var(--p); color: #fff; }
         .btn-sub { background: rgba(0,0,0,0.1); color: #333; padding: 6px 10px; font-size: 11px; border: none; border-radius: 6px; cursor: pointer; }
@@ -37,10 +38,13 @@
         .wait-timer { font-size: 14px; color: var(--acc); text-align: center; margin-bottom: 10px; font-weight: bold; }
 
         .tabs { display: flex; overflow-x: auto; gap: 8px; padding: 10px 0; }
-        .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
+        .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; cursor: pointer; }
         .tab-active { background: var(--p); color: white; }
 
-        /* 一括選択チェックボックスのためのスタイル修正 */
+        .sub-tabs { display: flex; gap: 4px; background: #eee; padding: 4px; border-radius: 8px; margin-bottom: 15px; }
+        .sub-tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: bold; color: #666; border-radius: 6px; cursor: pointer; }
+        .sub-tab-active { background: #fff; color: var(--p); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+
         .li-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; position: relative; padding: 14px; }
         .li-checkbox-area { display: flex; align-items: center; justify-content: center; padding-right: 4px; }
         .li-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: var(--p); margin: 0; }
@@ -56,10 +60,12 @@
         .abort-container { margin-top: 20px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px; }
         
         .pl-actions-container { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 15px; }
-
-        /* 新設：一括操作用アクションバーのスタイル */
         .bulk-action-bar { background: #fff; border: 2px solid var(--p); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(68,175,152,0.15); animation: slideDown 0.2s ease; }
         @keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* 新設：指示文サンプル用ボックス */
+        .prompt-example-box { background: #f1f3f5; border-left: 4px solid #999; padding: 12px; border-radius: 0 8px 8px 0; margin-top: 15px; font-size: 12px; color: #444; line-height: 1.5; }
+        .prompt-code-block { background: #fff; border: 1px solid #ddd; padding: 8px; border-radius: 4px; margin-top: 6px; font-family: monospace; white-space: pre-wrap; word-break: break-all; }
     </style>
 </head>
 <body>
@@ -91,11 +97,43 @@
 
     <div id="page-add" class="page">
         <div class="card">
-            <h2 style="margin:0">単語を登録</h2>
-            <select id="add-to-playlist"></select>
-            <input id="en-in" type="text" placeholder="English" autocomplete="off" onkeydown="if(event.key==='Enter' && this.value.trim() !== '') document.getElementById('ja-in').focus()">
-            <input id="ja-in" type="text" placeholder="日本語" autocomplete="off" onkeydown="if(event.key==='Enter') saveWord()">
-            <button class="main-btn btn-p" onclick="saveWord()">保存する</button>
+            <h2 style="margin:0 0 15px 0;">単語を登録</h2>
+            
+            <label style="font-size:12px; color:#666; font-weight:bold;">追加先フォルダ</label>
+            <select id="add-to-playlist" style="margin-top:4px; margin-bottom:15px;"></select>
+
+            <div class="sub-tabs">
+                <div id="sub-tab-single" class="sub-tab sub-tab-active" onclick="switchAddMode('single')">1件ずつ登録</div>
+                <div id="sub-tab-bulk" class="sub-tab" onclick="switchAddMode('bulk')">AI一括登録</div>
+            </div>
+
+            <div id="add-single-container">
+                <input id="en-in" type="text" placeholder="English" autocomplete="off" onkeydown="if(event.key==='Enter' && this.value.trim() !== '') document.getElementById('ja-in').focus()">
+                <input id="ja-in" type="text" placeholder="日本語" autocomplete="off" onkeydown="if(event.key==='Enter') saveWord()">
+                <button class="main-btn btn-p" onclick="saveWord()">保存する</button>
+            </div>
+
+            <div id="add-bulk-container" class="hidden">
+                <p style="font-size:12px; color:#666; margin: 0 0 8px 0; line-height: 1.4;">
+                    AIが抽出したテキストをそのまま貼り付けてください。<br>
+                    行ごとに <b>英語,日本語</b> の形式で解析してまとめて保存します。
+                </p>
+                <textarea id="bulk-import-area" placeholder="rational, 合理的な、理性的な&#10;irrational, 非合理的な&#10;reason, 理由、根拠、理性、論理的に考える"></textarea>
+                <button class="main-btn btn-p" style="background:var(--new); margin-bottom: 10px;" onclick="saveBulkWords()">一括保存する</button>
+                
+                <div class="prompt-example-box">
+                    <span style="font-weight: bold; color: #333;">💡 AI（Geminiなど）への指示文テンプレート</span><br>
+                    単語帳の写真をAIに送る際、以下の文章をコピーして指示文として使ってください。
+                    <div class="prompt-code-block" id="prompt-text-template">添付した画像から、縦線の左側に位置する見出しの黒字の英単語と、それに対応する赤色の太線で塗られている日本語訳だけをすべて抜き出してください。
+余計な解説や記号、番号は一切含めず、以下のフォーマット（英語と日本語を半角カンマで区切る形）だけで出力してください。複数の意味があればそれも書き入れてください（多義語対応）
+
+
+【出力フォーマット】
+hurtle, 突進する
+lineage, 血統
+accomplish, 達成</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -176,14 +214,21 @@
         let quizPool = [], quizIdx = 0, tempWord = null, currentQuizMode = "";
         let waitInterval = null, isCountingDown = false;
         let wordBeingEdited = null;
-        
-        // 新設：選択された単語を一括管理する配列 (中身はオブジェクトの参照、または特定可能な情報)
         let selectedWordsBulk = [];
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
         function getWordCount(playlistName) {
             return data.words.filter(w => w.pl === playlistName).length;
+        }
+
+        function switchAddMode(mode) {
+            document.getElementById('sub-tab-single').classList.toggle('sub-tab-active', mode === 'single');
+            document.getElementById('sub-tab-bulk').classList.toggle('sub-tab-active', mode === 'bulk');
+            document.getElementById('add-single-container').classList.toggle('hidden', mode !== 'single');
+            document.getElementById('add-bulk-container').classList.toggle('hidden', mode !== 'bulk');
+            if(mode === 'single') document.getElementById('en-in').focus();
+            else document.getElementById('bulk-import-area').focus();
         }
 
         function showPage(id) {
@@ -198,13 +243,13 @@
                 if(currentSel && data.playlists.includes(currentSel)) {
                     document.getElementById('add-to-playlist').value = currentSel;
                 }
-                document.getElementById('en-in').focus();
+                switchAddMode('single');
             } else {
                 updateUI();
             }
             
             if(id === 'list') {
-                clearBulkSelection(); // 画面を切り替えたら選択をリセット
+                clearBulkSelection();
                 renderWordList();
             }
             window.scrollTo(0, 0);
@@ -216,7 +261,6 @@
             document.getElementById('quiz-from-playlist').innerHTML = opts;
             document.getElementById('modal-pl-select').innerHTML = opts;
             
-            // 一括追加用のセレクトボックスも更新
             const bulkSelect = document.getElementById('bulk-target-pl');
             if (bulkSelect) bulkSelect.innerHTML = opts;
             
@@ -230,7 +274,7 @@
         }
 
         function changeViewPL(name) { 
-            clearBulkSelection(); // フォルダを切り替えたら一括選択をクリア
+            clearBulkSelection();
             currentViewingPL = name; 
             renderWordList(); 
             updateUI(); 
@@ -261,13 +305,11 @@
                 }
                 li.className = `card li-item ${statusClass}`;
                 
-                // 新設：チェックボックスエリア
                 const checkArea = document.createElement('div');
                 checkArea.className = 'li-checkbox-area';
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.className = 'li-checkbox';
-                // 既にバルク選択配列に含まれている場合はチェックを入れる
                 checkbox.checked = selectedWordsBulk.some(sel => sel.en === w.en && sel.ja === w.ja && sel.pl === w.pl);
                 checkbox.onchange = (e) => handleBulkCheckboxChange(e.target.checked, w);
                 checkArea.appendChild(checkbox);
@@ -309,25 +351,20 @@
             });
         }
 
-        // 新設：チェックボックスの状態変更時の処理
         function handleBulkCheckboxChange(isChecked, word) {
             if (isChecked) {
-                // 配列に存在しない場合のみ追加
                 if (!selectedWordsBulk.some(sel => sel.en === word.en && sel.ja === word.ja && sel.pl === word.pl)) {
                     selectedWordsBulk.push(word);
                 }
             } else {
-                // 配列から削除
                 selectedWordsBulk = selectedWordsBulk.filter(sel => !(sel.en === word.en && sel.ja === word.ja && sel.pl === word.pl));
             }
             renderBulkBar();
         }
 
-        // 新設：一括操作バーの表示・更新処理
         function renderBulkBar() {
             const bar = document.getElementById('bulk-bar');
             const countText = document.getElementById('bulk-select-count');
-            
             if (selectedWordsBulk.length > 0) {
                 bar.classList.remove('hidden');
                 countText.textContent = `${selectedWordsBulk.length} 件選択中`;
@@ -336,15 +373,12 @@
             }
         }
 
-        // 新設：一括選択状態の完全クリア
         function clearBulkSelection() {
             selectedWordsBulk = [];
             renderBulkBar();
-            // 描画されているチェックボックスを全てオフにする
             document.querySelectorAll('.li-checkbox').forEach(cb => cb.checked = false);
         }
 
-        // 新設：まとめて追加を実行するロジック
         function executeBulkAdd() {
             const targetPL = document.getElementById('bulk-target-pl').value;
             if (!selectedWordsBulk.length) return;
@@ -353,10 +387,8 @@
             let skipCount = 0;
 
             selectedWordsBulk.forEach(tempW => {
-                // 既に対象のリストに同じ英語＋日本語のペアが存在する場合はスキップ
                 const isExist = data.words.some(w => w.en === tempW.en && w.ja === tempW.ja && w.pl === targetPL);
                 if (!isExist) {
-                    // 既存の設定（学習進捗状況など）を引き継いで新しいリスト用に複製登録
                     data.words.push({
                         en: tempW.en,
                         ja: tempW.ja,
@@ -373,7 +405,6 @@
 
             saveData();
             alert(`${addedCount}件の単語を「${targetPL}」に一括追加しました！${skipCount > 0 ? `（重複 ${skipCount}件スキップ）` : ''}`);
-            
             clearBulkSelection();
             renderWordList();
             updateUI();
@@ -511,9 +542,50 @@
             enIn.value = ""; 
             jaIn.value = ""; 
             enIn.focus(); 
-            
             updateUI();
             plSelect.value = pl; 
+        }
+
+        function saveBulkWords() {
+            const textarea = document.getElementById('bulk-import-area');
+            const text = textarea.value.trim();
+            const pl = document.getElementById('add-to-playlist').value;
+            if (!text) return alert("インポートするテキストを入力してください。");
+
+            const lines = text.split('\n');
+            let successCount = 0;
+            let skipCount = 0;
+
+            lines.forEach(line => {
+                if (!line.trim()) return; 
+                
+                let parts = line.split(/[,\t，、：:]/);
+                if (parts.length < 2) return; 
+
+                const en = parts[0].trim();
+                const ja = parts.slice(1).join(',').trim();
+
+                if (!en || !ja) return;
+
+                const isExist = data.words.some(w => w.en === en && w.ja === ja && w.pl === pl);
+                if (!isExist) {
+                    const newWord = { en, ja, pl, due: Date.now(), isNew: true, level: 0 };
+                    data.words.push(newWord);
+                    
+                    if (pl !== "デフォルト" && !data.words.some(w => w.en === en && w.ja === ja && w.pl === "デフォルト")) {
+                        data.words.push({ ...newWord, pl: "デフォルト" });
+                    }
+                    successCount++;
+                } else {
+                    skipCount++;
+                }
+            });
+
+            saveData();
+            alert(`${successCount}件の単語を一括登録しました！${skipCount > 0 ? `（すでに登録済みの ${skipCount}件 をスキップしました）` : ''}`);
+            
+            textarea.value = ""; 
+            updateUI();
         }
 
         function abortQuiz() {
