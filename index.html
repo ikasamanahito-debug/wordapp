@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v55 - Rename Playlist</title>
+    <title>Domemory v57 - Bulk Add Words</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -40,10 +40,13 @@
         .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
         .tab-active { background: var(--p); color: white; }
 
-        .li-item { display: flex; justify-content: space-between; align-items: stretch; gap: 12px; position: relative; }
-        .li-info { flex: 1; min-width: 0; word-break: break-all; pointer-events: none; } 
+        /* 一括選択チェックボックスのためのスタイル修正 */
+        .li-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; position: relative; padding: 14px; }
+        .li-checkbox-area { display: flex; align-items: center; justify-content: center; padding-right: 4px; }
+        .li-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: var(--p); margin: 0; }
+        .li-info { flex: 1; min-width: 0; word-break: break-all; } 
         .action-btns { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; justify-content: center; z-index: 10; width: 65px; } 
-        .action-btns button { pointer-events: auto; text-align: center; width: 100%; }
+        .action-btns button { text-align: center; width: 100%; }
 
         .badge { display: inline-block; padding: 2px 8px; font-size: 11px; border-radius: 4px; margin-top: 6px; font-weight: bold; background: rgba(0,0,0,0.05); }
         .due-timer { font-size: 11px; color: #777; margin-top: 6px; margin-left: 5px; }
@@ -52,8 +55,11 @@
         .hidden { display: none !important; }
         .abort-container { margin-top: 20px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px; }
         
-        /* プレイリスト管理ボタンのエリア調整 */
         .pl-actions-container { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 15px; }
+
+        /* 新設：一括操作用アクションバーのスタイル */
+        .bulk-action-bar { background: #fff; border: 2px solid var(--p); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(68,175,152,0.15); animation: slideDown 0.2s ease; }
+        @keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -139,6 +145,16 @@
                 <button class="btn-p" style="padding:12px 15px; border-radius:8px; border:none; font-weight:bold;" onclick="createNewPlaylist()">作成</button>
             </div>
         </div>
+        
+        <div id="bulk-bar" class="bulk-action-bar hidden">
+            <div style="font-weight: bold; font-size:14px; margin-bottom: 8px; color:var(--p);" id="bulk-select-count">0 個選択中</div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <select id="bulk-target-pl" style="margin:0; padding:10px; font-size:14px !important; flex:1;"></select>
+                <button class="btn-p" style="padding:10px 14px; border:none; border-radius:8px; font-weight:bold; font-size:13px; white-space:nowrap;" onclick="executeBulkAdd()">まとめて追加</button>
+                <button class="btn-sub" style="padding:10px 10px; font-size:13px;" onclick="clearBulkSelection()">解除</button>
+            </div>
+        </div>
+
         <div id="playlist-tabs" class="tabs"></div>
         <div class="pl-actions-container">
             <button id="rename-pl-btn" class="btn-edit" style="display:none;" onclick="renameCurrentPlaylist()">リスト名を変更</button>
@@ -160,8 +176,15 @@
         let quizPool = [], quizIdx = 0, tempWord = null, currentQuizMode = "";
         let waitInterval = null, isCountingDown = false;
         let wordBeingEdited = null;
+        
+        // 新設：選択された単語を一括管理する配列 (中身はオブジェクトの参照、または特定可能な情報)
+        let selectedWordsBulk = [];
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+        function getWordCount(playlistName) {
+            return data.words.filter(w => w.pl === playlistName).length;
+        }
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -180,26 +203,38 @@
                 updateUI();
             }
             
-            if(id === 'list') renderWordList();
+            if(id === 'list') {
+                clearBulkSelection(); // 画面を切り替えたら選択をリセット
+                renderWordList();
+            }
             window.scrollTo(0, 0);
         }
 
         function updateUI() {
-            const opts = data.playlists.map(p => `<option value="${p}">${p}</option>`).join('');
+            const opts = data.playlists.map(p => `<option value="${p}">${p} (${getWordCount(p)})</option>`).join('');
             document.getElementById('add-to-playlist').innerHTML = opts;
             document.getElementById('quiz-from-playlist').innerHTML = opts;
             document.getElementById('modal-pl-select').innerHTML = opts;
+            
+            // 一括追加用のセレクトボックスも更新
+            const bulkSelect = document.getElementById('bulk-target-pl');
+            if (bulkSelect) bulkSelect.innerHTML = opts;
+            
             document.getElementById('playlist-tabs').innerHTML = data.playlists.map(p => 
-                `<div class="tab ${p === currentViewingPL ? 'tab-active' : ''}" onclick="changeViewPL('${p}')">${p}</div>`
+                `<div class="tab ${p === currentViewingPL ? 'tab-active' : ''}" onclick="changeViewPL('${p}')">${p} (${getWordCount(p)})</div>`
             ).join('');
             
-            // 修正：削除と名前変更ボタンの表示・非表示制御（デフォルトと間違えた単語は保護）
             const isSystemPL = (currentViewingPL === "デフォルト" || currentViewingPL === "間違えた単語");
             document.getElementById('delete-pl-btn').style.display = isSystemPL ? "none" : "inline-block";
             document.getElementById('rename-pl-btn').style.display = isSystemPL ? "none" : "inline-block";
         }
 
-        function changeViewPL(name) { currentViewingPL = name; renderWordList(); updateUI(); }
+        function changeViewPL(name) { 
+            clearBulkSelection(); // フォルダを切り替えたら一括選択をクリア
+            currentViewingPL = name; 
+            renderWordList(); 
+            updateUI(); 
+        }
 
         function renderWordList() {
             const listEl = document.getElementById('word-list-view');
@@ -226,6 +261,30 @@
                 }
                 li.className = `card li-item ${statusClass}`;
                 
+                // 新設：チェックボックスエリア
+                const checkArea = document.createElement('div');
+                checkArea.className = 'li-checkbox-area';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'li-checkbox';
+                // 既にバルク選択配列に含まれている場合はチェックを入れる
+                checkbox.checked = selectedWordsBulk.some(sel => sel.en === w.en && sel.ja === w.ja && sel.pl === w.pl);
+                checkbox.onchange = (e) => handleBulkCheckboxChange(e.target.checked, w);
+                checkArea.appendChild(checkbox);
+                li.appendChild(checkArea);
+
+                const infoEl = document.createElement('div');
+                infoEl.className = 'li-info';
+                infoEl.innerHTML = `
+                    <b style="font-size:18px;">${w.en}</b><br>
+                    <span>${w.ja}</span><br>
+                    <span class="badge">${statusName}</span>${timeInfo}
+                `;
+                li.appendChild(infoEl);
+                
+                const btnArea = document.createElement('div');
+                btnArea.className = 'action-btns';
+                
                 const addBtn = document.createElement('button');
                 addBtn.className = 'btn-sub';
                 addBtn.textContent = '追加';
@@ -241,16 +300,6 @@
                 delBtn.textContent = '削除';
                 delBtn.onclick = () => deleteWord(w.en, w.ja, w.pl);
 
-                li.innerHTML = `
-                    <div class="li-info">
-                        <b style="font-size:18px;">${w.en}</b><br>
-                        <span>${w.ja}</span><br>
-                        <span class="badge">${statusName}</span>${timeInfo}
-                    </div>
-                `;
-                
-                const btnArea = document.createElement('div');
-                btnArea.className = 'action-btns';
                 btnArea.appendChild(addBtn);
                 btnArea.appendChild(editBtn);
                 btnArea.appendChild(delBtn);
@@ -258,6 +307,76 @@
 
                 listEl.appendChild(li);
             });
+        }
+
+        // 新設：チェックボックスの状態変更時の処理
+        function handleBulkCheckboxChange(isChecked, word) {
+            if (isChecked) {
+                // 配列に存在しない場合のみ追加
+                if (!selectedWordsBulk.some(sel => sel.en === word.en && sel.ja === word.ja && sel.pl === word.pl)) {
+                    selectedWordsBulk.push(word);
+                }
+            } else {
+                // 配列から削除
+                selectedWordsBulk = selectedWordsBulk.filter(sel => !(sel.en === word.en && sel.ja === word.ja && sel.pl === word.pl));
+            }
+            renderBulkBar();
+        }
+
+        // 新設：一括操作バーの表示・更新処理
+        function renderBulkBar() {
+            const bar = document.getElementById('bulk-bar');
+            const countText = document.getElementById('bulk-select-count');
+            
+            if (selectedWordsBulk.length > 0) {
+                bar.classList.remove('hidden');
+                countText.textContent = `${selectedWordsBulk.length} 件選択中`;
+            } else {
+                bar.classList.add('hidden');
+            }
+        }
+
+        // 新設：一括選択状態の完全クリア
+        function clearBulkSelection() {
+            selectedWordsBulk = [];
+            renderBulkBar();
+            // 描画されているチェックボックスを全てオフにする
+            document.querySelectorAll('.li-checkbox').forEach(cb => cb.checked = false);
+        }
+
+        // 新設：まとめて追加を実行するロジック
+        function executeBulkAdd() {
+            const targetPL = document.getElementById('bulk-target-pl').value;
+            if (!selectedWordsBulk.length) return;
+
+            let addedCount = 0;
+            let skipCount = 0;
+
+            selectedWordsBulk.forEach(tempW => {
+                // 既に対象のリストに同じ英語＋日本語のペアが存在する場合はスキップ
+                const isExist = data.words.some(w => w.en === tempW.en && w.ja === tempW.ja && w.pl === targetPL);
+                if (!isExist) {
+                    // 既存の設定（学習進捗状況など）を引き継いで新しいリスト用に複製登録
+                    data.words.push({
+                        en: tempW.en,
+                        ja: tempW.ja,
+                        pl: targetPL,
+                        due: tempW.due || Date.now(),
+                        isNew: tempW.isNew !== undefined ? tempW.isNew : true,
+                        level: tempW.level || 0
+                    });
+                    addedCount++;
+                } else {
+                    skipCount++;
+                }
+            });
+
+            saveData();
+            alert(`${addedCount}件の単語を「${targetPL}」に一括追加しました！${skipCount > 0 ? `（重複 ${skipCount}件スキップ）` : ''}`);
+            
+            clearBulkSelection();
+            renderWordList();
+            updateUI();
         }
 
         function handleFinalCheck(isCorrect, correctJa) {
@@ -345,28 +464,24 @@
             showChoices();
         }
 
-        // 新設：現在のリスト（フォルダ）の名前を変更する機能
         function renameCurrentPlaylist() {
             if (currentViewingPL === "デフォルト" || currentViewingPL === "間違えた単語") return alert("このリスト名は変更できません。");
             
             const newName = prompt(`「${currentViewingPL}」の新しい名前を入力してください:`, currentViewingPL);
-            if (!newName) return; // キャンセルされた場合
+            if (!newName) return;
             const trimmedName = newName.trim();
             if (!trimmedName) return alert("リスト名が空欄です。");
             if (data.playlists.includes(trimmedName)) return alert("そのリスト名は既に存在します。");
 
-            // 1. プレイリスト配列内の名前を書き換え
             const idx = data.playlists.indexOf(currentViewingPL);
             if (idx !== -1) data.playlists[idx] = trimmedName;
 
-            // 2. 所属する単語データの所属先（pl）を新しい名前に一括書き換え
             data.words.forEach(w => {
                 if (w.pl === currentViewingPL) {
                     w.pl = trimmedName;
                 }
             });
 
-            // 表示中のプレイリスト情報を更新して保存
             currentViewingPL = trimmedName;
             saveData();
             updateUI();
@@ -468,7 +583,7 @@
             const targetPL = document.getElementById('modal-pl-select').value;
             if (data.words.some(w => w.en === tempWord.en && w.ja === tempWord.ja && w.pl === targetPL)) return alert("既に追加済み");
             data.words.push({ ...tempWord, pl: targetPL });
-            saveData(); closeModal('list-modal'); renderWordList();
+            saveData(); closeModal('list-modal'); renderWordList(); updateUI();
         }
 
         function executeEditWord() {
@@ -486,6 +601,7 @@
             saveData();
             closeModal('edit-modal');
             renderWordList();
+            updateUI();
             wordBeingEdited = null;
         }
 
