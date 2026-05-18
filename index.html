@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v51 - Perfect Fix</title>
+    <title>Domemory v55 - Rename Playlist</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -25,8 +25,9 @@
         input, select { width: 100%; padding: 14px; margin: 8px 0; font-size: 16px !important; border: 2px solid #eee; border-radius: 8px; outline: none; background: #fff; }
         .main-btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-p { background: var(--p); color: #fff; }
-        .btn-sub { background: rgba(0,0,0,0.1); color: #333; padding: 8px 12px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; }
-        .btn-d { background: var(--danger); color: #fff; padding: 8px 12px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; }
+        .btn-sub { background: rgba(0,0,0,0.1); color: #333; padding: 6px 10px; font-size: 11px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-edit { background: #f39c12; color: #fff; padding: 6px 10px; font-size: 11px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-d { background: var(--danger); color: #fff; padding: 6px 10px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; }
         
         .q-text { font-size: 32px; font-weight: bold; margin: 30px 0; text-align: center; word-break: break-all; }
         .countdown { font-size: 80px; color: var(--p); text-align: center; font-weight: bold; margin: 20px 0; }
@@ -39,29 +40,45 @@
         .tab { white-space: nowrap; background: #ddd; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #555; }
         .tab-active { background: var(--p); color: white; }
 
-        /* レイアウト崩れと重なりを完全に防ぐ */
         .li-item { display: flex; justify-content: space-between; align-items: stretch; gap: 12px; position: relative; }
         .li-info { flex: 1; min-width: 0; word-break: break-all; pointer-events: none; } 
-        .action-btns { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; justify-content: center; z-index: 10; } 
-        .action-btns button { pointer-events: auto; }
+        .action-btns { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; justify-content: center; z-index: 10; width: 65px; } 
+        .action-btns button { pointer-events: auto; text-align: center; width: 100%; }
 
         .badge { display: inline-block; padding: 2px 8px; font-size: 11px; border-radius: 4px; margin-top: 6px; font-weight: bold; background: rgba(0,0,0,0.05); }
         .due-timer { font-size: 11px; color: #777; margin-top: 6px; margin-left: 5px; }
 
-        #list-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:3000; align-items:center; justify-content:center; }
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:3000; align-items:center; justify-content:center; }
         .hidden { display: none !important; }
         .abort-container { margin-top: 20px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px; }
+        
+        /* プレイリスト管理ボタンのエリア調整 */
+        .pl-actions-container { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
-    <div id="list-modal">
+    <div id="list-modal" class="modal-overlay">
         <div class="card" style="width:85%; max-width:350px;">
             <h3 style="margin-top:0">追加先のリストを選択</h3>
             <select id="modal-pl-select"></select>
             <div style="display:flex; gap:10px; margin-top:10px;">
-                <button class="main-btn" style="background:#ccc; flex:1;" onclick="closeModal()">戻る</button>
+                <button class="main-btn" style="background:#ccc; flex:1;" onclick="closeModal('list-modal')">戻る</button>
                 <button class="main-btn btn-p" style="flex:1;" onclick="executeAddToList()">追加</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay">
+        <div class="card" style="width:85%; max-width:350px;">
+            <h3 style="margin-top:0">単語を編集</h3>
+            <label style="font-size:12px; color:#666;">English</label>
+            <input id="edit-en-in" type="text" autocomplete="off">
+            <label style="font-size:12px; color:#666;">日本語</label>
+            <input id="edit-ja-in" type="text" autocomplete="off">
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="main-btn" style="background:#ccc; flex:1;" onclick="closeModal('edit-modal')">戻る</button>
+                <button class="main-btn btn-p" style="flex:1; background:#f39c12;" onclick="executeEditWord()">更新</button>
             </div>
         </div>
     </div>
@@ -104,7 +121,7 @@
                     <button class="main-btn" style="background:var(--new); color:#fff" onclick="startQuiz('new')">新規(4択)</button>
                     <button class="main-btn" style="background:var(--acc); color:#fff" onclick="startQuiz('srs')">復習(6択)</button>
                 </div>
-                <button class="main-btn btn-p" style="background:var(--danger); margin-bottom:10px" onclick="startQuiz('miss')">苦手特訓(入力)</button>
+                <button class="main-btn btn-p" style="background:var(--danger); margin-bottom:10px" onclick="startQuiz('miss')">苦手特訓(4択)</button>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <button class="main-btn" style="background:var(--shuffle); color:#fff" onclick="startQuiz('all_choice')">既習(選択)</button>
                     <button class="main-btn" style="background:var(--shuffle); color:#fff" onclick="startQuiz('all')">既習(入力)</button>
@@ -123,7 +140,8 @@
             </div>
         </div>
         <div id="playlist-tabs" class="tabs"></div>
-        <div id="pl-manage-area" style="margin-bottom: 15px; text-align: right;">
+        <div class="pl-actions-container">
+            <button id="rename-pl-btn" class="btn-edit" style="display:none;" onclick="renameCurrentPlaylist()">リスト名を変更</button>
             <button id="delete-pl-btn" class="btn-d" style="display:none;" onclick="deleteCurrentPlaylist()">現在のリストを削除</button>
         </div>
         <div id="word-list-view"></div>
@@ -141,6 +159,7 @@
         let currentViewingPL = "デフォルト";
         let quizPool = [], quizIdx = 0, tempWord = null, currentQuizMode = "";
         let waitInterval = null, isCountingDown = false;
+        let wordBeingEdited = null;
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
@@ -149,9 +168,19 @@
             document.getElementById('page-' + id).classList.add('active');
             document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active-nav'));
             document.getElementById('nav-' + id).classList.add('active-nav');
-            updateUI();
+            
+            if(id === 'add') {
+                const currentSel = document.getElementById('add-to-playlist').value;
+                updateUI();
+                if(currentSel && data.playlists.includes(currentSel)) {
+                    document.getElementById('add-to-playlist').value = currentSel;
+                }
+                document.getElementById('en-in').focus();
+            } else {
+                updateUI();
+            }
+            
             if(id === 'list') renderWordList();
-            if(id === 'add') document.getElementById('en-in').focus();
             window.scrollTo(0, 0);
         }
 
@@ -163,8 +192,11 @@
             document.getElementById('playlist-tabs').innerHTML = data.playlists.map(p => 
                 `<div class="tab ${p === currentViewingPL ? 'tab-active' : ''}" onclick="changeViewPL('${p}')">${p}</div>`
             ).join('');
-            const delBtn = document.getElementById('delete-pl-btn');
-            if (delBtn) delBtn.style.display = (currentViewingPL !== "デフォルト" && currentViewingPL !== "間違えた単語") ? "inline-block" : "none";
+            
+            // 修正：削除と名前変更ボタンの表示・非表示制御（デフォルトと間違えた単語は保護）
+            const isSystemPL = (currentViewingPL === "デフォルト" || currentViewingPL === "間違えた単語");
+            document.getElementById('delete-pl-btn').style.display = isSystemPL ? "none" : "inline-block";
+            document.getElementById('rename-pl-btn').style.display = isSystemPL ? "none" : "inline-block";
         }
 
         function changeViewPL(name) { currentViewingPL = name; renderWordList(); updateUI(); }
@@ -194,11 +226,15 @@
                 }
                 li.className = `card li-item ${statusClass}`;
                 
-                // --- 修正の要：データ属性を使って onclick のエラーを回避 ---
                 const addBtn = document.createElement('button');
                 addBtn.className = 'btn-sub';
                 addBtn.textContent = '追加';
-                addBtn.onclick = () => openAddModal(w); // 直接オブジェクトを渡す
+                addBtn.onclick = () => openAddModal(w);
+
+                const editBtn = document.createElement('button');
+                editBtn.className = 'btn-edit';
+                editBtn.textContent = '編集';
+                editBtn.onclick = () => openEditModal(w);
 
                 const delBtn = document.createElement('button');
                 delBtn.className = 'btn-d';
@@ -216,6 +252,7 @@
                 const btnArea = document.createElement('div');
                 btnArea.className = 'action-btns';
                 btnArea.appendChild(addBtn);
+                btnArea.appendChild(editBtn);
                 btnArea.appendChild(delBtn);
                 li.appendChild(btnArea);
 
@@ -249,7 +286,7 @@
         function showChoices() {
             const grid = document.getElementById('choices-grid');
             grid.innerHTML = "";
-            const num = (currentQuizMode === 'new' || currentQuizMode === 'all_choice') ? 4 : 6;
+            const num = (currentQuizMode === 'new' || currentQuizMode === 'all_choice' || currentQuizMode === 'miss') ? 4 : 6;
             const correct = quizPool[quizIdx];
             let allJaChoices = [...new Set(data.words.map(w => w.ja))].filter(j => j !== correct.ja);
             allJaChoices.sort(() => Math.random() - 0.5);
@@ -275,7 +312,7 @@
             }
             const target = quizPool[quizIdx];
             document.getElementById('q-display').textContent = target.en;
-            const isChoiceMode = (currentQuizMode === 'new' || currentQuizMode === 'srs' || currentQuizMode === 'all_choice');
+            const isChoiceMode = (currentQuizMode === 'new' || currentQuizMode === 'srs' || currentQuizMode === 'all_choice' || currentQuizMode === 'miss');
             if(isChoiceMode) {
                 document.getElementById('quiz-ui').classList.add('hidden');
                 document.getElementById('choice-ui').classList.remove('hidden');
@@ -308,6 +345,35 @@
             showChoices();
         }
 
+        // 新設：現在のリスト（フォルダ）の名前を変更する機能
+        function renameCurrentPlaylist() {
+            if (currentViewingPL === "デフォルト" || currentViewingPL === "間違えた単語") return alert("このリスト名は変更できません。");
+            
+            const newName = prompt(`「${currentViewingPL}」の新しい名前を入力してください:`, currentViewingPL);
+            if (!newName) return; // キャンセルされた場合
+            const trimmedName = newName.trim();
+            if (!trimmedName) return alert("リスト名が空欄です。");
+            if (data.playlists.includes(trimmedName)) return alert("そのリスト名は既に存在します。");
+
+            // 1. プレイリスト配列内の名前を書き換え
+            const idx = data.playlists.indexOf(currentViewingPL);
+            if (idx !== -1) data.playlists[idx] = trimmedName;
+
+            // 2. 所属する単語データの所属先（pl）を新しい名前に一括書き換え
+            data.words.forEach(w => {
+                if (w.pl === currentViewingPL) {
+                    w.pl = trimmedName;
+                }
+            });
+
+            // 表示中のプレイリスト情報を更新して保存
+            currentViewingPL = trimmedName;
+            saveData();
+            updateUI();
+            renderWordList();
+            alert("リスト名を変更しました。");
+        }
+
         function deleteCurrentPlaylist() {
             if (currentViewingPL === "デフォルト" || currentViewingPL === "間違えた単語") return alert("このリストは削除できません。");
             if (!confirm(`リスト「${currentViewingPL}」を削除しますか？`)) return;
@@ -318,12 +384,21 @@
 
         function saveWord() {
             const enIn = document.getElementById('en-in'), jaIn = document.getElementById('ja-in');
-            const en = enIn.value.trim(), ja = jaIn.value.trim(), pl = document.getElementById('add-to-playlist').value;
+            const plSelect = document.getElementById('add-to-playlist');
+            const en = enIn.value.trim(), ja = jaIn.value.trim(), pl = plSelect.value;
             if(!en || !ja) return;
+            
             const newWord = { en, ja, pl, due: Date.now(), isNew: true, level: 0 };
             data.words.push(newWord);
             if(pl !== "デフォルト") data.words.push({ ...newWord, pl: "デフォルト" });
-            saveData(); enIn.value = ""; jaIn.value = ""; enIn.focus(); updateUI();
+            saveData(); 
+            
+            enIn.value = ""; 
+            jaIn.value = ""; 
+            enIn.focus(); 
+            
+            updateUI();
+            plSelect.value = pl; 
         }
 
         function abortQuiz() {
@@ -379,13 +454,39 @@
         }
 
         function openAddModal(word) { tempWord = word; document.getElementById('list-modal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('list-modal').style.display = 'none'; }
+        
+        function openEditModal(word) {
+            wordBeingEdited = word;
+            document.getElementById('edit-en-in').value = word.en;
+            document.getElementById('edit-ja-in').value = word.ja;
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
         
         function executeAddToList() {
             const targetPL = document.getElementById('modal-pl-select').value;
             if (data.words.some(w => w.en === tempWord.en && w.ja === tempWord.ja && w.pl === targetPL)) return alert("既に追加済み");
             data.words.push({ ...tempWord, pl: targetPL });
-            saveData(); closeModal(); renderWordList();
+            saveData(); closeModal('list-modal'); renderWordList();
+        }
+
+        function executeEditWord() {
+            const newEn = document.getElementById('edit-en-in').value.trim();
+            const newJa = document.getElementById('edit-ja-in').value.trim();
+            if (!newEn || !newJa) return alert("空欄にはできません。");
+
+            data.words.forEach(w => {
+                if (w.en === wordBeingEdited.en && w.ja === wordBeingEdited.ja) {
+                    w.en = newEn;
+                    w.ja = newJa;
+                }
+            });
+
+            saveData();
+            closeModal('edit-modal');
+            renderWordList();
+            wordBeingEdited = null;
         }
 
         function createNewPlaylist() {
