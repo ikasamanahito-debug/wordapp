@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v59 - Prompt Example</title>
+    <title>Domemory v60 - Keep Selected Folder</title>
     <style>
         :root { --p: #44af98; --bg: #f8f9fa; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -63,7 +63,6 @@
         .bulk-action-bar { background: #fff; border: 2px solid var(--p); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(68,175,152,0.15); animation: slideDown 0.2s ease; }
         @keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* 新設：指示文サンプル用ボックス */
         .prompt-example-box { background: #f1f3f5; border-left: 4px solid #999; padding: 12px; border-radius: 0 8px 8px 0; margin-top: 15px; font-size: 12px; color: #444; line-height: 1.5; }
         .prompt-code-block { background: #fff; border: 1px solid #ddd; padding: 8px; border-radius: 4px; margin-top: 6px; font-family: monospace; white-space: pre-wrap; word-break: break-all; }
     </style>
@@ -546,10 +545,12 @@ accomplish, 達成</div>
             plSelect.value = pl; 
         }
 
+        // 一括インポート後もフォルダ選択をキープするように修正
         function saveBulkWords() {
             const textarea = document.getElementById('bulk-import-area');
             const text = textarea.value.trim();
-            const pl = document.getElementById('add-to-playlist').value;
+            const plSelect = document.getElementById('add-to-playlist');
+            const pl = plSelect.value;
             if (!text) return alert("インポートするテキストを入力してください。");
 
             const lines = text.split('\n');
@@ -586,6 +587,9 @@ accomplish, 達成</div>
             
             textarea.value = ""; 
             updateUI();
+            
+            // 修正：updateUI()でリセットされた選択値を、実行前のフォルダに戻す
+            plSelect.value = pl;
         }
 
         function abortQuiz() {
