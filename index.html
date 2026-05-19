@@ -429,11 +429,12 @@ accomplish, 達成</div>
                 const headX = currentX + dx * lenRate;
                 const headY = currentY + dy * lenRate;
 
+// 🔵 青色に変更したグラデーションと影の処理
                 const gradient = ctx.createLinearGradient(currentX, currentY, headX, headY);
-                gradient.addColorStop(0, 'rgba(255, 235, 170, 0.0)');
-                gradient.addColorStop(0.3, 'rgba(255, 210, 120, 0.4)');
-                gradient.addColorStop(0.8, 'rgba(255, 240, 200, 0.9)');
-                gradient.addColorStop(1, 'rgba(255, 255, 255, 1.0)');
+                gradient.addColorStop(0, 'rgba(0, 150, 255, 0.0)');   /* 透明 */
+                gradient.addColorStop(0.3, 'rgba(0, 180, 255, 0.4)'); /* 薄い青 */
+                gradient.addColorStop(0.8, 'rgba(130, 220, 255, 0.9)');/* 明るい水色 */
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 1.0)');  /* 先頭は白 */
 
                 ctx.beginPath();
                 ctx.moveTo(currentX, currentY);
@@ -443,9 +444,11 @@ accomplish, 達成</div>
                 ctx.strokeStyle = gradient;
                 
                 ctx.shadowBlur = 12;
-                ctx.shadowColor = 'rgba(255, 200, 100, 0.7)';
-                ctx.stroke();
+                ctx.shadowColor = 'rgba(0, 150, 255, 0.8)'; /* 影（ネオンの光り）を青に変更 */
+                
+                ctx.stroke(); // 👈 この行の直前にきれいに収まっていれば大正解です！
             });
+
 
             ctx.shadowBlur = 0;
             requestAnimationFrame(drawLightStreams);
