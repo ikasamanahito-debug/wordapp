@@ -431,10 +431,11 @@ accomplish, 達成</div>
 
 // 🔵 青色に変更したグラデーションと影の処理
                 const gradient = ctx.createLinearGradient(currentX, currentY, headX, headY);
-                gradient.addColorStop(0, 'rgba(0, 150, 255, 0.0)');   /* 透明 */
-                gradient.addColorStop(0.3, 'rgba(0, 180, 255, 0.4)'); /* 薄い青 */
-                gradient.addColorStop(0.8, 'rgba(130, 220, 255, 0.9)');/* 明るい水色 */
-                gradient.addColorStop(1, 'rgba(255, 255, 255, 1.0)');  /* 先頭は白 */
+                gradient.addColorStop(0, 'rgba(255, 0, 128, 0.0)');
+gradient.addColorStop(0.3, 'rgba(255, 0, 128, 0.4)');
+gradient.addColorStop(0.8, 'rgba(255, 50, 150, 0.9)');
+gradient.addColorStop(1, 'rgba(255, 255, 255, 1.0)'); /* 先頭は白 */
+
 
                 ctx.beginPath();
                 ctx.moveTo(currentX, currentY);
@@ -444,7 +445,7 @@ accomplish, 達成</div>
                 ctx.strokeStyle = gradient;
                 
                 ctx.shadowBlur = 12;
-                ctx.shadowColor = 'rgba(0, 150, 255, 0.8)'; /* 影（ネオンの光り）を青に変更 */
+                ctx.shadowColor = 'rgba(255, 0, 128, 0.8)';
                 
                 ctx.stroke(); // 👈 この行の直前にきれいに収まっていれば大正解です！
             });
