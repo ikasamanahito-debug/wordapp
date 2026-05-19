@@ -794,19 +794,50 @@ accomplish, 達成</div>
 
             if(isCorrect) {
                 showQuizEffect(true);
+                
+                // --- 新規(new) または 復習(srs) モードで直接正解した場合 ---
                 if(currentQuizMode === 'new' || currentQuizMode === 'srs') {
                     masterWord.isNew = false;
                     masterWord.level++;
                     let daysArr = [0, 1, 3, 7, 14, 30], days = daysArr[masterWord.level] || 30;
                     masterWord.due = Date.now() + (days * 86400000);
+                } 
+                // --- 苦手特訓(miss) モードで正解した場合 ---
+                else if (currentQuizMode === 'miss') {
+                    // 直前に「新規」か「復習」で間違えた単語だった場合のみレベルを上げる
+                    if (masterWord.fromSrsLevel) {
+                        masterWord.isNew = false;
+                        masterWord.level++;
+                        let daysArr = [0, 1, 3, 7, 14, 30], days = daysArr[masterWord.level] || 30;
+                        masterWord.due = Date.now() + (days * 86400000);
+                    }
+                    // 練習用（既習など）でのミスだった場合はレベルを上げず、復習タイミングも変えない
+                    
+                    // 苦手特訓で正解したのでフラグはクリアする
+                    delete masterWord.fromSrsLevel;
                 }
+                
+                // 正解したので間違えた単語リスト（タグ）から削除
                 masterWord.tags = masterWord.tags.filter(t => t !== "間違えた単語");
+                
             } else {
                 showQuizEffect(false, correctJa);
+                
+                // --- 間違えた場合の処理 ---
                 if(!masterWord.tags.includes("間違えた単語")) {
                     masterWord.tags.push("間違えた単語");
                 }
+                
+                // 新規または復習モードで間違えた場合のみ「レベルを上げる対象」として目印（フラグ）をつける
+                if (currentQuizMode === 'new' || currentQuizMode === 'srs') {
+                    masterWord.fromSrsLevel = true;
+                } else {
+                    // 既習選択や既習入力などの練習用で間違えた場合は、フラグをつけない（あるいは消す）
+                    delete masterWord.fromSrsLevel;
+                }
             }
+            
+            saveData(); // 変更された状態を保存
             quizIdx++; 
             setTimeout(nextQ, isCorrect ? CORRECT_DISPLAY_MS : MISS_DISPLAY_MS);
         }
