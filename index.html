@@ -17,14 +17,12 @@
             overflow: hidden;
             background-color: #0b0f14;
         }
-        /* ご提示いただいたメニューなし背景画像を全面にぴったりフィット */
         .city-base-image {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: url('http://googleusercontent.com/image_generation_content/16') center center / cover no-repeat;
             z-index: 1;
         }
-        /* 道路に沿って規則的な光を走らせるアニメーションCanvas */
         #highway-canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -33,12 +31,22 @@
             opacity: 0.85;
         }
 
-        /* アプリ全体のコンテンツを夜景に浮かび上がらせるための薄いレイヤー */
         .page { padding: 15px; max-width: 500px; margin: 0 auto; display: none; position: relative; z-index: 10; }
         .active { display: block; }
         
-        /* カードデザインを背景に馴染む透過ダークモダンに変更 */
-        .card { background: rgba(255, 255, 255, 0.92); padding: 18px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); position: relative; transition: all 0.3s ease; }
+        /* 登録画面とクイズ画面を中央寄せにする配置設定 */
+        #page-add, #page-quiz {
+            min-height: calc(100vh - 120px);
+            display: none;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;     
+        }
+        #page-add.active, #page-quiz.active {
+            display: flex;
+        }
+
+        .card { background: rgba(255, 255, 255, 0.92); padding: 18px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); position: relative; transition: all 0.3s ease; width: 100%; z-index: 10; }
 
         .menu { background: rgba(20, 24, 30, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: #fff; position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 12px 0 30px 0; z-index: 2000; border-top: 1px solid rgba(255,255,255,0.1); }
         .menu button { background: none; color: #8a99ad; font-size: 11px; border: none; display: flex; flex-direction: column; align-items: center; gap: 4px; flex:1; cursor: pointer; }
@@ -60,6 +68,8 @@
         .q-text { font-size: 32px; font-weight: bold; margin: 30px 0; text-align: center; word-break: break-all; color: #222; }
         .countdown { font-size: 80px; color: var(--p); text-align: center; font-weight: bold; margin: 20px 0; }
         
+        #quiz-ui-container { position: relative; width: 100%; }
+
         .choices-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
         .choice-btn { background: #fff; border: 2px solid #eee; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; text-align: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .choices-disabled .choice-btn { pointer-events: none; opacity: 0.8; }
@@ -104,28 +114,64 @@
         .toast { background: #fff; color: #333; padding: 15px 20px; border-radius: 10px; font-size: 14px; font-weight: bold; box-shadow: 0 5px 20px rgba(0,0,0,0.15); display: flex; align-items: center; animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, toastOut 0.3s ease 2.7s forwards; border-left: 6px solid var(--p); pointer-events: auto; }
         .toast.toast-error { border-left-color: var(--danger); }
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+        @keyframes toastOut { from { opacity: 1; transform: translateY(-20px); } }
 
-        #bg-effect-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1400; opacity: 0; transition: all 0.2s ease; }
+        #bg-effect-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            pointer-events: none; 
+            z-index: 5; 
+            opacity: 0; 
+            transition: all 0.2s ease; 
+        }
         .bg-correct-active { opacity: 1 !important; background: rgba(255, 255, 255, 0.12); }
-        .bg-miss-active { opacity: 1 !important; background: rgba(15, 32, 67, 0.45) !important; }
+        .bg-miss-active { opacity: 1 !important; background: rgba(15, 32, 67, 0.55) !important; }
 
-        .card-correct-fx { border: 2px solid #ffd700 !important; box-shadow: 0 0 25px rgba(255, 215, 0, 0.5) !important; background: rgba(255,253,240,0.96) !important; }
-        .card-miss-fx { border: 2px solid #1e3c72 !important; box-shadow: inset 0 0 30px rgba(10, 37, 64, 0.15), 0 4px 20px rgba(0,0,0,0.2) !important; background: rgba(240,244,248,0.96) !important; }
-
-        #quiz-effect-layer { position: fixed; bottom: 15%; left: 0; right: 0; height: 140px; pointer-events: none; z-index: 1500; display: flex; justify-content: center; align-items: center; }
-        .quiz-effect-txt { font-size: 56px; font-weight: 900; text-shadow: 0 4px 15px rgba(0,0,0,0.25); position: relative; z-index: 10; letter-spacing: 2px; }
+        #quiz-effect-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: auto; 
+            pointer-events: none; 
+            z-index: 1500; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
         
-        .txt-correct { background: linear-gradient(90deg, #ffd700, #ffffff, #ffea00, #ffffff, #ffd700); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldWhiteFlow 2s linear infinite, correctPop 800ms ease-out forwards; }
+        .quiz-effect-box {
+            background: #ffffff;
+            padding: 12px 24px;         
+            border-radius: 8px;         
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.08);
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 92%;                 
+            max-width: 440px;
+            position: relative;
+            margin-top: 5px;
+        }
+
+        .quiz-effect-txt { font-size: 38px; font-weight: 900; position: relative; z-index: 1600; letter-spacing: 2px; }
+        
+        .txt-correct { background: linear-gradient(90deg, #ffd700, #b89700, #ffea00, #b89700, #ffd700); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldWhiteFlow 2s linear infinite, correctPop 800ms ease-out forwards; }
         @keyframes goldWhiteFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes correctPop { 0% { transform: scale(0.4); opacity: 0; } 25% { transform: scale(1.1); opacity: 1; } 85% { transform: scale(1.0); opacity: 1; } 100% { transform: scale(0.95); opacity: 0; } }
+        @keyframes correctPop { 0% { transform: scale(0.6); opacity: 0; } 25% { transform: scale(1.05); opacity: 1; } 85% { transform: scale(1.0); opacity: 1; } 100% { transform: scale(0.95); opacity: 0; } }
         
         .particle { position: absolute; width: 7px; height: 7px; border-radius: 50%; pointer-events: none; animation: particleBlow 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; }
         @keyframes particleBlow { 0% { transform: translate(0, 0) scale(1.2); opacity: 1; } 100% { transform: translate(var(--mx), var(--my)) scale(0); opacity: 0; } }
 
-        .txt-miss { background: linear-gradient(135deg, #0a2540, #ffffff, #1e3c72, #e0e0e0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 46px; text-align: center; animation: missShake 1950ms ease-in-out forwards; }
-        .txt-miss span { display: block; font-size: 16px; -webkit-text-fill-color: #333; font-weight: bold; background: #ffffff; padding: 6px 14px; border-radius: 8px; margin-top: 8px; border: 2px solid #b1c7df; box-shadow: 0 4px 12px rgba(10,37,64,0.15); max-width: 280px; margin-left: auto; margin-right: auto; }
-        @keyframes missShake { 0% { transform: translateX(0) scale(0.8); opacity: 0; } 4%, 12%, 20%, 28% { transform: translateX(-6px); opacity: 1; } 8%, 16%, 24%, 32% { transform: translateX(6px); } 36% { transform: translateX(0) translateY(0); opacity: 1; } 88% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(25px); opacity: 0; } }
+        .txt-miss { background: linear-gradient(135deg, #e74c3c, #c0392b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 36px; animation: missShake 1950ms ease-in-out forwards; }
+        .miss-ans-subtext { display: block; font-size: 14px; color: #333; font-weight: bold; background: #f8f9fa; padding: 8px 14px; border-radius: 8px; margin-top: 8px; border: 1px solid #ddd; max-width: 100%; word-break: break-all; }
+        @keyframes missShake { 0% { transform: translateX(0) scale(0.9); opacity: 0; } 4%, 12%, 20%, 28% { transform: translateX(-5px); opacity: 1; } 8%, 16%, 24%, 32% { transform: translateX(5px); } 36% { transform: translateX(0) translateY(0); opacity: 1; } 88% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(15px); opacity: 0; } }
 
         .txt-complete { background: linear-gradient(90deg, #e74c3c, #e67e22, #ffd700, #44af98, #3498db, #9b59b6); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: rainbowFlow 4s linear infinite, completeZoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; font-size: 38px; font-weight: 900; text-align: center; margin-bottom: 15px; }
         @keyframes rainbowFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -144,7 +190,6 @@
 
     <div id="toast-container"></div>
     <div id="bg-effect-overlay"></div>
-    <div id="quiz-effect-layer"></div>
 
     <div id="confirm-modal" class="modal-overlay" style="z-index: 5000;">
         <div class="card" style="width:85%; max-width:350px; text-align: center; animation: completeZoom 0.3s ease;">
@@ -236,17 +281,21 @@ accomplish, 達成</div>
             <div id="count-area" class="countdown hidden"></div>
             <div id="q-display" class="q-text">練習を始める</div>
             
-            <div id="quiz-ui" class="hidden">
-                <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;" autocomplete="off" onkeydown="if(event.key==='Enter') handleCheck()">
-                <button class="main-btn btn-p" onclick="handleCheck()">決定</button>
-            </div>
+            <div id="quiz-ui-container">
+                <div id="quiz-effect-layer"></div>
 
-            <div id="choice-ui" class="hidden">
-                <div id="wait-area">
-                    <div id="wait-timer" class="wait-timer">選択肢表示まであと 8 秒</div>
-                    <button class="main-btn btn-sub" style="width:100%; margin-bottom:10px;" onclick="skipWait()">今すぐ表示</button>
+                <div id="quiz-ui" class="hidden">
+                    <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;" autocomplete="off" onkeydown="if(event.key==='Enter') handleCheck()">
+                    <button class="main-btn btn-p" onclick="handleCheck()">決定</button>
                 </div>
-                <div id="choices-grid" class="choices-grid hidden"></div>
+
+                <div id="choice-ui" class="hidden">
+                    <div id="wait-area">
+                        <div id="wait-timer" class="wait-timer">選択肢表示まであと 8 秒</div>
+                        <button class="main-btn btn-sub" style="width:100%; margin-bottom:10px;" onclick="skipWait()">今すぐ表示</button>
+                    </div>
+                    <div id="choices-grid" class="choices-grid hidden"></div>
+                </div>
             </div>
 
             <div id="abort-ui" class="abort-container hidden">
@@ -333,7 +382,6 @@ accomplish, 達成</div>
         const CORRECT_DISPLAY_MS = 800;  
         const MISS_DISPLAY_MS = 1950;    
 
-        // ==================== v75 パース整合型ライトストリームアニメーションエンジン ====================
         const canvas = document.getElementById('highway-canvas');
         const ctx = canvas.getContext('2d');
         let lightStreams = [];
@@ -346,15 +394,13 @@ accomplish, 達成</div>
 
         function initLightStreams() {
             lightStreams = [];
-            // 高速道路を規則正しく流れる複数の光線を初期化
-            // 画面外左下から右上に向けて走るパース(角度は約26.5度、Math.atan2(-1, 2))
             const numStreams = 4;
             for (let i = 0; i < numStreams; i++) {
                 lightStreams.push({
-                    progress: i / numStreams, // 規則的な間隔を空けるための進捗
-                    speed: 0.0025,           // 滑らかに滑り抜ける速度
-                    width: 3.5,              // 光の物体の太さ
-                    length: 120              // 光の物体の長さ(直線形状)
+                    progress: i / numStreams, 
+                    speed: 0.0025,           
+                    width: 3.5,              
+                    length: 120              
                 });
             }
         }
@@ -362,7 +408,6 @@ accomplish, 達成</div>
         function drawLightStreams() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // 画像の高速道路（右上から左下を貫く立体高架）の仮想的な始点と終点を定義
             const startX = canvas.width * -0.2;
             const startY = canvas.height * 1.1;
             const endX = canvas.width * 1.2;
@@ -377,16 +422,13 @@ accomplish, 達成</div>
                     stream.progress = 0;
                 }
 
-                // 現在の規則的な中心座標
                 const currentX = startX + dx * stream.progress;
                 const currentY = startY + dy * stream.progress;
 
-                // 直線形状の進行方向ベクトル
                 const lenRate = stream.length / Math.sqrt(dx*dx + dy*dy);
                 const headX = currentX + dx * lenRate;
                 const headY = currentY + dy * lenRate;
 
-                // 規則的な光の物体をレンダリング
                 const gradient = ctx.createLinearGradient(currentX, currentY, headX, headY);
                 gradient.addColorStop(0, 'rgba(255, 235, 170, 0.0)');
                 gradient.addColorStop(0.3, 'rgba(255, 210, 120, 0.4)');
@@ -400,25 +442,20 @@ accomplish, 達成</div>
                 ctx.lineCap = 'round';
                 ctx.strokeStyle = gradient;
                 
-                // 滑らかな車のライト感を際立たせるシャドウ効果
                 ctx.shadowBlur = 12;
                 ctx.shadowColor = 'rgba(255, 200, 100, 0.7)';
                 ctx.stroke();
             });
 
-            // シャドウを一度リセットして毎フレーム高速に描画
             ctx.shadowBlur = 0;
             requestAnimationFrame(drawLightStreams);
         }
 
         window.addEventListener('resize', resizeCanvas);
-        // 背景画像の読み込みタイミングを考慮して初期始動
         setTimeout(() => {
             resizeCanvas();
             drawLightStreams();
         }, 100);
-
-        // =================================================================================
 
         function showToast(message, type = "success") {
             const container = document.getElementById('toast-container');
@@ -448,48 +485,58 @@ accomplish, 達成</div>
                 mainCard.classList.add('card-miss-fx');
             }
 
+            const effectBox = document.createElement('div');
+            effectBox.className = "quiz-effect-box";
+
             const txt = document.createElement('div');
             if (isCorrect) {
                 txt.className = "quiz-effect-txt txt-correct";
                 txt.textContent = "🏆 正解！";
                 
-                for (let i = 0; i < 40; i++) {
+                for (let i = 0; i < 30; i++) {
                     const particle = document.createElement('div');
                     particle.className = "particle";
-                    const colors = ['#ffd700', '#ffffff', '#e6c229', '#f4e08b'];
+                    const colors = ['#ffd700', '#e6c229', '#f4e08b'];
                     particle.style.background = colors[Math.floor(Math.random() * colors.length)];
                     
                     const angle = Math.random() * Math.PI * 2;
-                    const distance = 60 + Math.random() * 150;
+                    const distance = 40 + Math.random() * 90;
                     particle.style.setProperty('--mx', `${Math.cos(angle) * distance}px`);
                     particle.style.setProperty('--my', `${Math.sin(angle) * distance}px`);
                     
                     txt.appendChild(particle);
                 }
+                effectBox.appendChild(txt);
             } else {
                 txt.className = "quiz-effect-txt txt-miss";
-                txt.innerHTML = `❌ 間違い！<span>正解は… ${extraInfo}</span>`;
+                txt.textContent = "❌ 間違い！";
 
-                for (let i = 0; i < 35; i++) {
+                const subTxt = document.createElement('div');
+                subTxt.className = "miss-ans-subtext";
+                subTxt.innerHTML = `正解は… <span style="color:var(--danger);">${extraInfo}</span>`;
+
+                for (let i = 0; i < 25; i++) {
                     const particle = document.createElement('div');
                     particle.className = "particle";
-                    const colors = ['#0a2540', '#1e3c72', '#ffffff', '#b1c7df', '#7ca1cc'];
+                    const colors = ['#e74c3c', '#c0392b', '#7ca1cc'];
                     particle.style.background = colors[Math.floor(Math.random() * colors.length)];
                     
                     const angle = Math.random() * Math.PI * 2;
-                    const distance = 50 + Math.random() * 130;
+                    const distance = 35 + Math.random() * 80;
                     particle.style.setProperty('--mx', `${Math.cos(angle) * distance}px`);
                     particle.style.setProperty('--my', `${Math.sin(angle) * distance}px`);
                     
                     txt.appendChild(particle);
                 }
+                effectBox.appendChild(txt);
+                effectBox.appendChild(subTxt);
             }
             
-            layer.appendChild(txt);
+            layer.appendChild(effectBox);
 
             const duration = isCorrect ? CORRECT_DISPLAY_MS : MISS_DISPLAY_MS;
             setTimeout(() => { 
-                txt.remove(); 
+                effectBox.remove(); 
                 bgOverlay.className = ""; 
                 mainCard.classList.remove('card-correct-fx', 'card-miss-fx'); 
                 if (choiceUi) {
@@ -564,8 +611,21 @@ accomplish, 達成</div>
         }
 
         function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + id).classList.add('active');
+            document.querySelectorAll('.page').forEach(p => {
+                if(p.id === 'page-quiz' || p.id === 'page-add') {
+                    p.style.display = 'none';
+                } else {
+                    p.classList.remove('active');
+                }
+            });
+            
+            const targetPage = document.getElementById('page-' + id);
+            if(id === 'quiz' || id === 'add') {
+                targetPage.style.display = 'flex';
+            } else {
+                targetPage.classList.add('active');
+            }
+
             document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active-nav'));
             document.getElementById('nav-' + id).classList.add('active-nav');
             
@@ -747,7 +807,7 @@ accomplish, 達成</div>
                     masterWord.tags.push("間違えた単語");
                 }
             }
-            saveData(); quizIdx++; 
+            quizIdx++; 
             setTimeout(nextQ, isCorrect ? CORRECT_DISPLAY_MS : MISS_DISPLAY_MS);
         }
 
@@ -1016,6 +1076,8 @@ accomplish, 達成</div>
 
         migrateToUnifiedData();
         updateUI();
+        
+        showPage('quiz');
     </script>
 </body>
 </html>
