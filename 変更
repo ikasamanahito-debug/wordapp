@@ -51,4 +51,58 @@ document.addEventListener('focusin', (e) => {
             e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 120); // 120ミリ秒だけ待って、キーボードが完全に開ききってから中央へスクロール
     }
+
+１１１            document.addEventListener('focusout', (e) => {
+
+            // 対象の要素（入力欄）か確認
+
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+
+                
+
+                // 修正ポイント：無理やり下へスクロールする処理を削除し、
+
+                // キーボードが閉じるのを待ってから「滑らかに」トップへ戻すだけにする
+
+                setTimeout(() => {
+
+                    window.scrollTo({
+
+                        top: 0,
+
+                        left: 0,
+
+                        behavior: 'smooth' // これでガタつかずヌルッと戻ります
+
+                    });
+
+                }, 60); // 40msだと早すぎる場合があるので60msで安定化
+
+            }
+
+        });
+
+            document.addEventListener('focusin', (e) => {
+
+                if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+
+                    setTimeout(() => {
+
+                        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    }, 120); // 120ミリ秒だけ待って、キーボードが完全に開ききってから中央へスクロール
+
+                }
+
+            
+
+                        document.addEventListener('touchstart', (e) => {
+
+                        if (e.touches.length > 1) {
+
+                            e.preventDefault();
+
+                        }
+
+                    }, { passive: false });　変？
 });
