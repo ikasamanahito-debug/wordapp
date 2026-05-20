@@ -9,14 +9,14 @@
         :root { 
             --p: #00f3ff;          /* サイバーシアン（主色） */
             --p-dark: #00b8cc;     /* 深みのあるシアン */
-            --bg: #060d16;         /* ディープサイバーネイビー（背景） */
+            --bg: #080d36;         /* ディープサイバーネイビー（背景） */
             --acc: #ff007f;        /* エレクトリックピンク（アクセント） */
             --danger: #ff3333;     /* ネオンレッド */
-            --new: #00ffcc;        /* サイバーミント */
+            --new: #11ffcc;        /* サイバーミント */
             --text: #ffffff;       /* テキスト（白ベース） */
             --text-dark: #111822;  /* カード内入力など用（濃色） */
             --gold: #ffe600;       /* サイバーゴールド */
-            --shuffle: #b026ff;    /* ネオンパープル */
+            --shuffle: #b524ff;    /* ネオンパープル */
             --card-bg: rgba(16, 24, 36, 0.85); /* 透過ダークカード */
         }
         
@@ -586,11 +586,10 @@ accomplish, 達成</div>
                 const headY = currentY + dy * lenRate;
 
                 const gradient = ctx.createLinearGradient(currentX, currentY, headX, headY);
-                gradient.addColorStop(0, 'rgba(0, 255, 204, 0.0)');
-                gradient.addColorStop(0.3, 'rgba(0, 243, 255, 0.3)');
-                gradient.addColorStop(0.8, 'rgba(0, 255, 204, 0.8)');
-                gradient.addColorStop(1, 'rgba(255, 255, 255, 1.0)');
-
+gradient.addColorStop(0, 'rgba(255, 230, 0, 0.0)');   /* 最初は透明な黄色 */
+gradient.addColorStop(0.3, 'rgba(255, 200, 0, 0.3)'); /* うっすら光るゴールド（透明度0.3） */
+gradient.addColorStop(0.8, 'rgba(255, 230, 0, 0.8) '); /* 鮮やかな黄色（透明度0.8） */
+gradient.addColorStop(1, 'rgba(255, 255, 255, 1.0)');  /* 先端は一番まぶしい「白」 */
                 ctx.beginPath();
                 ctx.moveTo(currentX, currentY);
                 ctx.lineTo(headX, headY);
