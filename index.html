@@ -419,8 +419,8 @@
                 <div class="prompt-example-box">
                     <span style="font-weight: bold; color: var(--p);">💡 AI（Geminiなど）への指示文テンプレート</span><br>
                     単語帳の写真をAIに送る際、以下の文章をコピーして指示文として使ってください。
-                    <div class="prompt-code-block" id="prompt-text-template">添付した画像から、縦線の左側に位置する見出しの黒字の英単語と、それに対応する赤色の太線で塗られている日本語訳だけをすべて抜き出してください。
-余計な解説や記号、番号は一切含めず、以下のフォーマット（英語と日本語を半角カンマで区切る形）だけで出力してください。複数の意味があればそれも書き入れながら（多義語対応）
+                    <div class="prompt-code-block" id="prompt-text-template">添付した画像から、見出し英単語と、それに対応する日本語訳だけをすべて抜き出してください。
+以下のフォーマット（英語と日本語を半角カンマで区切る形）だけで出力してください。
 
 
 【出力フォーマット】
@@ -435,7 +435,7 @@ accomplish, 達成</div>
     <div id="page-quiz" class="page active">
         <div class="card" id="quiz-main-card">
             <div id="count-area" class="countdown hidden"></div>
-            <div id="q-display" class="q-text">練習を始める</div>
+            <div id="q-display" class="q-text">クイズ道場</div>
             
             <div id="quiz-ui-container">
                 <div id="quiz-effect-layer"></div>
@@ -475,19 +475,19 @@ accomplish, 達成</div>
                     <div class="mode-desc-title">💡 モード別のルールと復習間隔（SRS）の仕様</div>
                     <div class="mode-desc-item">
                         <span class="mode-desc-tag" style="background:var(--new);">新規(4択)</span>
-                        まだ一度もクイズしていない単語が出現。一発で<b>正解（合格）</b>するとタイマーが始動し「復習待ち」へ移行。間違えても合格するまで保留され、何度も再出題されます。
+                        まだ一度もクイズしていない単語が出現。一発で<b>正解（合格）</b>するとタイマーが始動し「復習待ち」へ移行。</b>間違えても合格するまで他モードでは出されず、新規モードでクリアするまで何度も再出題されます。
                     </div>
                     <div class="mode-desc-item">
                         <span class="mode-desc-tag" style="background:var(--p); color:var(--text-dark);">復習(6択)</span>
-                        指定時間が経過し、復習可能になった単語だけが出現。<b>正解（合格）</b>するごとに次の復習までの間隔（1日➔3日➔7日➔14日➔30日後）が段階的に伸びてしていきます。ミスしても合格するまでタイマーは変更（リセット）されずその場に保留されます。
+                        指定時間が経過し、復習可能になった単語だけが出現。<b>正解（合格）</b>するごとに次の復習までの間隔（1日➔3日➔7日➔14日➔30日後）が段階的に伸びてしていきます。</b>ミスしても合格するまでタイマーは変更（リセット）されずその場に保留されます。
                     </div>
                     <div class="mode-desc-item">
                         <span class="mode-desc-tag" style="background:var(--acc); color:#fff;">苦手特訓</span>
-                        新規・復習でミスした「苦手」な単語だけを抽出。このモードで何回正解・不正解しても<b>裏側の学習レベルや復習タイマーは一切変更されません（キープ）</b>。正解すると苦手タグが外れます。
+                        ミスした「苦手」な単語だけを抽出。</b>このモードで正解・不正解しても<b>復習までの時間は一切変更されません（キープ）</b>。ただし、復習待ちの単語は正解するとクリアとみなし、復習済みとなります。
                     </div>
                     <div class="mode-desc-item">
                         <span class="mode-desc-tag" style="background:var(--shuffle); color:#fff;">既習(選択/入力)</span>
-                        これまでに学習を開始したすべての単語からランダムに練習（入力はスペル手打ち）。テスト前の総チェック用自習モードであり、<b>正解・不正解を問わず復習タイマーやレベルは一切変更されず完全キープ</b>されます。
+                        これまでに新規で１度クリアした単語だけが出題されます。ランダムに出題されます（入力はスペル手打ち）。テスト前や復習モードに向けての自習用モードであり、<b>正解・不正解を問わず復習タイマーやレベルは一切変更されず完全キープ</b>されます。（復習モードでクリアしない限り復習したとは判定されません。）
                     </div>
                 </div>
             </div>
