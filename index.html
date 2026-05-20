@@ -1267,10 +1267,16 @@ accomplish, 達成</div>
 
             document.addEventListener('focusout', (e) => {
             if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
-              window.scrollTo(0, Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
-               setTimeout(() => { window.scrollTo(0, 0); }, 40);}
-            
-            });
+                // 少しだけ時間を遅らせてキーボードが完全に閉じるのを待つ
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth' // 飛び飛びではなく、滑らかなアニメーションで戻す
+                    });
+                }, 60); // 40msから60msに微調整してスマホの挙動を安定化
+            }
+        });
 
 
             document.addEventListener('touchstart', (e) => {
