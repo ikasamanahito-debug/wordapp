@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Domemory v75 - Stream Highway Edition</title>
+    <style>
+        /* ==================== さわやかポップサイバー テーマ定義 ==================== */
+        :root { 
+            --p: #00f3ff;          /* サイバーシアン（主色） */
+            --p-dark: #00b8cc;     /* 深みのあるシアン */
+            --bg: #060d16;         /* ディープサイバーネイビー（背景） */
+            --acc: #ff007f;        /* エレクトリックピンク（アクセント） */
+            --danger: #ff3333;     /* ネオンレッド */
+            --new: #00ffcc;        /* サイバーミント */
+            --text: #ffffff;       /* テキスト（白ベース） */
+            --text-dark: #111822;  /* カード内入力など用（濃色） */
+            --gold: #ffe600;       /* サイバーゴールド */
+            --shuffle: #b026ff;    /* ネオンパープル */
+            --card-bg: rgba(16, 24, 36, 0.85); /* 透過ダークカード */
+        }
+        
+        * { 
+            -webkit-tap-highlight-color: transparent; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            color: var(--text); 
+            padding-bottom: calc(100px + env(safe-area-inset-bottom, 16px)); 
+            overflow-x: hidden; 
+            position: relative; 
+            min-height: 100dvh; 
+        }
+
+        button, .card, .sub-tab, .tab, .choice-btn {
+            touch-action: manipulation;
+        }
+
+        /* ==================== 都会の夜景ハイウェイ・動的Canvas背景 ==================== */
+        .city-bg-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100dvh;
+            z-index: -1; pointer-events: none;
+            overflow: hidden;
+            background-color: var(--bg);
+        }
+        .city-base-image {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('http://googleusercontent.com/image_generation_content/16') center center / cover no-repeat;
+            z-index: 1;
+            opacity: 0.4; 
+        }
+        #highway-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2;
+            mix-blend-mode: screen;
+            opacity: 0.9;
+        }
+
+        .page { 
+            padding: 15px; 
+            width: 100%;
+            max-width: 500px; 
+            margin: 0 auto; 
+            display: none; 
+            position: relative; 
+            z-index: 10; 
+            overflow-x: hidden;
+        }
+        .active { display: block; }
+        
+        #page-add, #page-quiz {
+            min-height: calc(100dvh - 100px);
+            display: none;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;     
+            width: 100%;
+            padding: 10px;
+        }
+        #page-add.active, #page-quiz.active {
+            display: flex;
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 20px; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 32px rgba(0, 243, 255, 0.15); 
+            margin-bottom: 15px; 
+            border: 1px solid rgba(0, 243, 255, 0.25); 
+            position: relative; 
+            transition: all 0.3s ease; 
+            width: 100%; 
+            max-width: 100%;
+            z-index: 10; 
+            color: #ffffff;
+        }
+
+        .menu { 
+            background: rgba(6, 13, 22, 0.93); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px); 
+            color: #fff; 
+            position: fixed; 
+            bottom: 0; left: 0; right: 0; 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 12px 0 calc(12px + env(safe-area-inset-bottom, 16px)) 0; 
+            z-index: 2000; 
+            border-top: 2px solid rgba(0, 243, 255, 0.3); 
+            box-shadow: 0 -4px 20px rgba(0, 243, 255, 0.1);
+        }
+        .menu button { 
+            background: none; 
+            color: #70889b; 
+            font-size: 12px; 
+            font-weight: bold;
+            border: none; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 4px; 
+            flex: 1; 
+            cursor: pointer; 
+            transition: color 0.2s ease;
+        }
+        .menu button.active-nav { 
+            color: var(--p); 
+            text-shadow: 0 0 8px rgba(0, 243, 255, 0.6);
+        }
+
+        .status-miss { background-color: rgba(255, 0, 127, 0.15) !important; border-left: 6px solid var(--acc); border-right: 1px solid var(--acc); }
+        .status-new { background-color: rgba(0, 255, 204, 0.1) !important; border-left: 6px solid var(--new); }
+        .status-wait { background-color: rgba(0, 243, 255, 0.1) !important; border-left: 6px solid var(--p); }
+        .status-veteran { background-color: rgba(255, 230, 0, 0.1) !important; border-left: 6px solid var(--gold); border: 1px solid var(--gold); }
+
+        input, select, textarea { 
+            width: 100%; 
+            max-width: 100%;
+            padding: 14px; 
+            margin: 8px 0; 
+            font-size: 16px !important; 
+            border: 2px solid rgba(0, 243, 255, 0.3); 
+            border-radius: 10px; 
+            outline: none; 
+            background: rgba(255, 255, 255, 0.95); 
+            color: var(--text-dark);
+            font-family: inherit; 
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--p);
+            box-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
+        }
+        textarea { resize: vertical; min-height: 120px; }
+
+        .main-btn { 
+            width: 100%; 
+            max-width: 100%;
+            padding: 15px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        .main-btn:active { transform: scale(0.98); }
+        
+        .btn-p { background: linear-gradient(135deg, var(--p), var(--p-dark)); color: var(--text-dark); }
+        .btn-sub { background: rgba(255, 255, 255, 0.15); color: #fff; padding: 6px 10px; font-size: 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; }
+        .btn-edit { background: linear-gradient(135deg, var(--gold), #ccb600); color: var(--text-dark); padding: 6px 10px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-d { background: linear-gradient(135deg, var(--danger), #cc2424); color: #fff; padding: 6px 10px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        
+        .q-text { font-size: 32px; font-weight: bold; margin: 25px 0; text-align: center; word-break: break-all; color: #ffffff; }
+        .countdown { font-size: 80px; color: var(--p); text-align: center; font-weight: bold; margin: 20px 0; text-shadow: 0 0 20px rgba(0, 243, 255, 0.6); }
+        
+        #quiz-ui-container { position: relative; width: 100%; }
+
+        .choices-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; width: 100%; }
+        .choice-btn { background: rgba(255, 255, 255, 0.95); border: 2px solid rgba(0, 243, 255, 0.2); padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; color: var(--text-dark); text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: all 0.1s ease; }
+        .choice-btn:active { transform: scale(0.97); background: var(--p); color: var(--text-dark); }
+        .choices-disabled .choice-btn { pointer-events: none; opacity: 0.6; }
+
+        .wait-timer { font-size: 15px; color: var(--new); text-align: center; margin-bottom: 10px; font-weight: bold; text-shadow: 0 0 8px rgba(0, 255, 204, 0.4); }
+
+        /* フォルダ（タブ）部分が画面外にいくら増えても確実に横スクロールできるように強化 */
+        .tabs { 
+            display: flex; 
+            overflow-x: auto; 
+            overflow-y: hidden;
+            gap: 8px; 
+            padding: 10px 4px; 
+            width: 100%; 
+            -webkit-overflow-scrolling: touch; 
+            position: relative;
+            z-index: 100;
+        }
+        .tabs::-webkit-scrollbar { 
+            height: 4px; 
+        }
+        .tabs::-webkit-scrollbar-thumb {
+            background: rgba(0, 243, 255, 0.3);
+            border-radius: 2px;
+        }
+        
+        .tab { 
+            display: inline-block;
+            white-space: nowrap; 
+            background: rgba(255,255,255,0.1); 
+            border: 1px solid rgba(0,243,255,0.2); 
+            padding: 8px 16px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            color: #fff; 
+            cursor: pointer; 
+            backdrop-filter: blur(5px); 
+            -webkit-backdrop-filter: blur(5px);
+            flex-shrink: 0; 
+        }
+        .tab-active { background: var(--p); color: var(--text-dark); font-weight: bold; box-shadow: 0 0 10px rgba(0,243,255,0.4); border-color: var(--p); }
+
+        .sub-tabs { display: flex; gap: 6px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); width: 100%; }
+        .sub-tab { flex: 1; text-align: center; padding: 10px; font-size: 13px; font-weight: bold; color: #a0b0c0; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .sub-tab-active { background: var(--p); color: var(--text-dark); box-shadow: 0 2px 8px rgba(0,243,255,0.3); }
+
+        .li-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; position: relative; padding: 14px; width: 100%; }
+        .li-checkbox-area { display: flex; align-items: center; justify-content: center; padding-right: 2px; flex-shrink: 0; }
+        .li-checkbox { width: 24px; height: 24px; cursor: pointer; accent-color: var(--p); margin: 0; }
+        .li-info { flex: 1; min-width: 0; word-break: break-all; padding-right: 4px; } 
+        .action-btns { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; justify-content: center; z-index: 10; width: 70px; } 
+        .action-btns button { text-align: center; width: 100%; padding: 6px 4px; }
+
+        .badge { display: inline-block; padding: 3px 8px; font-size: 11px; border-radius: 4px; margin-top: 6px; font-weight: bold; background: rgba(255,255,255,0.15); color: #fff; }
+        .due-timer { font-size: 11px; color: #abc0d0; margin-top: 6px; margin-left: 5px; display: inline-block; }
+
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100dvh; background:rgba(4, 8, 15, 0.8); z-index:3000; align-items:center; justify-content:center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 20px; }
+        .hidden { display: none !important; }
+        .abort-container { margin-top: 20px; text-align: center; border-top: 1px dashed rgba(0,243,255,0.3); padding-top: 15px; width: 100%; }
+        
+        .pl-actions-container { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 15px; width: 100%; }
+        .bulk-action-bar { background: rgba(16, 24, 36, 0.95); border: 2px solid var(--p); border-radius: 14px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 20px rgba(0,243,255,0.2); animation: slideDown 0.2s ease; width: 100%; }
+        @keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .prompt-example-box { background: rgba(255,255,255,0.05); border-left: 4px solid var(--p); padding: 12px; border-radius: 0 8px 8px 0; margin-top: 15px; font-size: 12px; color: #ccc; line-height: 1.5; width: 100%; }
+        .prompt-code-block { background: rgba(0,0,0,0.4); border: 1px solid rgba(0,243,255,0.2); color: #00ffcc; padding: 10px; border-radius: 6px; margin-top: 6px; font-family: monospace; white-space: pre-wrap; word-break: break-all; font-size: 11px; }
+        
+        .mode-desc-container { margin-top: 25px; border-top: 1px dashed rgba(0,243,255,0.3); padding-top: 15px; width: 100%; }
+        .mode-desc-title { font-size: 13px; font-weight: bold; color: var(--p); margin-bottom: 10px; display: flex; align-items: center; gap: 4px; }
+        .mode-desc-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 12px; line-height: 1.4; color: #cbd5e1; }
+        .mode-desc-tag { display: inline-block; padding: 2px 6px; font-size: 10px; font-weight: bold; border-radius: 4px; color: var(--text-dark); margin-right: 6px; vertical-align: middle; }
+
+        #toast-container { position: fixed; top: 20px; left: 0; right: 0; margin: 0 auto; z-index: 9999; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: rgba(16, 24, 36, 0.95); color: #fff; padding: 15px 20px; border-radius: 12px; font-size: 14px; font-weight: bold; box-shadow: 0 8px 24px rgba(0,243,255,0.25); display: flex; align-items: center; justify-content: center; animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, toastOut 0.3s ease 2.7s forwards; border-left: 6px solid var(--p); pointer-events: auto; border-top: 1px solid rgba(0,243,255,0.2); width: 100%; text-align: center; }
+        .toast.toast-error { border-left-color: var(--danger); box-shadow: 0 8px 24px rgba(255,51,51,0.25); }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+
+        #bg-effect-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100dvh; 
+            pointer-events: none; 
+            z-index: 5; 
+            opacity: 0; 
+            transition: all 0.2s ease; 
+        }
+        .bg-correct-active { opacity: 1 !important; background: rgba(0, 255, 204, 0.1); }
+        .bg-miss-active { opacity: 1 !important; background: rgba(255, 0, 127, 0.15) !important; }
+
+        #quiz-effect-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            pointer-events: none; 
+            z-index: 1500; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        
+        .quiz-effect-box {
+            background: rgba(11, 20, 34, 0.96);
+            padding: 16px 24px;         
+            border-radius: 12px;         
+            box-shadow: 0 8px 32px rgba(0,243,255,0.3);
+            border: 1px solid rgba(0,243,255,0.3);
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;                 
+            position: relative;
+        }
+
+        .quiz-effect-txt { font-size: 38px; font-weight: 900; position: relative; z-index: 1600; letter-spacing: 2px; text-align: center; width: 100%; }
+        
+        .txt-correct { background: linear-gradient(90deg, #00ffcc, #00f3ff, #ffe600, #00f3ff, #00ffcc); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldWhiteFlow 2s linear infinite, correctPop 800ms ease-out forwards; }
+        @keyframes goldWhiteFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes correctPop { 0% { transform: scale(0.6); opacity: 0; } 25% { transform: scale(1.05); opacity: 1; } 85% { transform: scale(1.0); opacity: 1; } 100% { transform: scale(0.95); opacity: 0; } }
+        
+        .particle { position: absolute; width: 7px; height: 7px; border-radius: 50%; pointer-events: none; animation: particleBlow 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; left: 50%; top: 50%; }
+        @keyframes particleBlow { 0% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(calc(-50% + var(--mx)), calc(-50% + var(--my))) scale(0); opacity: 0; } }
+
+        .txt-miss { background: linear-gradient(135deg, #ff007f, #ff3333); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 36px; animation: missShake 1950ms ease-in-out forwards; text-shadow: 0 0 10px rgba(255,0,127,0.3); width: 100%; text-align: center; }
+        .miss-ans-subtext { display: block; font-size: 15px; color: #fff; font-weight: bold; background: rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 8px; margin-top: 8px; border: 1px solid rgba(0,243,255,0.2); max-width: 100%; word-break: break-all; text-align: center; }
+        @keyframes missShake { 0% { transform: translateX(0) scale(0.9); opacity: 0; } 4%, 12%, 20%, 28% { transform: translateX(-5px); opacity: 1; } 8%, 16%, 24%, 32% { transform: translateX(5px); } 36% { transform: translateX(0) translateY(0); opacity: 1; } 88% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(15px); opacity: 0; } }
+
+        .txt-complete { background: linear-gradient(90deg, var(--acc), var(--shuffle), var(--p), var(--new), var(--gold)); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: rainbowFlow 4s linear infinite, completeZoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; font-size: 38px; font-weight: 900; text-align: center; margin-bottom: 15px; }
+        @keyframes rainbowFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes completeZoom { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+
+        .confirm-btn-grid { display: flex; gap: 10px; margin-top: 20px; width: 100%; }
+        .confirm-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="city-bg-container">
+        <div class="city-base-image"></div>
+        <canvas id="highway-canvas"></canvas>
+    </div>
+
+    <div id="toast-container"></div>
+    <div id="bg-effect-overlay"></div>
+
+    <div id="confirm-modal" class="modal-overlay" style="z-index: 5000;">
+        <div class="card" style="width:85%; max-width:350px; text-align: center; animation: completeZoom 0.3s ease;">
+            <h3 style="margin-top:0; color:#fff;" id="confirm-title">最終確認</h3>
+            <p id="confirm-msg" style="font-size:14px; color:#cbd5e1; line-height:1.5; margin-bottom:20px;">本当に実行しますか？</p>
+            <div class="confirm-btn-grid">
+                <button class="confirm-btn" style="background:rgba(255,255,255,0.2); color:#fff;" id="confirm-cancel-btn">いいえ</button>
+                <button class="confirm-btn" style="background:linear-gradient(135deg, var(--danger), #cc2424); color:#fff;" id="confirm-ok-btn">はい</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="complete-modal" class="modal-overlay">
+        <div class="card" style="width:85%; max-width:380px; text-align: center; padding: 30px 20px;">
+            <div class="txt-complete">🎉 COMPLETE !!</div>
+            <p style="font-size:16px; font-weight:bold; color:#e2e8f0; margin: 0 0 20px 0;">すべてのクイズが終了しました！</p>
+            <button class="main-btn btn-p" onclick="closeModal('complete-modal')">達成感を胸に戻る</button>
+        </div>
+    </div>
+
+    <div id="list-modal" class="modal-overlay">
+        <div class="card" style="width:85%; max-width:350px;">
+            <h3 style="margin-top:0">追加先のリストを選択</h3>
+            <select id="modal-pl-select"></select>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button class="main-btn" style="background:rgba(255,255,255,0.2); color:#fff; flex:1;" onclick="closeModal('list-modal')">戻る</button>
+                <button class="main-btn btn-p" style="flex:1;" onclick="executeAddToList()">追加</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay">
+        <div class="card" style="width:85%; max-width:350px;">
+            <h3 style="margin-top:0">単語を編集</h3>
+            <label style="font-size:12px; color:#abc0d0;">English</label>
+            <input id="edit-en-in" type="text" autocomplete="off">
+            <label style="font-size:12px; color:#abc0d0;">日本語</label>
+            <input id="edit-ja-in" type="text" autocomplete="off">
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="main-btn" style="background:rgba(255,255,255,0.2); color:#fff; flex:1;" onclick="closeModal('edit-modal')">戻る</button>
+                <button class="main-btn btn-edit" style="flex:1;" onclick="executeEditWord()">更新</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-add" class="page">
+        <div class="card">
+            <h2 style="margin:0 0 15px 0; color:var(--p); text-shadow:0 0 8px rgba(0,243,255,0.3)">単語を登録</h2>
+            <label style="font-size:12px; color:#abc0d0; font-weight:bold;">追加先フォルダ</label>
+            <select id="add-to-playlist" style="margin-top:4px; margin-bottom:15px;"></select>
+
+            <div class="sub-tabs">
+                <div id="sub-tab-single" class="sub-tab sub-tab-active" onclick="switchAddMode('single')">1件ずつ登録</div>
+                <div id="sub-tab-bulk" class="sub-tab" onclick="switchAddMode('bulk')">AI一括登録</div>
+            </div>
+
+            <div id="add-single-container" style="width: 100%;">
+                <input id="en-in" type="text" placeholder="English" autocomplete="off" onkeydown="if(event.key==='Enter' && this.value.trim() !== '') document.getElementById('ja-in').focus()">
+                <input id="ja-in" type="text" placeholder="日本語" autocomplete="off" onkeydown="if(event.key==='Enter') saveWord()">
+                <button class="main-btn btn-p" onclick="saveWord()">保存する</button>
+            </div>
+
+            <div id="add-bulk-container" class="hidden" style="width: 100%;">
+                <p style="font-size:12px; color:#abc0d0; margin: 0 0 8px 0; line-height: 1.4;">
+                    AIが抽出したテキストをそのまま貼り付けてください。<br>
+                    行ごとに <b>英語,日本語</b> の形式で解析してまとめて保存します。
+                </p>
+                <textarea id="bulk-import-area" placeholder="rational, 合理的な、理性的な&#10;irrational, 非合理的な&#10;reason, 理由、根拠、理性、論理的に考える"></textarea>
+                <button class="main-btn btn-p" style="background:linear-gradient(135deg, var(--new), #00b38f); color:var(--text-dark); margin-bottom: 10px;" onclick="saveBulkWords()">一括保存する</button>
+                
+                <div class="prompt-example-box">
+                    <span style="font-weight: bold; color: var(--p);">💡 AI（Geminiなど）への指示文テンプレート</span><br>
+                    単語帳の写真をAIに送る際、以下の文章をコピーして指示文として使ってください。
+                    <div class="prompt-code-block" id="prompt-text-template">添付した画像から、縦線の左側に位置する見出しの黒字の英単語と、それに対応する赤色の太線で塗られている日本語訳だけをすべて抜き出してください。
+余計な解説や記号、番号は一切含めず、以下のフォーマット（英語と日本語を半角カンマで区切る形）だけで出力してください。複数の意味があればそれも書き入れながら（多義語対応）
+
+
+【出力フォーマット】
+hurtle, 突進する
+lineage, 血統
+accomplish, 達成</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-quiz" class="page active">
+        <div class="card" id="quiz-main-card">
+            <div id="count-area" class="countdown hidden"></div>
+            <div id="q-display" class="q-text">練習を始める</div>
+            
+            <div id="quiz-ui-container">
+                <div id="quiz-effect-layer"></div>
+
+                <div id="quiz-ui" class="hidden">
+                    <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;" autocomplete="off" onkeydown="if(event.key==='Enter') handleCheck()">
+                    <button class="main-btn btn-p" onclick="handleCheck()">決定</button>
+                </div>
+
+                <div id="choice-ui" class="hidden">
+                    <div id="wait-area">
+                        <div id="wait-timer" class="wait-timer">選択肢表示まであと 8 秒</div>
+                        <button class="main-btn btn-sub" style="width:100%; margin-bottom:10px;" onclick="skipWait()">今すぐ表示</button>
+                    </div>
+                    <div id="choices-grid" class="choices-grid hidden"></div>
+                </div>
+            </div>
+
+            <div id="abort-ui" class="abort-container hidden">
+                <button class="btn-sub" style="background:none; color:#abc0d0; text-decoration:underline; border:none;" onclick="abortQuiz()">クイズを中止する</button>
+            </div>
+
+            <div id="quiz-setup" style="width: 100%;">
+                <p style="text-align:center; font-weight: bold; color:#fff;">対象: <select id="quiz-from-playlist" style="width:auto; display:inline-block; padding:8px 12px; margin:0; background:rgba(255,255,255,0.95); color:var(--text-dark);"></select></p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:10px;">
+                    <button class="main-btn" style="background:linear-gradient(135deg, var(--new), #00b38f); color:var(--text-dark)" onclick="startQuiz('new')">新規(4択)</button>
+                    <button class="main-btn" style="background:linear-gradient(135deg, var(--p), var(--p-dark)); color:var(--text-dark)" onclick="startQuiz('srs')">復習(6択)</button>
+                </div>
+                <button class="main-btn" style="background:linear-gradient(135deg, var(--acc), #cc0066); color:#fff; margin-bottom:10px" onclick="startQuiz('miss')">苦手特訓(4択)</button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="main-btn" style="background:linear-gradient(135deg, var(--shuffle), #8000cc); color:#fff" onclick="startQuiz('all_choice')">既習(選択)</button>
+                    <button class="main-btn" style="background:linear-gradient(135deg, var(--shuffle), #8000cc); color:#fff" onclick="startQuiz('all')">既習(入力)</button>
+                </div>
+                <p id="limit-msg" style="font-size:11px; color:#00ffcc; text-align:center; margin-top:10px; font-weight:bold; text-shadow: 0 1px 4px rgba(0,0,0,0.8);">※4単語以上の登録で開始できます</p>
+                
+                <div class="mode-desc-container">
+                    <div class="mode-desc-title">💡 モード別のルールと復習間隔（SRS）の仕様</div>
+                    <div class="mode-desc-item">
+                        <span class="mode-desc-tag" style="background:var(--new);">新規(4択)</span>
+                        まだ一度もクイズしていない単語が出現。一発で<b>正解（合格）</b>するとタイマーが始動し「復習待ち」へ移行。間違えても合格するまで保留され、何度も再出題されます。
+                    </div>
+                    <div class="mode-desc-item">
+                        <span class="mode-desc-tag" style="background:var(--p); color:var(--text-dark);">復習(6択)</span>
+                        指定時間が経過し、復習可能になった単語だけが出現。<b>正解（合格）</b>するごとに次の復習までの間隔（1日➔3日➔7日➔14日➔30日後）が段階的に伸びてしていきます。ミスしても合格するまでタイマーは変更（リセット）されずその場に保留されます。
+                    </div>
+                    <div class="mode-desc-item">
+                        <span class="mode-desc-tag" style="background:var(--acc); color:#fff;">苦手特訓</span>
+                        新規・復習でミスした「苦手」な単語だけを抽出。このモードで何回正解・不正解しても<b>裏側の学習レベルや復習タイマーは一切変更されません（キープ）</b>。正解すると苦手タグが外れます。
+                    </div>
+                    <div class="mode-desc-item">
+                        <span class="mode-desc-tag" style="background:var(--shuffle); color:#fff;">既習(選択/入力)</span>
+                        これまでに学習を開始したすべての単語からランダムに練習（入力はスペル手打ち）。テスト前の総チェック用自習モードであり、<b>正解・不正解を問わず復習タイマーやレベルは一切変更されず完全キープ</b>されます。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-list" class="page">
+        <div class="card">
+            <input id="search-in" type="text" placeholder="🔍 単語を検索..." oninput="renderWordList()" style="margin-bottom:15px; border-color:var(--p); background: #fff; color: var(--text-dark);">
+            <div style="display:flex; gap:8px; align-items: center; width:100%;">
+                <input id="new-pl-input" placeholder="新しいリスト名" style="flex:1; margin:0; background: #fff; color: var(--text-dark);">
+                <button class="btn-p" style="padding:12px 15px; border-radius:10px; border:none; font-weight:bold; height:48px;" onclick="createNewPlaylist(event)" ontouchstart="createNewPlaylist(event)">作成</button>
+            </div>
+        </div>
+        
+        <div id="bulk-bar" class="bulk-action-bar hidden">
+            <div style="font-weight: bold; font-size:14px; margin-bottom: 8px; color:var(--p);" id="bulk-select-count">0 個選択中</div>
+            <div style="display: flex; gap: 8px; align-items: center; width: 100%;">
+                <select id="bulk-target-pl" style="margin:0; padding:10px; font-size:14px !important; flex:1; background: #fff; color: var(--text-dark);"></select>
+                <button class="btn-p" style="padding:10px 14px; border:none; border-radius:8px; font-weight:bold; font-size:13px; white-space:nowrap; height:44px;" onclick="executeBulkAdd()">まとめて追加</button>
+                <button class="btn-sub" style="padding:10px 10px; font-size:13px; height:44px;" onclick="clearBulkSelection()">解除</button>
+            </div>
+        </div>
+
+        <div id="playlist-tabs" class="tabs"></div>
+        <div class="pl-actions-container">
+            <button id="rename-pl-btn" class="btn-edit" style="display:none;" onclick="renameCurrentPlaylist()">リスト名を変更</button>
+            <button id="delete-pl-btn" class="btn-d" style="display:none;" onclick="deleteCurrentPlaylist()">現在のリストを削除</button>
+        </div>
+        <div id="word-list-view" style="width: 100%;"></div>
+    </div>
+
+    <nav class="menu">
+        <button id="nav-add" onclick="showPage('add')">➕登録</button>
+        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')">📝練習</button>
+        <button id="nav-list" onclick="showPage('list')">📚リスト</button>
+    </nav>
+
+    <script>
+        const STORAGE_KEY = "domemory_v20_stable";
+        let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { playlists: ["デフォルト", "間違えた単語"], words: [] };
+        let currentViewingPL = "デフォルト";
+        let quizPool = [], quizIdx = 0, tempWord = null, currentQuizMode = "";
+        let waitInterval = null, isCountingDown = false;
+        let wordBeingEdited = null;
+        let selectedWordsBulk = [];
+
+        const CORRECT_DISPLAY_MS = 800;  
+        const MISS_DISPLAY_MS = 1950;    
+
+        const canvas = document.getElementById('highway-canvas');
+        const ctx = canvas.getContext('2d');
+        let lightStreams = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initLightStreams();
+        }
+
+        function initLightStreams() {
+            lightStreams = [];
+            const numStreams = 5; 
+            for (let i = 0; i < numStreams; i++) {
+                lightStreams.push({
+                    progress: i / numStreams, 
+                    speed: 0.003,           
+                    width: 3.0,              
+                    length: 140              
+                });
+            }
+        }
+
+        function drawLightStreams() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const startX = canvas.width * -0.2;
+            const startY = canvas.height * 1.1;
+            const endX = canvas.width * 1.2;
+            const endY = canvas.height * -0.1;
+
+            const dx = endX - startX;
+            const dy = endY - startY;
+
+            lightStreams.forEach(stream => {
+                stream.progress += stream.speed;
+                if (stream.progress > 1) {
+                    stream.progress = 0;
+                }
+
+                const currentX = startX + dx * stream.progress;
+                const currentY = startY + dy * stream.progress;
+
+                const lenRate = stream.length / Math.sqrt(dx*dx + dy*dy);
+                const headX = currentX + dx * lenRate;
+                const headY = currentY + dy * lenRate;
+
+                const gradient = ctx.createLinearGradient(currentX, currentY, headX, headY);
+                gradient.addColorStop(0, 'rgba(0, 255, 204, 0.0)');
+                gradient.addColorStop(0.3, 'rgba(0, 243, 255, 0.3)');
+                gradient.addColorStop(0.8, 'rgba(0, 255, 204, 0.8)');
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 1.0)');
+
+                ctx.beginPath();
+                ctx.moveTo(currentX, currentY);
+                ctx.lineTo(headX, headY);
+                ctx.lineWidth = stream.width;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = gradient;
+                
+                ctx.shadowBlur = 14;
+                ctx.shadowColor = 'rgba(0, 243, 255, 0.8)';
+                ctx.stroke();
+            });
+
+            ctx.shadowBlur = 0;
+            requestAnimationFrame(drawLightStreams);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        setTimeout(() => {
+            resizeCanvas();
+            drawLightStreams();
+        }, 100);
+
+        function showToast(message, type = "success") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type === 'error' ? 'toast-error' : ''}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3000);
+        }
+
+        function showQuizEffect(isCorrect, extraInfo = "") {
+            const layer = document.getElementById('quiz-effect-layer');
+            const bgOverlay = document.getElementById('bg-effect-overlay');
+            const mainCard = document.getElementById('quiz-main-card');
+            const choiceUi = document.getElementById('choice-ui');
+            layer.innerHTML = ""; 
+
+            if (choiceUi) {
+                choiceUi.classList.add('choices-disabled');
+            }
+
+            if (isCorrect) {
+                bgOverlay.className = "bg-correct-active";
+            } else {
+                bgOverlay.className = "bg-miss-active";
+            }
+
+            const effectBox = document.createElement('div');
+            effectBox.className = "quiz-effect-box";
+
+            const txt = document.createElement('div');
+            if (isCorrect) {
+                txt.className = "quiz-effect-txt txt-correct";
+                txt.textContent = "🏆 正解！";
+                
+                for (let i = 0; i < 30; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = "particle";
+                    const colors = ['#00f3ff', '#00ffcc', '#ffe600'];
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 40 + Math.random() * 90;
+                    particle.style.setProperty('--mx', `${Math.cos(angle) * distance}px`);
+                    particle.style.setProperty('--my', `${Math.sin(angle) * distance}px`);
+                    
+                    txt.appendChild(particle);
+                }
+                effectBox.appendChild(txt);
+            } else {
+                txt.className = "quiz-effect-txt txt-miss";
+                txt.textContent = "❌ 間違い！";
+
+                const subTxt = document.createElement('div');
+                subTxt.className = "miss-ans-subtext";
+                subTxt.innerHTML = `正解は… <span style="color:var(--p); text-shadow:0 0 4px rgba(0,243,255,0.4);">${extraInfo}</span>`;
+
+                for (let i = 0; i < 25; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = "particle";
+                    const colors = ['#ff007f', '#ff3333', '#00f3ff'];
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 35 + Math.random() * 80;
+                    particle.style.setProperty('--mx', `${Math.cos(angle) * distance}px`);
+                    particle.style.setProperty('--my', `${Math.sin(angle) * distance}px`);
+                    
+                    txt.appendChild(particle);
+                }
+                effectBox.appendChild(txt);
+                effectBox.appendChild(subTxt);
+            }
+            
+            layer.appendChild(effectBox);
+
+            const duration = isCorrect ? CORRECT_DISPLAY_MS : MISS_DISPLAY_MS;
+            setTimeout(() => { 
+                effectBox.remove(); 
+                bgOverlay.className = ""; 
+                if (choiceUi) {
+                    choiceUi.classList.remove('choices-disabled');
+                }
+            }, duration);
+        }
+
+        function showConfirm(title, message, onConfirm) {
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-msg').textContent = message;
+            const modal = document.getElementById('confirm-modal');
+            modal.style.display = 'flex';
+
+            const okBtn = document.getElementById('confirm-ok-btn');
+            const cancelBtn = document.getElementById('confirm-cancel-btn');
+            okBtn.onclick = null; cancelBtn.onclick = null;
+
+            okBtn.onclick = () => { modal.style.display = 'none'; onConfirm(); };
+            cancelBtn.onclick = () => { modal.style.display = 'none'; };
+        }
+
+        function migrateToUnifiedData() {
+            if (data.words.length === 0) return;
+            if (data.words[0].tags !== undefined) return;
+
+            let unifiedMap = new Map();
+            data.words.forEach(w => {
+                let key = `${w.en}___${w.ja}`;
+                let currentFolder = w.pl || "デフォルト";
+
+                if (!unifiedMap.has(key)) {
+                    unifiedMap.set(key, {
+                        en: w.en,
+                        ja: w.ja,
+                        tags: [currentFolder],
+                        due: w.due || Date.now(),
+                        isNew: w.isNew !== undefined ? w.isNew : true,
+                        level: w.level || 0
+                    });
+                } else {
+                    let existing = unifiedMap.get(key);
+                    if (!existing.tags.includes(currentFolder)) {
+                        existing.tags.push(currentFolder);
+                    }
+                    if ((w.level || 0) > existing.level) {
+                        existing.level = w.level;
+                        existing.due = w.due;
+                        existing.isNew = w.isNew;
+                    }
+                }
+            });
+
+            data.words = Array.from(unifiedMap.values());
+            saveData();
+            showToast("最新のタグ管理システムへのデータ移行・同期が完了しました！");
+        }
+
+        function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+        function getWordCount(playlistName) {
+            return data.words.filter(w => w.tags.includes(playlistName)).length;
+        }
+
+        function switchAddMode(mode) {
+            document.getElementById('sub-tab-single').classList.toggle('sub-tab-active', mode === 'single');
+            document.getElementById('sub-tab-bulk').classList.toggle('sub-tab-active', mode === 'bulk');
+            document.getElementById('add-single-container').classList.toggle('hidden', mode !== 'single');
+            document.getElementById('add-bulk-container').classList.toggle('hidden', mode !== 'bulk');
+            if(mode === 'single') document.getElementById('en-in').focus();
+            else document.getElementById('bulk-import-area').focus();
+        }
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => {
+                if(p.id === 'page-quiz' || p.id === 'page-add') {
+                    p.style.display = 'none';
+                } else {
+                    p.classList.remove('active');
+                }
+            });
+            
+            const targetPage = document.getElementById('page-' + id);
+            if(id === 'quiz' || id === 'add') {
+                targetPage.style.display = 'flex';
+            } else {
+                targetPage.classList.add('active');
+            }
+
+            document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active-nav'));
+            document.getElementById('nav-' + id).classList.add('active-nav');
+            
+            if(id === 'add') {
+                const currentSel = document.getElementById('add-to-playlist').value;
+                updateUI();
+                if(currentSel && data.playlists.includes(currentSel)) {
+                    document.getElementById('add-to-playlist').value = currentSel;
+                }
+                switchAddMode('single');
+            } else {
+                updateUI();
+            }
+            
+            if(id === 'list') {
+                clearBulkSelection();
+                renderWordList();
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function updateUI() {
+            const opts = data.playlists.map(p => `<option value="${p}">${p} (${getWordCount(p)})</option>`).join('');
+            document.getElementById('add-to-playlist').innerHTML = opts;
+            document.getElementById('quiz-from-playlist').innerHTML = opts;
+            document.getElementById('modal-pl-select').innerHTML = opts;
+            
+            const bulkSelect = document.getElementById('bulk-target-pl');
+            if (bulkSelect) bulkSelect.innerHTML = opts;
+            
+            document.getElementById('playlist-tabs').innerHTML = data.playlists.map(p => 
+                `<div class="tab ${p === currentViewingPL ? 'tab-active' : ''}" onclick="changeViewPL('${p}')">${p} (${getWordCount(p)})</div>`
+            ).join('');
+            
+            const isSystemPL = (currentViewingPL === "デフォルト" || currentViewingPL === "間違えた単語");
+            document.getElementById('delete-pl-btn').style.display = isSystemPL ? "none" : "inline-block";
+            document.getElementById('rename-pl-btn').style.display = isSystemPL ? "none" : "inline-block";
+        }
+
+        function changeViewPL(name) { 
+            clearBulkSelection();
+            currentViewingPL = name; 
+            renderWordList(); 
+            updateUI(); 
+        }
+
+        function updateWordListOnDom(filtered, now) {
+            const listEl = document.getElementById('word-list-view');
+            listEl.innerHTML = "";
+            filtered.forEach((w) => {
+                const li = document.createElement('div');
+                let statusClass = "status-new", statusName = "未学習", timeInfo = "";
+                
+                if(w.tags.includes("間違えた単語")) { statusClass = "status-miss"; statusName = "苦手"; }
+                else if(w.level >= 5) { statusClass = "status-veteran"; statusName = "ベテラン"; }
+                else if(w.level > 0) { 
+                    statusClass = "status-wait"; statusName = "復習待ち";
+                    const diff = w.due - now;
+                    if (diff > 0) {
+                        const mins = Math.floor((diff % 3600000) / 60000);
+                        const hours = Math.floor((diff % 86400000) / 3600000);
+                        const days = Math.floor(diff / 86400000);
+                        timeInfo = `<span class="due-timer">あと ${days ? days+'日' : ''}${hours ? hours+'時' : ''}${mins}分</span>`;
+                    } else { timeInfo = `<span class="due-timer" style="color:var(--acc); font-weight:bold;">復習可能</span>`; }
+                }
+                li.className = `card li-item ${statusClass}`;
+                
+                const checkArea = document.createElement('div');
+                checkArea.className = 'li-checkbox-area';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'li-checkbox';
+                checkbox.checked = selectedWordsBulk.some(sel => sel.en === w.en && sel.ja === w.ja);
+                checkbox.onchange = (e) => handleBulkCheckboxChange(e.target.checked, w);
+                checkArea.appendChild(checkbox);
+                li.appendChild(checkArea);
+
+                const infoEl = document.createElement('div');
+                infoEl.className = 'li-info';
+                infoEl.innerHTML = `
+                    <b style="font-size:18px; color:#fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">${w.en}</b><br>
+                    <span style="color:#cbd5e1; font-size:14px;">${w.ja}</span><br>
+                    <span class="badge">${statusName}</span>${timeInfo}
+                `;
+                li.appendChild(infoEl);
+                
+                const btnArea = document.createElement('div');
+                btnArea.className = 'action-btns';
+                
+                const addBtn = document.createElement('button');
+                addBtn.className = 'btn-sub'; addBtn.textContent = '追加';
+                addBtn.onclick = () => openAddModal(w);
+
+                const editBtn = document.createElement('button');
+                editBtn.className = 'btn-edit'; editBtn.textContent = '編集';
+                editBtn.onclick = () => openEditModal(w);
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'btn-d'; delBtn.textContent = '削除';
+                delBtn.onclick = () => deleteWord(w.en, w.ja, currentViewingPL);
+
+                btnArea.appendChild(addBtn); btnArea.appendChild(editBtn); btnArea.appendChild(delBtn);
+                li.appendChild(btnArea);
+                listEl.appendChild(li);
+            });
+        }
+
+        function renderWordList() {
+            const search = document.getElementById('search-in').value.toLowerCase();
+            const filtered = data.words.filter(w => w.tags.includes(currentViewingPL) && (w.en.toLowerCase().includes(search) || w.ja.includes(search)));
+            const now = Date.now();
+            updateWordListOnDom(filtered, now);
+        }
+
+        function handleBulkCheckboxChange(isChecked, word) {
+            if (isChecked) {
+                if (!selectedWordsBulk.some(sel => sel.en === word.en && sel.ja === word.ja)) {
+                    selectedWordsBulk.push(word);
+                }
+            } else {
+                selectedWordsBulk = selectedWordsBulk.filter(sel => !(sel.en === word.en && sel.ja === word.ja));
+            }
+            renderBulkBar();
+        }
+
+        function renderBulkBar() {
+            const bar = document.getElementById('bulk-bar');
+            const countText = document.getElementById('bulk-select-count');
+            if (selectedWordsBulk.length > 0) {
+                bar.classList.remove('hidden');
+                countText.textContent = `${selectedWordsBulk.length} 件選択中`;
+            } else {
+                bar.classList.add('hidden');
+            }
+        }
+
+        function clearBulkSelection() {
+            selectedWordsBulk = [];
+            renderBulkBar();
+            document.querySelectorAll('.li-checkbox').forEach(cb => cb.checked = false);
+        }
+
+        function executeBulkAdd() {
+            const targetPL = document.getElementById('bulk-target-pl').value;
+            if (!selectedWordsBulk.length) return;
+
+            let addedCount = 0; let skipCount = 0;
+            selectedWordsBulk.forEach(tempW => {
+                let masterWord = data.words.find(w => w.en === tempW.en && w.ja === tempW.ja);
+                if (masterWord) {
+                    if (!masterWord.tags.includes(targetPL)) {
+                        masterWord.tags.push(targetPL); addedCount++;
+                    } else { skipCount++; }
+                }
+            });
+
+            saveData();
+            showToast(`${addedCount}件の単語のタグに「${targetPL}」を追加しました！${skipCount > 0 ? `（スキップ ${skipCount}件）` : ''}`);
+            clearBulkSelection(); renderWordList(); updateUI();
+        }
+
+        function handleFinalCheck(isCorrect, correctJa) {
+            const target = quizPool[quizIdx];
+            let masterWord = data.words.find(w => w.en === target.en && w.ja === target.ja);
+            if (!masterWord) return;
+
+            if(isCorrect) {
+                showQuizEffect(true);
+                
+                if(currentQuizMode === 'new' || currentQuizMode === 'srs') {
+                    masterWord.isNew = false;
+                    masterWord.level++;
+                    let daysArr = [0, 1, 3, 7, 14, 30], days = daysArr[masterWord.level] || 30;
+                    masterWord.due = Date.now() + (days * 86400000);
+                } 
+                else if (currentQuizMode === 'miss') {
+                    if (masterWord.fromSrsLevel) {
+                        masterWord.isNew = false;
+                        masterWord.level++;
+                        let daysArr = [0, 1, 3, 7, 14, 30], days = daysArr[masterWord.level] || 30;
+                        masterWord.due = Date.now() + (days * 86400000);
+                    }
+                    delete masterWord.fromSrsLevel;
+                }
+                
+                masterWord.tags = masterWord.tags.filter(t => t !== "間違えた単語");
+                
+            } else {
+                showQuizEffect(false, correctJa);
+                
+                if(!masterWord.tags.includes("間違えた単語")) {
+                    masterWord.tags.push("間違えた単語");
+                }
+                
+                if (currentQuizMode === 'new' || currentQuizMode === 'srs') {
+                    masterWord.fromSrsLevel = true;
+                } else {
+                    delete masterWord.fromSrsLevel;
+                }
+            }
+            
+            saveData(); 
+            quizIdx++; 
+            setTimeout(nextQ, isCorrect ? CORRECT_DISPLAY_MS : MISS_DISPLAY_MS);
+        }
+
+        function showChoices() {
+            const grid = document.getElementById('choices-grid');
+            grid.innerHTML = "";
+            const num = (currentQuizMode === 'new' || currentQuizMode === 'all_choice' || currentQuizMode === 'miss') ? 4 : 6;
+            const correct = quizPool[quizIdx];
+            let allJaChoices = [...new Set(data.words.map(w => w.ja))].filter(j => j !== correct.ja);
+            allJaChoices.sort(() => Math.random() - 0.5);
+            let finalChoices = [correct.ja, ...allJaChoices.slice(0, num - 1)];
+            finalChoices.sort(() => Math.random() - 0.5);
+            finalChoices.forEach(c => {
+                const b = document.createElement('div');
+                b.className = 'choice-btn'; b.textContent = c;
+                b.onclick = () => handleFinalCheck(c === correct.ja, correct.ja);
+                grid.appendChild(b);
+            });
+        }
+
+        function nextQ() {
+            if(quizIdx >= quizPool.length) { 
+                document.getElementById('abort-ui').classList.add('hidden');
+                document.getElementById('quiz-setup').classList.remove('hidden');
+                document.getElementById('q-display').textContent = "練習を始める";
+                document.getElementById('quiz-ui').classList.add('hidden');
+                document.getElementById('choice-ui').classList.add('hidden');
+                document.getElementById('complete-modal').style.display = 'flex';
+                return; 
+            }
+            const target = quizPool[quizIdx];
+            document.getElementById('q-display').textContent = target.en;
+            const isChoiceMode = (currentQuizMode === 'new' || currentQuizMode === 'srs' || currentQuizMode === 'all_choice' || currentQuizMode === 'miss');
+            if(isChoiceMode) {
+                document.getElementById('quiz-ui').classList.add('hidden');
+                document.getElementById('choice-ui').classList.remove('hidden');
+                startWaitTimer();
+            } else {
+                document.getElementById('quiz-ui').classList.remove('hidden');
+                document.getElementById('choice-ui').classList.add('hidden');
+                document.getElementById('ans-in').value = ""; 
+                document.getElementById('ans-in').focus();
+            }
+        }
+
+        function startWaitTimer() {
+            clearInterval(waitInterval);
+            document.getElementById('wait-area').classList.remove('hidden');
+            document.getElementById('choices-grid').classList.add('hidden');
+            let timeLeft = 8;
+            const timerEl = document.getElementById('wait-timer');
+            timerEl.textContent = `選択肢表示まであと ${timeLeft} 秒`;
+            waitInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = `選択肢表示まであと ${timeLeft} 秒`;
+                if(timeLeft <= 0) skipWait();
+            }, 1000);
+        }
+
+        function skipWait() {
+            clearInterval(waitInterval);
+            document.getElementById('wait-area').classList.add('hidden');
+            document.getElementById('choices-grid').classList.remove('hidden');
+            showChoices();
+        }
+
+        function renameCurrentPlaylist() {
+            if (currentViewingPL === "デフォルト" || currentViewingPL === "間違えた単語") return showToast("このリスト名は変更できません。", "error");
+            
+            const newName = prompt(`「${currentViewingPL}」の新しい名前を入力してください:`, currentViewingPL);
+            if (!newName) return;
+            const trimmedName = newName.trim();
+            if (!trimmedName) return showToast("リスト名が空欄です。", "error");
+            if (data.playlists.includes(trimmedName)) return showToast("そのリスト名は既に存在します。", "error");
+
+            const idx = data.playlists.indexOf(currentViewingPL);
+            if (idx !== -1) data.playlists[idx] = trimmedName;
+
+            data.words.forEach(w => {
+                let tIdx = w.tags.indexOf(currentViewingPL);
+                if (tIdx !== -1) w.tags[tIdx] = trimmedName;
+            });
+
+            currentViewingPL = trimmedName; saveData(); updateUI(); renderWordList();
+            showToast("リスト名を変更しました。");
+        }
+
+        function deleteCurrentPlaylist() {
+            if (currentViewingPL === "デフォルト" || currentViewingPL === "間違えた単語") return showToast("このリストは削除できません。", "error");
+            
+            showConfirm("リストの削除", `リスト「${currentViewingPL}」を削除しますか？（中の単語データ自体は削除されません）`, () => {
+                data.playlists = data.playlists.filter(p => p !== currentViewingPL);
+                data.words.forEach(w => {
+                    w.tags = w.tags.filter(t => t !== currentViewingPL);
+                });
+                data.words.forEach(w => {
+                    if (w.tags.length === 0) w.tags.push("デフォルト");
+                });
+                currentViewingPL = "デフォルト"; saveData(); updateUI(); renderWordList();
+                showToast("リストを削除しました。");
+            });
+        }
+
+        function saveWord() {
+            const enIn = document.getElementById('en-in'), jaIn = document.getElementById('ja-in');
+            const plSelect = document.getElementById('add-to-playlist');
+            const en = enIn.value.trim(), ja = jaIn.value.trim(), pl = plSelect.value;
+            if(!en || !ja) return;
+            
+            let existing = data.words.find(w => w.en === en && w.ja === ja);
+            if (existing) {
+                if (!existing.tags.includes(pl)) existing.tags.push(pl);
+                if (pl !== "デフォルト" && !existing.tags.includes("デフォルト")) existing.tags.push("デフォルト");
+            } else {
+                let initTags = [pl];
+                if (pl !== "デフォルト") initTags.push("デフォルト");
+                data.words.push({ en, ja, tags: initTags, due: Date.now(), isNew: true, level: 0 });
+            }
+            
+            saveData(); enIn.value = ""; jaIn.value = ""; enIn.focus(); updateUI();
+            plSelect.value = pl; showToast("単語を正常に登録しました！");
+        }
+
+        function saveBulkWords() {
+            const textarea = document.getElementById('bulk-import-area');
+            const text = textarea.value.trim();
+            const plSelect = document.getElementById('add-to-playlist');
+            const pl = plSelect.value;
+            if (!text) return showToast("インポートするテキストを入力してください。", "error");
+
+            const lines = text.split('\n'); let successCount = 0;
+            lines.forEach(line => {
+                if (!line.trim()) return; 
+                let parts = line.split(/[,\t，、：:]/);
+                if (parts.length < 2) return; 
+
+                const en = parts[0].trim(); const ja = parts.slice(1).join(',').trim();
+                if (!en || !ja) return;
+
+                let existing = data.words.find(w => w.en === en && w.ja === ja);
+                if (existing) {
+                    if (!existing.tags.includes(pl)) existing.tags.push(pl);
+                    if (pl !== "デフォルト" && !existing.tags.includes("デフォルト")) existing.tags.push("デフォルト");
+                } else {
+                    let initTags = [pl];
+                    if (pl !== "デフォルト") initTags.push("デフォルト");
+                    data.words.push({ en, ja, tags: initTags, due: Date.now(), isNew: true, level: 0 });
+                    successCount++;
+                }
+            });
+
+            saveData(); showToast(`${successCount}件の新規単語を一括登録・統合しました！`);
+            textarea.value = ""; updateUI(); plSelect.value = pl;
+        }
+
+        function abortQuiz() {
+            showConfirm("クイズの中止", "クイズを途中で中止して最初の画面に戻りますか？", () => {
+                clearInterval(waitInterval);
+                document.getElementById('quiz-setup').classList.remove('hidden');
+                document.getElementById('abort-ui').classList.add('hidden');
+                document.getElementById('quiz-ui').classList.add('hidden');
+                document.getElementById('choice-ui').classList.add('hidden');
+                document.getElementById('q-display').textContent = "練習を始める";
+                quizPool = []; quizIdx = 0; showToast("クイズを中断しました。");
+            });
+        }
+
+        async function startQuiz(mode) {
+            const totalWords = data.words.length;
+            if(totalWords < 4) { 
+                showToast("単語数が足りません。最低4語登録してください。", "error"); return showPage('add'); 
+            }
+            currentQuizMode = mode; 
+            const target = document.getElementById('quiz-from-playlist').value;
+            
+            if(mode === 'miss') {
+                quizPool = data.words.filter(w => w.tags.includes("間違えた単語"));
+            } else {
+                const baseWords = data.words.filter(w => w.tags.includes(target));
+                if(mode === 'new') quizPool = baseWords.filter(w => w.isNew);
+                else if(mode === 'srs') quizPool = baseWords.filter(w => !w.isNew && w.due <= Date.now());
+                else if(mode === 'all' || mode === 'all_choice') quizPool = baseWords.filter(w => !w.isNew);
+            }
+            
+            if(!quizPool.length) { showToast("対象の単語がありません。", "error"); return; }
+
+            document.getElementById('quiz-setup').classList.add('hidden');
+            document.getElementById('abort-ui').classList.remove('hidden');
+            document.getElementById('q-display').classList.add('hidden');
+            const countEl = document.getElementById('count-area');
+            countEl.classList.remove('hidden');
+            isCountingDown = true;
+            for(let i=3; i>0; i--) { if(!isCountingDown) return; countEl.textContent = i; await new Promise(r => setTimeout(r, 800)); }
+            isCountingDown = false; countEl.classList.add('hidden');
+            document.getElementById('q-display').classList.remove('hidden');
+            quizPool.sort(() => Math.random() - 0.5); quizIdx = 0; nextQ();
+        }
+
+        function handleCheck() {
+            const ans = document.getElementById('ans-in').value.trim();
+            if(!ans) return;
+            handleFinalCheck(ans === quizPool[quizIdx].ja, quizPool[quizIdx].ja);
+        }
+
+        function deleteWord(en, ja, pl) {
+            showConfirm("リストから外す", `「${en}」をこのリストから外しますか？`, () => {
+                let masterWord = data.words.find(w => w.en === en && w.ja === ja);
+                if (masterWord) {
+                    if (pl === "デフォルト") {
+                        data.words = data.words.filter(w => !(w.en === en && w.ja === ja));
+                    } else {
+                        masterWord.tags = masterWord.tags.filter(t => t !== pl);
+                        if (masterWord.tags.length === 0) {
+                            data.words = data.words.filter(w => !(w.en === en && w.ja === ja));
+                        }
+                    }
+                }
+                saveData(); renderWordList(); updateUI(); showToast("単語をリストから外しました。");
+            });
+        }
+
+        function openAddModal(word) { tempWord = word; document.getElementById('list-modal').style.display = 'flex'; }
+        
+        function openEditModal(word) {
+            wordBeingEdited = { origEn: word.en, origJa: word.ja };
+            document.getElementById('edit-en-in').value = word.en;
+            document.getElementById('edit-ja-in').value = word.ja;
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        
+        function executeAddToList() {
+            const targetPL = document.getElementById('modal-pl-select').value;
+            let masterWord = data.words.find(w => w.en === tempWord.en && w.ja === tempWord.ja);
+            if (masterWord) {
+                if (masterWord.tags.includes(targetPL)) {
+                    closeModal('list-modal'); return showToast("既に追加済み", "error");
+                }
+                masterWord.tags.push(targetPL);
+            }
+            saveData(); closeModal('list-modal'); renderWordList(); updateUI();
+            showToast(`リスト「${targetPL}」に追加しました！`);
+        }
+
+        function executeEditWord() {
+            const newEn = document.getElementById('edit-en-in').value.trim();
+            const newJa = document.getElementById('edit-ja-in').value.trim();
+            if (!newEn || !newJa) return showToast("空欄にはできません。", "error");
+
+            let masterWord = data.words.find(w => w.en === wordBeingEdited.origEn && w.ja === wordBeingEdited.origJa);
+            if (masterWord) {
+                masterWord.en = newEn; masterWord.ja = newJa;
+            }
+
+            saveData(); closeModal('edit-modal'); renderWordList(); updateUI();
+            wordBeingEdited = null; showToast("単語の修正が完了しました！（全フォルダに自動適用）");
+        }
+
+        /* 【変更箇所】作成ボタンの挙動最適化 */
+        function createNewPlaylist(e) {
+            if (e) {
+                e.preventDefault(); // 重複実行や、iOS特有の不自然なバウンス挙動を防止
+            }
+            
+            // 入力中であれば、最優先でキーボードのフォーカスを解除して引っ込める
+            if (document.activeElement) {
+                document.activeElement.blur();
+            }
+
+            const inputEl = document.getElementById('new-pl-input');
+            const name = inputEl.value.trim();
+            
+            if(!name) return;
+            if(data.playlists.includes(name)) {
+                showToast(`リスト「${name}」は既に存在します。`, "error");
+                return;
+            }
+            
+            data.playlists.push(name);
+            inputEl.value = ""; 
+            saveData(); 
+            updateUI();
+            showToast(`リスト「${name}」を作成しました！`);
+        }
+
+        document.addEventListener('focusout', (e) => {
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+                window.scrollTo(0, Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
+                setTimeout(() => { window.scrollTo(0, 0); }, 40);
+            }
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault(); 
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
+        migrateToUnifiedData();
+        updateUI();
+        showPage('quiz');
+    </script>
+</body>
+</html>
