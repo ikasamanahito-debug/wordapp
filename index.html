@@ -461,35 +461,35 @@ accomplish, 達成</div>
             <div id="quiz-setup" style="width: 100%;">
                 <p style="text-align:center; font-weight: bold; color:#fff;">対象: <select id="quiz-from-playlist" style="width:auto; display:inline-block; padding:8px 12px; margin:0; background:rgba(255,255,255,0.95); color:var(--text-dark);"></select></p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:10px;">
-<button class="main-btn" style="background: linear-gradient(135deg, rgb(0, 168, 255), rgb(0, 85, 160)); color: #ffffff; box-shadow: 0 0 10px rgba(0, 168, 255, 0.3);" onclick="startQuiz('new')">新規(4択)</button>
-                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(0, 210, 170), rgb(0, 110, 95)); color: #ffffff; box-shadow: 0 0 10px rgba(0, 210, 170, 0.3);" onclick="startQuiz('srs')">復習(6択)</button>
+<button class="main-btn" style="background: linear-gradient(135deg, rgb(79, 110, 138), rgb(53, 73, 92)); color: #ffffff;" onclick="startQuiz('new')">新規(4択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(156, 124, 84), rgb(110, 86, 57)); color: #ffffff;" onclick="startQuiz('srs')">復習(6択)</button>
                 </div>
-                <button class="main-btn" style="background: linear-gradient(135deg, rgb(235, 90, 140), rgb(140, 35, 75)); color: #ffffff; margin-bottom: 10px; box-shadow: 0 0 10px rgba(235, 90, 140, 0.3);" onclick="startQuiz('miss')">苦手特訓(4択)</button>
+                <button class="main-btn" style="background: linear-gradient(135deg, rgb(143, 68, 86), rgb(102, 47, 60)); color: #ffffff; margin-bottom: 10px;" onclick="startQuiz('miss')">苦手特訓(4択)</button>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(155, 89, 182), rgb(85, 45, 115)); color: #ffffff; box-shadow: 0 0 10px rgba(155, 89, 182, 0.3);" onclick="startQuiz('all_choice')">既習(選択)</button>
-                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(155, 89, 182), rgb(85, 45, 115)); color: #ffffff; box-shadow: 0 0 10px rgba(155, 89, 182, 0.3);" onclick="startQuiz('all')">既習(入力)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(106, 90, 115), rgb(77, 65, 84)); color: #ffffff;" onclick="startQuiz('all_choice')">既習(選択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(106, 90, 115), rgb(77, 65, 84)); color: #ffffff;" onclick="startQuiz('all')">既習(入力)</button>
                 </div>
-                <p id="limit-msg" style="font-size:11px; color: rgb(0, 210, 170); text-align:center; margin-top:10px; font-weight:bold; text-shadow: 0 0 5px rgba(0, 210, 170, 0.5);">※4単語以上の登録で開始できます</p>
+                <p id="limit-msg" style="font-size:11px; color: rgb(156, 124, 84); text-align:center; margin-top:10px; font-weight:bold;">※4単語以上の登録で開始できます</p>
                 
-                <div class="mode-desc-container" style="background: rgb(15, 23, 42); border: 1px solid rgb(30, 41, 59); border-radius: 14px; padding: 15px; box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05);">
-                    <div class="mode-desc-title" style="color: rgb(226, 232, 240); font-weight: 700; margin-bottom: 12px; text-shadow: 0 0 4px rgba(255,255,255,0.2);">🛸 モード別のルールと復習間隔（SRS）の仕様</div>
-                    <div class="mode-desc-item" style="color: rgb(148, 163, 184); margin-bottom: 10px;">
-                        <span class="mode-desc-tag" style="background: rgb(0, 168, 255); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; box-shadow: 0 0 6px rgba(0, 168, 255, 0.4);">新規(4択)</span>
-                        まだ一度もクイズしていない単語が出現。一発で<b>正解（合格）</b>するとタイマーが始動し「復習待ち」へ移行。</b>間違えても合格するまで他モードでは出されず、新規モードでクリアするまで何度も再出題されます。
+                <div class="mode-desc-container" style="background: rgb(28, 25, 23); border: 1px solid rgb(44, 40, 37); border-radius: 14px; padding: 15px;">
+                    <div class="mode-desc-title" style="color: rgb(231, 229, 228); font-weight: 700; margin-bottom: 12px;">🎷 モード別のルールと復習間隔（SRS）の仕様</div>
+                    <div class="mode-desc-item" style="color: rgb(168, 162, 158); margin-bottom: 10px;">
+                        <span class="mode-desc-tag" style="background: rgb(79, 110, 138); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">新規(4択)</span>
+                        まだ一度もクイズしていない単語が出現。一発で<b>正解（合格）</b>するとタイマーが始動し「復習待ち」へ移行。間違えても合格するまで他モードでは出されず、新規モードでクリアするまで何度も再出題されます。
                     </div>
-                    <div class="mode-desc-item" style="color: rgb(148, 163, 184); margin-bottom: 10px;">
-                        <span class="mode-desc-tag" style="background: rgb(0, 210, 170); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; box-shadow: 0 0 6px rgba(0, 210, 170, 0.4);">復習(6択)</span>
-                        指定時間が経過し、復習可能になった単語だけが出現。<b>正解（合格）</b>するごとに次の復習までの間隔（1日➔3日➔7日➔14日➔30日後）が段階的に伸びてしていきます。</b>ミスしても合格するまでタイマーは変更（リセット）されずその場に保留されます。
+                    <div class="mode-desc-item" style="color: rgb(168, 162, 158); margin-bottom: 10px;">
+                        <span class="mode-desc-tag" style="background: rgb(156, 124, 84); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">復習(6択)</span>
+                        指定時間が経過し、復習可能になった単語だけが出現。<b>正解（合格）</b>するごとに次の復習までの間隔（1日➔3日➔7日➔14日➔30日後）が段階的に伸びてしていきます。ミスしても合格するまでタイマーは変更（リセット）されずその場に保留されます。
                     </div>
-                    <div class="mode-desc-item" style="color: rgb(148, 163, 184); margin-bottom: 10px;">
-                        <span class="mode-desc-tag" style="background: rgb(235, 90, 140); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; box-shadow: 0 0 6px rgba(235, 90, 140, 0.4);">苦手特訓</span>
-                        ミスした「苦手」な単語だけを抽出。</b>このモードで正解・不正解しても<b>復習までの時間は一切変更されません（キープ）</b>。ただし、復習待ちの単語は正解するとクリアとみなし、復習済みとなります。
+                    <div class="mode-desc-item" style="color: rgb(168, 162, 158); margin-bottom: 10px;">
+                        <span class="mode-desc-tag" style="background: rgb(143, 68, 86); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">苦手特訓</span>
+                        ミスした「苦手」な単語だけを抽出。このモードで正解・不正解しても<b>復習までの時間は一切変更されません（キープ）</b>。ただし、復習待ちの単語は正解するとクリアとみなし、復習済みとなります。
                     </div>
-                    <div class="mode-desc-item" style="color: rgb(148, 163, 184);">
-                        <span class="mode-desc-tag" style="background: rgb(155, 89, 182); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; box-shadow: 0 0 6px rgba(155, 89, 182, 0.4);">既習(選択/入力)</span>
-                        これまでに新規で１度クリアした単語だけ
+                    <div class="mode-desc-item" style="color: rgb(168, 162, 158);">
+                        <span class="mode-desc-tag" style="background: rgb(106, 90, 115); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">既習(選択/入力)</span>
+                        これまでに新規で１度クリアした単語だけが出題されます。ランダムに出題されます（入力はスペル手打ち）。テスト前や復習モードに向けての自習用モードであり、<b>正解・不正解を問わず復習タイマーやレベルは一切変更されず完全キープ</b>されます。（復習モードでクリアしない限り復習したとは判定されません。）
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 
