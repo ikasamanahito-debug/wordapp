@@ -823,16 +823,20 @@ gradient.addColorStop(1, 'rgba(255, 255, 255, 1.0)');  /* 先端は一番まぶ�
                 
                 if(w.tags.includes("間違えた単語")) { statusClass = "status-miss"; statusName = "苦手"; }
                 else if(w.level >= 5) { statusClass = "status-veteran"; statusName = "ベテラン"; }
-                else if(w.level > 0) { 
-                    statusClass = "status-wait"; statusName = "復習待ち";
-                    const diff = w.due - now;
-                    if (diff > 0) {
-                        const mins = Math.floor((diff % 3600000) / 60000);
-                        const hours = Math.floor((diff % 86400000) / 3600000);
-                        const days = Math.floor(diff / 86400000);
-                        timeInfo = `<span class="due-timer">あと ${days ? days+'日' : ''}${hours ? hours+'時間' : ''}${mins}分</span>`;
-                    } else { timeInfo = `<span class="due-timer" style="color:var(--acc); font-weight:bold;">復習可能</span>`; }
-                }
+                                    else if(w.level > 0) { 
+                        statusClass = "status-wait";
+                        const diff = w.due - now;
+                        if (diff > 0) {
+                            statusName = "復習待ち"; // まだ指定時間が経過していない場合
+                            const mins = Math.floor((diff % 3600000) / 60000);
+                            const hours = Math.floor((diff % 86400000) / 3600000);
+                            const days = Math.floor(diff / 86400000);
+                            timeInfo = `<span class="due-timer">あと ${days ? days+'日' : ''}${hours ? hours+'時間' : ''}${mins}分</span>`;
+                        } else { 
+                            statusName = "復習可能"; // 指定時間が経過してクイズができる状態の場合
+                            timeInfo = ""; // タイマー表記を消してバッジ側でスッキリ見せる（もし文字を残したいならお好みで調整してください）
+                        }
+                    }
                 li.className = `card li-item ${statusClass}`;
                 
                 const checkArea = document.createElement('div');
