@@ -400,7 +400,8 @@
             </div>
 
             <div id="add-single-container" style="width: 100%;">
-                <input id="en-in" type="text" placeholder="English" autocomplete="off" onkeydown="if(event.key==='Enter' && this.value.trim() !== '') document.getElementById('ja-in').focus()">
+                
+                <input id="en-in" type="text" placeholder="English" autocomplete="off" onkeydown="if(event.key==='Enter' && this.value.trim() !== '') { event.preventDefault(); setTimeout(() => { document.getElementById('ja-in').focus(); }, 10); }">
                 <input id="ja-in" type="text" placeholder="日本語" autocomplete="off" onkeydown="if(event.key==='Enter') saveWord()">
                 <button class="main-btn btn-p" onclick="saveWord()">保存する</button>
             </div>
