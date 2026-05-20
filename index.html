@@ -1268,9 +1268,9 @@ accomplish, 達成</div>
             document.addEventListener('focusout', (e) => {
             if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
               window.scrollTo(0, Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
-               setTimeout(() => { window.scrollTo(0, 0); }, 40);
+               setTimeout(() => { window.scrollTo(0, 0); }, 40);}
             
-            }});
+            });
 
 
             document.addEventListener('touchstart', (e) => {
