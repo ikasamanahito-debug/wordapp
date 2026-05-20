@@ -78,14 +78,15 @@
         .active { display: block; }
         
         /* 【バグ対策】min-heightを100dvh基準にし、キーボード出現時は中央寄せを解除して上基準(flex-start)にする */
+/* PCでもスマホでも画面の上下左右の真ん中に配置する設定 */
         #page-add, #page-quiz {
-            min-height: calc(100dvh - 120px);
+            min-height: calc(100dvh - 100px); /* フッターメニュー分の高さを考慮 */
             display: none;
             flex-direction: column;
-            justify-content: flex-start; /* centerからflex-startに変更してバグを防止 */
-            align-items: center;     
+            justify-content: center; /* 上下の中央寄せ */
+            align-items: center;     /* 左右の中央寄せ */
             width: 100%;
-            padding-top: 10px;
+            padding: 10px;
         }
         #page-add.active, #page-quiz.active {
             display: flex;
