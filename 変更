@@ -37,3 +37,9 @@ iOS（Safari）の仕様で、ボタンやテキスト入力を操作する際�
         //         setTimeout(() => { window.scrollTo(0, 0); }, 40);
         //     }
         // });
+
+<input id="en-in" type="text" placeholder="English" autocomplete="off" onkeydown="if(event.key==='Enter' && this.value.trim() !== '') document.getElementById('ja-in').focus()">
+
+👇
+
+<input id="en-in" type="text" placeholder="English" autocomplete="off" onkeydown="if(event.key==='Enter' && this.value.trim() !== '') { event.preventDefault(); setTimeout(() => { document.getElementById('ja-in').focus(); }, 10); }">
