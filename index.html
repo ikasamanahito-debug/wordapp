@@ -1265,7 +1265,7 @@ accomplish, 達成</div>
             showToast(`リスト「${name}」を作成しました！`);
         }
 
-            ocument.addEventListener('focusout', (e) => {
+            document.addEventListener('focusout', (e) => {
             if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
               window.scrollTo(0, Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
                setTimeout(() => { window.scrollTo(0, 0); }, 40);
