@@ -1288,12 +1288,6 @@ accomplish, 達成</div>
 
             if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
 
-                
-
-                // 修正ポイント：無理やり下へスクロールする処理を削除し、
-
-                // キーボードが閉じるのを待ってから「滑らかに」トップへ戻すだけにする
-
                 setTimeout(() => {
 
                     window.scrollTo({
@@ -1322,7 +1316,7 @@ accomplish, 達成</div>
 
                     }, 120); // 120ミリ秒だけ待って、キーボードが完全に開ききってから中央へスクロール
 
-                });
+                }});
 
             
 
