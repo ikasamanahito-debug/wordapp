@@ -29,3 +29,11 @@ iOS（Safari）の仕様で、ボタンやテキスト入力を操作する際�
 キーボードが閉じる前に（画面が下にズレ動く前に）、指が触れた瞬間に最優先で作成処理を走らせるように修正しました。
 2.	フォーカスを強制的に外す（キーボードを自ら閉じる）処理の追加
 ボタンが押された瞬間にプログラム側から document.activeElement.blur() を呼び出し、不自然な画面のバウンス（跳ね返り戻り）を抑制
+
+        /* 画面ズレ防止のため、不要な強制スクロール処理を無効化 */
+        // document.addEventListener('focusout', (e) => {
+        //     if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+        //         window.scrollTo(0, Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
+        //         setTimeout(() => { window.scrollTo(0, 0); }, 40);
+        //     }
+        // });
