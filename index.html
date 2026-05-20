@@ -36,6 +36,11 @@
             min-height: 100dvh; /* dvhを採用し、キーボード表示時の伸縮に対応 */
         }
 
+        /* 【追加】タップ時のブラウザ独自のズームやジェスチャーを無効化 */
+        button, .card, .sub-tab, .tab, .choice-btn {
+            touch-action: manipulation;
+        }
+
         /* ==================== 都会の夜景ハイウェイ・動的Canvas背景 ==================== */
         .city-bg-container {
             position: fixed;
@@ -187,7 +192,7 @@
         .btn-edit { background: linear-gradient(135deg, var(--gold), #ccb600); color: var(--text-dark); padding: 6px 10px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .btn-d { background: linear-gradient(135deg, var(--danger), #cc2424); color: #fff; padding: 6px 10px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
         
-        /* 【ご要望】クイズ画面の英単語フォントを元のシンプルな太字（光沢なし、通常太字、サイズ32px）に戻しました */
+        /* クイズ画面の英単語フォント */
         .q-text { font-size: 32px; font-weight: bold; margin: 25px 0; text-align: center; word-break: break-all; color: #ffffff; }
         .countdown { font-size: 80px; color: var(--p); text-align: center; font-weight: bold; margin: 20px 0; text-shadow: 0 0 20px rgba(0, 243, 255, 0.6); }
         
@@ -259,7 +264,7 @@
         .bg-correct-active { opacity: 1 !important; background: rgba(0, 255, 204, 0.1); }
         .bg-miss-active { opacity: 1 !important; background: rgba(255, 0, 127, 0.15) !important; }
 
-        /* 【バグ対策】エフェクト表示位置の固定化（絶対配置から固定配置にし、カード位置に依存しないように修正） */
+        /* エフェクト表示位置の固定化 */
         #quiz-effect-layer { 
             position: fixed; 
             top: 25%; 
@@ -1231,6 +1236,23 @@ accomplish, 達成</div>
                 setTimeout(() => { window.scrollTo(0, 0); }, 40);
             }
         });
+
+        /* 【追加】2本指以上のピンチズームを禁止 */
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        /* 【追加】ダブルタップによるズームを禁止 */
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault(); // 300ms以内の連続タップ（ダブルタップ）を無効化
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
 
         migrateToUnifiedData();
         updateUI();
