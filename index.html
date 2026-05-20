@@ -7,7 +7,17 @@
     <style>
         /* ==================== さわやかポップサイバー テーマ定義 ==================== */
         :root { 
-            --p: #44af98; --bg: #e6f2ff; --acc: #e67e22; --danger: #e74c3c; --new: #3498db; --text: #333; --gold: #ffd700; --shuffle: #9b59b6;/* 透過ダークカード */
+            --p: #00f3ff;
+            --p-dark: #00b8cc;
+            --bg: #060d16;
+            --acc: #ff007f;
+            --danger: #ff3333;
+            --new: #00ffcc;
+            --text: #ffffff;
+            --text-dark: #111822;
+            --gold: #ffe600;
+            --shuffle: #b026ff;
+            --card-bg: rgba(16, 24, 36, 0.85);
         }
         
         * { 
@@ -451,34 +461,35 @@ accomplish, 達成</div>
             <div id="quiz-setup" style="width: 100%;">
                 <p style="text-align:center; font-weight: bold; color:#fff;">対象: <select id="quiz-from-playlist" style="width:auto; display:inline-block; padding:8px 12px; margin:0; background:rgba(255,255,255,0.95); color:var(--text-dark);"></select></p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:10px;">
-                    <button class="main-btn" style="background:linear-gradient(135deg, var(--new), #00b38f); color:var(--text-dark)" onclick="startQuiz('new')">新規(4択)</button>
-                    <button class="main-btn" style="background:linear-gradient(135deg, var(--p), var(--p-dark)); color:var(--text-dark)" onclick="startQuiz('srs')">復習(6択)</button>
+<button class="main-btn" style="background: linear-gradient(135deg, rgb(52, 116, 181), rgb(41, 91, 143)); color: #ffffff;" onclick="startQuiz('new')">新規(4択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(68, 140, 116), rgb(53, 107, 89)); color: #ffffff;" onclick="startQuiz('srs')">復習(6択)</button>
                 </div>
-                <button class="main-btn" style="background:linear-gradient(135deg, var(--acc), #cc0066); color:#fff; margin-bottom:10px" onclick="startQuiz('miss')">苦手特訓(4択)</button>
+                <button class="main-btn" style="background: linear-gradient(135deg, rgb(190, 105, 80), rgb(150, 75, 55)); color: #ffffff; margin-bottom: 10px;" onclick="startQuiz('miss')">苦手特訓(4択)</button>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="main-btn" style="background:linear-gradient(135deg, var(--shuffle), #8000cc); color:#fff" onclick="startQuiz('all_choice')">既習(選択)</button>
-                    <button class="main-btn" style="background:linear-gradient(135deg, var(--shuffle), #8000cc); color:#fff" onclick="startQuiz('all')">既習(入力)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(110, 100, 140), rgb(85, 75, 110)); color: #ffffff;" onclick="startQuiz('all_choice')">既習(選択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(110, 100, 140), rgb(85, 75, 110)); color: #ffffff;" onclick="startQuiz('all')">既習(入力)</button>
                 </div>
-                <p id="limit-msg" style="font-size:11px; color:#00ffcc; text-align:center; margin-top:10px; font-weight:bold; text-shadow: 0 1px 4px rgba(0,0,0,0.8);">※4単語以上の登録で開始できます</p>
+                <p id="limit-msg" style="font-size:11px; color: rgba(52, 116, 181, 0.9); text-align:center; margin-top:10px; font-weight:bold;">※4単語以上の登録で開始できます</p>
                 
-                <div class="mode-desc-container">
-                    <div class="mode-desc-title">💡 モード別のルールと復習間隔（SRS）の仕様</div>
-                    <div class="mode-desc-item">
-                        <span class="mode-desc-tag" style="background:var(--new);">新規(4択)</span>
+                <div class="mode-desc-container" style="background: rgb(245, 247, 250); border: 1px solid rgb(218, 224, 233); border-radius: 14px; padding: 15px; box-shadow: none;">
+                    <div class="mode-desc-title" style="color: rgb(60, 70, 85); font-weight: 700; margin-bottom: 12px;">💡 モード別のルールと復習間隔（SRS）の仕様</div>
+                    <div class="mode-desc-item" style="color: rgb(80, 90, 105); margin-bottom: 10px;">
+                        <span class="mode-desc-tag" style="background: rgb(52, 116, 181); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">新規(4択)</span>
                         まだ一度もクイズしていない単語が出現。一発で<b>正解（合格）</b>するとタイマーが始動し「復習待ち」へ移行。</b>間違えても合格するまで他モードでは出されず、新規モードでクリアするまで何度も再出題されます。
                     </div>
-                    <div class="mode-desc-item">
-                        <span class="mode-desc-tag" style="background:var(--p); color:var(--text-dark);">復習(6択)</span>
+                    <div class="mode-desc-item" style="color: rgb(80, 90, 105); margin-bottom: 10px;">
+                        <span class="mode-desc-tag" style="background: rgb(68, 140, 116); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">復習(6択)</span>
                         指定時間が経過し、復習可能になった単語だけが出現。<b>正解（合格）</b>するごとに次の復習までの間隔（1日➔3日➔7日➔14日➔30日後）が段階的に伸びてしていきます。</b>ミスしても合格するまでタイマーは変更（リセット）されずその場に保留されます。
                     </div>
-                    <div class="mode-desc-item">
-                        <span class="mode-desc-tag" style="background:var(--acc); color:#fff;">苦手特訓</span>
+                    <div class="mode-desc-item" style="color: rgb(80, 90, 105); margin-bottom: 10px;">
+                        <span class="mode-desc-tag" style="background: rgb(190, 105, 80); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">苦手特訓</span>
                         ミスした「苦手」な単語だけを抽出。</b>このモードで正解・不正解しても<b>復習までの時間は一切変更されません（キープ）</b>。ただし、復習待ちの単語は正解するとクリアとみなし、復習済みとなります。
                     </div>
-                    <div class="mode-desc-item">
-                        <span class="mode-desc-tag" style="background:var(--shuffle); color:#fff;">既習(選択/入力)</span>
+                    <div class="mode-desc-item" style="color: rgb(80, 90, 105);">
+                        <span class="mode-desc-tag" style="background: rgb(110, 100, 140); color: #ffffff; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold;">既習(選択/入力)</span>
                         これまでに新規で１度クリアした単語だけが出題されます。ランダムに出題されます（入力はスペル手打ち）。テスト前や復習モードに向けての自習用モードであり、<b>正解・不正解を問わず復習タイマーやレベルは一切変更されず完全キープ</b>されます。（復習モードでクリアしない限り復習したとは判定されません。）
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -823,16 +834,20 @@ gradient.addColorStop(1, 'rgba(255, 255, 255, 1.0)');  /* 先端は一番まぶ�
                 
                 if(w.tags.includes("間違えた単語")) { statusClass = "status-miss"; statusName = "苦手"; }
                 else if(w.level >= 5) { statusClass = "status-veteran"; statusName = "ベテラン"; }
-                else if(w.level > 0) { 
-                    statusClass = "status-wait"; statusName = "復習待ち";
-                    const diff = w.due - now;
-                    if (diff > 0) {
-                        const mins = Math.floor((diff % 3600000) / 60000);
-                        const hours = Math.floor((diff % 86400000) / 3600000);
-                        const days = Math.floor(diff / 86400000);
-                        timeInfo = `<span class="due-timer">あと ${days ? days+'日' : ''}${hours ? hours+'時間' : ''}${mins}分</span>`;
-                    } else { timeInfo = `<span class="due-timer" style="color:var(--acc); font-weight:bold;">復習可能</span>`; }
-                }
+                                    else if(w.level > 0) { 
+                        statusClass = "status-wait";
+                        const diff = w.due - now;
+                        if (diff > 0) {
+                            statusName = "復習待ち"; // まだ指定時間が経過していない場合
+                            const mins = Math.floor((diff % 3600000) / 60000);
+                            const hours = Math.floor((diff % 86400000) / 3600000);
+                            const days = Math.floor(diff / 86400000);
+                            timeInfo = `<span class="due-timer">あと ${days ? days+'日' : ''}${hours ? hours+'時間' : ''}${mins}分</span>`;
+                        } else { 
+                            statusName = "復習可能"; // 指定時間が経過してクイズができる状態の場合
+                            timeInfo = ""; // タイマー表記を消してバッジ側でスッキリ見せる（もし文字を残したいならお好みで調整してください）
+                        }
+                    }
                 li.className = `card li-item ${statusClass}`;
                 
                 const checkArea = document.createElement('div');
