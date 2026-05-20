@@ -1,3 +1,27 @@
 挙動（キーボード表示時やクイズ解答後に画面が上下にカクッとズレて固定されてしまう現象）を解決するために、プログラムを修正しました。
 原因は、スマホのキーボード表示によって画面全体の高さ（ビューポート）が縮小した際、#page-add や #page-quiz に指定されていた min-height: calc(100vh - 120px) と display: flex; justify-content: center; が干渉し、要素を画面中央に押し込もうとしてレイアウトの基準位置がバグってしまっていたことです。
 以下のコードは、CSSのレイアウト構造をスマホに最適化し（dvh 単位の導入、キーボード表示時の伸縮対策、エフェクト表示位置の固定化）、JavaScript側のフォーカス外れ時のスクロールバグ対策を追加した完全版のコードです。そのままコピー＆ペーストして差し替えてください。
+
+/* タップ時のブラウザ独自のズームやジェスチャーを無効化 */
+button, .card, .sub-tab, .tab, .choice-btn {
+    touch-action: manipulation;
+}
+// 2本指以上のピンチズームを禁止
+document.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 1) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+// ダブルタップによるズームを禁止
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+        e.preventDefault(); // 300ms以内の連続タップ（ダブルタップ）を無効化
+    }
+    lastTouchEnd = now;
+}, { passive: false });
+
+iOS（Safari）の仕様で、ボタンやテキスト入力を操作する際に**「ダブルタップ」や「ピンチイン・アウト（2本指での拡大）」を行うと、ブラウザ側が自動的に画面をズームしてしまう挙動**ですね。
+これをアプリ側で完全に無効化し、ダブルタップされても画面が一切ブレないように（ネイティブアプリのような挙動に）CSSとJavaScript
