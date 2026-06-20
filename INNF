@@ -1,1 +1,1143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Domemory v76 - Stream Highway Edition</title>
+    <style>
+        /* ==================== さわやかポップサイバー テーマ定義（真反対に反転） ==================== */
+        :root { 
+            --p: #ff0c00;            /* #00f3ff の反転（シアン → 赤・オレンジ） */
+            --p-dark: #ff4733;       /* #00b8cc の反転 */
+            --bg: #f9f2e9;           /* #060d16 の反転（深いネイビー → 明るい生成り・ベージュ） */
+            --acc: #00ff80;          /* #ff007f の反転（マゼンタピンク → 明るいグリーン） */
+            --danger: #00cccc;       /* #ff3333 の反転（赤 → シアン・水色） */
+            --new: #ff0033;          /* #00ffcc の反転（ミントグリーン → ディープピンク・赤） */
+            --text: #000000;         /* #ffffff の反転（白 → 黒） */
+            --text-dark: #eeeffd;    /* #111822 の反転（濃い紺 → 薄いラベンダーグレー） */
+            --gold: #0019ff;         /* #ffe600 の反転（ゴールド → 鮮やかなブルー） */
+            --shuffle: #4fd900;      /* #b026ff の反転（パープル → ライトグリーン） */
+            --card-bg: rgba(239, 231, 219, 0.85); /* rgba(16, 24, 36, 0.85) の反転 */
+        }
+        
+        * { 
+            -webkit-tap-highlight-color: transparent; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            color: var(--text); 
+            padding-bottom: calc(85px + env(safe-area-inset-bottom, 16px)); 
+            overflow-x: hidden; 
+            position: relative; 
+            min-height: 100dvh; 
+        }
 
+        button, .card, .sub-tab, .tab, .choice-btn {
+            touch-action: manipulation;
+        }
+
+        /* ==================== 都会の夜景ハイウェイ・動的Canvas背景 ==================== */
+        .city-bg-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100dvh;
+            z-index: -1; pointer-events: none;
+            overflow: hidden;
+            background-color: var(--bg);
+        }
+        .city-base-image {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('http://googleusercontent.com/image_generation_content/16') center center / cover no-repeat;
+            z-index: 1;
+            opacity: 0.6;
+        }
+        #highway-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2;
+            mix-blend-mode: multiply;
+            opacity: 0.1;
+        }
+
+        .page { 
+            padding: 12px; 
+            width: 100%;
+            max-width: 500px; 
+            margin: 0 auto; 
+            display: none; 
+            position: relative; 
+            z-index: 10; 
+            overflow-x: hidden;
+        }
+        .active { display: block; }
+        
+        #page-add, #page-quiz {
+            min-height: calc(100dvh - 90px);
+            display: none;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;     
+            width: 100%;
+            padding: 10px;
+        }
+        #page-add.active, #page-quiz.active {
+            display: flex;
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px; 
+            border-radius: 14px; 
+            box-shadow: 0 6px 24px rgba(255, 12, 0, 0.12); 
+            margin-bottom: 12px; 
+            border: 1px solid rgba(255, 12, 0, 0.22); 
+            position: relative; 
+            transition: all 0.3s ease; 
+            width: 100%; 
+            max-width: 100%;
+            z-index: 10; 
+            color: #000000; 
+        }
+
+        .menu { 
+            background: rgba(249, 242, 233, 0.95); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px); 
+            color: #000; 
+            position: fixed; 
+            bottom: 0; left: 0; right: 0; 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 12px)) 0; 
+            z-index: 2000; 
+            border-top: 2px solid rgba(255, 12, 0, 0.3); 
+            box-shadow: 0 -4px 20px rgba(255, 12, 0, 0.1); 
+        }
+        .menu button { 
+            height: 44px;
+            background: none; 
+            color: #8f7764; 
+            font-size: 11px; 
+            font-weight: bold;
+            border: none; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            gap: 2px; 
+            flex: 1; 
+            cursor: pointer; 
+            transition: color 0.2s ease;
+        }
+        .menu button span-icon {
+            font-size: 18px;
+        }
+        .menu button.active-nav { 
+            color: var(--p); 
+            text-shadow: 0 0 8px rgba(255, 12, 0, 0.5); 
+        }
+
+        .status-miss { background-color: rgba(0, 255, 128, 0.12) !important; border-left: 5px solid var(--acc); border-right: 1px solid var(--acc); } 
+        .status-new { background-color: rgba(255, 0, 51, 0.08) !important; border-left: 5px solid var(--new); } 
+        .status-wait { background-color: rgba(255, 12, 0, 0.08) !important; border-left: 5px solid var(--p); } 
+        .status-veteran { background-color: rgba(0, 25, 255, 0.08) !important; border-left: 5px solid var(--gold); border: 1px solid var(--gold); } 
+
+        input, select, textarea { 
+            width: 100%; 
+            max-width: 100%;
+            padding: 11px 14px; 
+            margin: 6px 0; 
+            font-size: 15px !important; 
+            border: 2px solid rgba(255, 12, 0, 0.25); 
+            border-radius: 9px; 
+            outline: none; 
+            scroll-margin-top: 80px;
+            background: rgba(0, 0, 0, 0.95); 
+            color: var(--text-dark);
+            font-family: inherit; 
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--p);
+            box-shadow: 0 0 6px rgba(255, 12, 0, 0.4); 
+        }
+        textarea { resize: vertical; min-height: 100px; }
+
+        .search-bar-container {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .search-input {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            border: 2px solid rgba(255, 12, 0, 0.3);
+            font-weight: 500;
+        }
+        .search-input::placeholder {
+            color: #777;
+        }
+
+        .main-btn { 
+            width: 100%; 
+            max-width: 100%;
+            padding: 12px; 
+            border: none; 
+            border-radius: 9px; 
+            font-size: 15px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.2s ease;
+        }
+        .main-btn:active { transform: scale(0.98); }
+        
+        .btn-p { background: linear-gradient(135deg, var(--p), var(--p-dark)); color: var(--text-dark); }
+        .btn-sub { background: rgba(0, 0, 0, 0.08); color: #000; padding: 5px 8px; font-size: 11px; border: 1px solid rgba(0,0,0,0.15); border-radius: 5px; cursor: pointer; } 
+        .btn-edit { background: linear-gradient(135deg, var(--gold), #1122cc); color: var(--text-dark); padding: 5px 8px; font-size: 11px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; } 
+        .btn-d { background: linear-gradient(135deg, var(--danger), #33dbdb); color: #000; padding: 5px 8px; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: bold; } 
+        
+        .q-text { font-size: 28px; font-weight: bold; margin: 20px 0; text-align: center; word-break: break-all; color: #000000; } 
+        .countdown { font-size: 70px; color: var(--p); text-align: center; font-weight: bold; margin: 15px 0; text-shadow: 0 0 15px rgba(255, 12, 0, 0.6); } 
+        
+        #quiz-ui-container { position: relative; width: 100%; }
+
+        .choices-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; width: 100%; }
+        .choice-btn { background: rgba(0, 0, 0, 0.95); border: 2px solid rgba(255, 12, 0, 0.15); padding: 14px; border-radius: 10px; font-size: 15px; font-weight: bold; color: var(--text-dark); text-align: center; cursor: pointer; transition: all 0.1s ease; } 
+        .choice-btn:active { transform: scale(0.97); background: var(--p); color: var(--text-dark); }
+        .choices-disabled .choice-btn { pointer-events: none; opacity: 0.4; } 
+
+        .wait-timer { font-size: 14px; color: var(--new); text-align: center; margin-bottom: 8px; font-weight: bold; } 
+
+        .tabs { 
+            display: flex; 
+            overflow-x: auto; 
+            overflow-y: hidden;
+            gap: 6px; 
+            padding: 6px 2px; 
+            width: 100%; 
+            -webkit-overflow-scrolling: touch; 
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        
+        .tab { 
+            display: inline-block;
+            white-space: nowrap; 
+            background: rgba(0,0,0,0.06); 
+            border: 1px solid rgba(255,12,0,0.15); 
+            padding: 6px 12px; 
+            border-radius: 16px; 
+            font-size: 12px; 
+            color: #000; 
+            cursor: pointer; 
+            flex-shrink: 0; 
+        }
+        .tab-active { background: var(--p); color: var(--text-dark); font-weight: bold; border-color: var(--p); } 
+
+        .sub-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.4); padding: 3px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(0,0,0,0.08); width: 100%; } 
+        .sub-tab { flex: 1; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; color: #5f4f3f; border-radius: 6px; cursor: pointer; } 
+        .sub-tab-active { background: var(--p); color: var(--text-dark); } 
+
+        .li-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; position: relative; padding: 12px; width: 100%; }
+        .li-checkbox-area { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .li-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: var(--p); margin: 0; }
+        .li-info { flex: 1; min-width: 0; word-break: break-all; padding-left: 4px; } 
+        .action-btns { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; justify-content: center; width: 66px; } 
+        .action-btns button { text-align: center; width: 100%; padding: 5px 2px; font-size: 10px; }
+
+        .badge { display: inline-block; padding: 2px 6px; font-size: 10px; border-radius: 3px; margin-top: 4px; font-weight: bold; background: rgba(0,0,0,0.1); color: #000; } 
+        .due-timer { font-size: 10px; color: #543f2f; margin-top: 4px; margin-left: 4px; display: inline-block; } 
+
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100dvh; background:rgba(251, 247, 240, 0.8); z-index:3000; align-items:center; justify-content:center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 20px; } 
+        .hidden { display: none !important; }
+        .abort-container { margin-top: 15px; text-align: center; border-top: 1px dashed rgba(255,12,0,0.2); padding-top: 10px; width: 100%; } 
+        
+        .pl-actions-container { display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 10px; width: 100%; margin-top:4px; }
+        .bulk-action-bar { background: rgba(239, 231, 219, 0.95); border: 2px solid var(--p); border-radius: 12px; padding: 12px; margin-bottom: 12px; width: 100%; } 
+
+        .prompt-example-box { background: rgba(0,0,0,0.04); border-left: 4px solid var(--p); padding: 10px; border-radius: 0 6px 6px 0; margin-top: 12px; font-size: 11px; color: #333; line-height: 1.4; width: 100%; } 
+        .prompt-code-block { background: rgba(255,255,255,0.4); border: 1px solid rgba(255,12,0,0.15); color: #ff0033; padding: 8px; border-radius: 5px; margin-top: 4px; font-family: monospace; white-wrap: pre-wrap; word-break: break-all; font-size: 10px; } 
+        
+        .mode-desc-container { margin-top: 15px; border-top: 1px dashed rgba(255,12,0,0.2); padding-top: 12px; width: 100%; } 
+        .mode-desc-title { font-size: 12px; font-weight: bold; color: var(--p); margin-bottom: 8px; }
+        .mode-desc-item { background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; font-size: 11px; color: #342a1e; } 
+        .mode-desc-tag { display: inline-block; padding: 1px 5px; font-size: 9px; font-weight: bold; border-radius: 3px; color: var(--text-dark); margin-right: 4px; }
+
+        #toast-container { position: fixed; top: 20px; left: 0; right: 0; margin: 0 auto; z-index: 9999; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+        .toast { background: rgba(239, 231, 219, 0.95); color: #000; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: bold; box-shadow: 0 6px 20px rgba(255,12,0,0.2); display: flex; align-items: center; justify-content: center; animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, toastOut 0.3s ease 2.7s forwards; border-left: 5px solid var(--p); pointer-events: auto; width: 100%; text-align: center; } 
+        .toast.toast-error { border-left-color: var(--danger); } 
+        @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+
+        #bg-effect-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; pointer-events: none; z-index: 5; opacity: 0; transition: all 0.2s ease; }
+        .bg-correct-active { opacity: 1 !important; background: rgba(255, 0, 51, 0.1); } 
+        .bg-miss-active { opacity: 1 !important; background: rgba(0, 255, 128, 0.15) !important; } 
+
+        #quiz-effect-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1500; display: flex; justify-content: center; align-items: center; }
+        .quiz-effect-box { background: rgba(244, 235, 221, 0.96); padding: 14px 20px; border-radius: 10px; box-shadow: 0 6px 24px rgba(255,12,0,0.25); border: 1px solid rgba(255,12,0,0.25); display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+        .quiz-effect-txt { font-size: 34px; font-weight: 900; letter-spacing: 1px; text-align: center; width: 100%; }
+        
+        .txt-correct { background: linear-gradient(90deg, #ff0033, #ff1200, #0019ff, #ff1200, #ff0033); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldWhiteFlow 2s linear infinite, correctPop 800ms ease-out forwards; } 
+        @keyframes correctPop { 0% { transform: scale(0.6); opacity: 0; } 25% { transform: scale(1.05); opacity: 1; } 85% { transform: scale(1.0); opacity: 1; } 100% { transform: scale(0.95); opacity: 0; } }
+        
+        .particle { position: absolute; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; animation: particleBlow 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; left: 50%; top: 50%; }
+        @keyframes particleBlow { 0% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(calc(-50% + var(--mx)), calc(-50% + var(--my))) scale(0); opacity: 0; } }
+
+        .txt-miss { background: linear-gradient(135deg, #00ff80, #00cccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; animation: missShake 1950ms ease-in-out forwards; width: 100%; text-align: center; } 
+        .miss-ans-subtext { display: block; font-size: 14px; color: #000; font-weight: bold; background: rgba(0,0,0,0.08); padding: 8px 12px; border-radius: 6px; margin-top: 6px; border: 1px solid rgba(255,12,0,0.15); width: 100%; text-align: center; word-break: break-all; } 
+        @keyframes missShake { 0% { transform: translateX(0) scale(0.9); opacity: 0; } 4%, 12%, 20%, 28% { transform: translateX(-4px); opacity: 1; } 8%, 16%, 24%, 32% { transform: translateX(4px); } 36% { transform: translateX(0) translateY(0); opacity: 1; } 88% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(15px); opacity: 0; } }
+
+        .txt-complete { background: linear-gradient(90deg, var(--acc), var(--shuffle), var(--p), var(--new), var(--gold)); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: rainbowFlow 4s linear infinite, completeZoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; font-size: 34px; font-weight: 900; text-align: center; margin-bottom: 12px; }
+        @keyframes completeZoom { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+
+        .confirm-btn-grid { display: flex; gap: 8px; margin-top: 15px; width: 100%; }
+        .confirm-btn { flex: 1; padding: 10px; border: none; border-radius: 7px; font-size: 14px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="city-bg-container">
+        <div class="city-base-image"></div>
+        <canvas id="highway-canvas"></canvas>
+    </div>
+
+    <div id="toast-container"></div>
+    <div id="bg-effect-overlay"></div>
+
+    <div id="confirm-modal" class="modal-overlay" style="z-index: 5000;">
+        <div class="card" style="width:85%; max-width:330px; text-align: center;">
+            <h3 style="margin-top:0;" id="confirm-title">最終確認</h3> 
+            <p id="confirm-msg" style="font-size:13px; color:#342a1e; line-height:1.5; margin-bottom:15px;"></p> 
+            <div class="confirm-btn-grid">
+                <button class="confirm-btn" style="background:rgba(0,0,0,0.15);" id="confirm-cancel-btn">いいえ</button> 
+                <button class="confirm-btn" style="background:linear-gradient(135deg, var(--danger), #33dbdb);" id="confirm-ok-btn">はい</button> 
+            </div>
+        </div>
+    </div>
+
+    <div id="complete-modal" class="modal-overlay">
+        <div class="card" style="width:85%; max-width:350px; text-align: center; padding: 25px 15px;">
+            <div class="txt-complete">🎉 COMPLETE !!</div>
+            <p style="font-size:15px; font-weight:bold; margin: 0 0 15px 0;">すべてのクイズが終了しました！</p> 
+            <button class="main-btn btn-p" onclick="closeModal('complete-modal')">戻る</button>
+        </div>
+    </div>
+
+    <div id="list-modal" class="modal-overlay">
+        <div class="card" style="width:85%; max-width:330px;">
+            <h3 style="margin-top:0">移動先のフォルダを選択</h3>
+            <select id="modal-pl-select"></select>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+                <button class="main-btn" style="background:rgba(0,0,0,0.15); flex:1;" onclick="closeModal('list-modal')">戻る</button> 
+                <button class="main-btn btn-p" style="flex:1;" onclick="executeAddToList()">移動する</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay">
+        <div class="card" style="width:85%; max-width:330px;">
+            <h3 style="margin-top:0">単語を編集</h3>
+            <label style="font-size:11px; color:#543f2f;">English</label> <input id="edit-en-in" type="text" autocomplete="off">
+            <label style="font-size:11px; color:#543f2f;">日本語</label> <input id="edit-ja-in" type="text" autocomplete="off">
+            <div style="display:flex; gap:8px; margin-top:12px;">
+                <button class="main-btn" style="background:rgba(0,0,0,0.15); flex:1;" onclick="closeModal('edit-modal')">戻る</button> 
+                <button class="main-btn btn-edit" style="flex:1;" onclick="executeEditWord()">更新</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-add" class="page">
+        <div class="card">
+            <h2 style="margin:0 0 12px 0; color:var(--p); text-shadow:0 0 6px rgba(255,12,0,0.2)">単語を登録</h2> 
+            <label style="font-size:11px; color:#543f2f; font-weight:bold;">追加先フォルダ</label> 
+            <select id="add-to-playlist" style="margin-top:4px; margin-bottom:12px;"></select>
+
+            <div class="sub-tabs">
+                <div id="sub-tab-single" class="sub-tab sub-tab-active" onclick="switchAddMode('single')">1件ずつ登録</div>
+                <div id="sub-tab-bulk" class="sub-tab" onclick="switchAddMode('bulk')">AI一括登録</div>
+            </div>
+
+            <div id="add-single-container" style="width: 100%;">
+                <input id="en-in" type="text" placeholder="English" autocomplete="off" onkeydown="if(event.key==='Enter' && this.value.trim() !== '') { event.preventDefault(); setTimeout(() => { document.getElementById('ja-in').focus(); }, 10); }">
+                <input id="ja-in" type="text" placeholder="日本語" autocomplete="off" onkeydown="if(event.key==='Enter') saveWord()">
+                <button class="main-btn btn-p" onclick="saveWord()">保存する</button>
+            </div>
+
+            <div id="add-bulk-container" class="hidden" style="width: 100%;">
+                <textarea id="bulk-import-area" placeholder="rational, 合理的な&#10;irrational, 非合理的な"></textarea>
+                <button class="main-btn btn-p" style="background:linear-gradient(135deg, var(--new), #ff4c70); margin-bottom: 8px;" onclick="saveBulkWords()">一括保存する</button> 
+                <div class="prompt-example-box">
+                    <span style="font-weight: bold; color: var(--p);">💡 AIへのフォーマット指示</span>
+                    <div class="prompt-code-block" id="prompt-text-template">hurtle, 突進する
+lineage, 血統
+accomplish, 達成</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-quiz" class="page active">
+        <div class="card" id="quiz-main-card">
+            <div id="count-area" class="countdown hidden"></div>
+            <div id="q-display" class="q-text">クイズ道場</div>
+            
+            <div id="quiz-ui-container">
+                <div id="quiz-effect-layer"></div>
+
+                <div id="quiz-ui" class="hidden">
+                    <input id="ans-in" type="text" placeholder="答えを入力" style="text-align:center;" autocomplete="off" onkeydown="if(event.key==='Enter') handleCheck()">
+                    <button class="main-btn btn-p" onclick="handleCheck()">決定</button>
+                </div>
+                <div id="choice-ui" class="hidden">
+                    <div id="wait-area">
+                        <div id="wait-timer" class="wait-timer">選択肢表示まであと 8 秒</div>
+                        <button class="main-btn btn-sub" style="width:100%; margin-bottom:8px;" onclick="skipWait()">今すぐ表示</button>
+                    </div>
+                    <div id="choices-grid" class="choices-grid hidden"></div>
+                </div>
+            </div>
+
+            <div id="abort-ui" class="abort-container hidden">
+                <button class="btn-sub" style="background:none; border:none; text-decoration:underline;" onclick="abortQuiz()">クイズを中止する</button>
+            </div>
+
+            <div id="quiz-setup" style="width: 100%;">
+                <p style="text-align:center; font-weight: bold;">対象: <select id="quiz-from-playlist" style="width:auto; display:inline-block; padding:6px 10px; margin:0; background:rgba(0,0,0,0.95); color:var(--text-dark);"></select></p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom:8px;">
+                    <button class="main-btn" style="background: linear-gradient(135deg, #cb8b4a, #d6a470);" onclick="startQuiz('new')">新規(4択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, #bb738b, #ca94a6);" onclick="startQuiz('srs')">復習(6択)</button>
+                </div>
+                <button class="main-btn" style="background: linear-gradient(135deg, #4196af, #69b4c8); margin-bottom: 8px;" onclick="startQuiz('miss')">苦手特訓(4択)</button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button class="main-btn" style="background: linear-gradient(135deg, #919b73, #aab491);" onclick="startQuiz('all_choice')">既習(選択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, #919b73, #aab491);" onclick="startQuiz('all')">既習(入力)</button>
+                </div>
+                <p id="limit-msg" style="font-size:11px; color: #cb8b4a; text-align:center; margin-top:8px; font-weight:bold;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-list" class="page">
+        <div class="search-bar-container">
+            <input type="text" id="word-search-input" class="search-input" placeholder="🔍 単語・意味を検索..." autocomplete="off" oninput="renderWordList()">
+        </div>
+
+        <div class="tabs" id="list-tabs-container"></div>
+
+        <div class="pl-actions-container">
+            <button class="btn-sub" onclick="toggleBulkActionBar()">選択した項目を操作...</button>
+        </div>
+
+        <div id="bulk-action-bar" class="bulk-action-bar hidden">
+            <div style="font-size:11px; font-weight:bold; margin-bottom:6px; color:var(--p);">一括操作メニュー (<span id="selected-count">0</span>件選択中)</div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="btn-sub" style="background:var(--p); color:var(--text-dark); border:none;" onclick="openBulkMoveModal()">フォルダ移動</button>
+                <button class="btn-sub" style="background:var(--shuffle); color:var(--text-dark); border:none;" onclick="executeBulkResetSRS()">SRS初期化</button>
+                <button class="btn-d" onclick="executeBulkDelete()">削除</button>
+                <button class="btn-sub" onclick="toggleSelectAllItems()">全選択/解除</button>
+            </div>
+        </div>
+
+        <div id="word-list-container"></div>
+    </div>
+
+    <div id="page-settings" class="page">
+        <div class="card" style="border: 2px solid var(--gold);">
+            <h3 style="margin:0 0 8px 0; color:var(--gold);">☁️ GitHub クラウド同期設定</h3>
+            
+            <label style="font-size:11px; font-weight:bold;">GitHub ユーザー名</label>
+            <input id="gh-user" type="text" placeholder="example-user" autocomplete="off" style="padding:8px; margin:2px 0 8px 0;">
+            
+            <label style="font-size:11px; font-weight:bold;">リポジトリ名</label>
+            <input id="gh-repo" type="text" placeholder="my-domemory-db" autocomplete="off" style="padding:8px; margin:2px 0 8px 0;">
+            
+            <label style="font-size:11px; font-weight:bold;">パーソナルアクセストークン (ghp_...)</label>
+            <input id="gh-token" type="password" placeholder="ghp_xxxxxxxx" autocomplete="off" style="padding:8px; margin:2px 0 8px 0;">
+
+            <label style="font-size:11px; color:var(--p); font-weight:bold;">あなたのなまえ（データ識別キー: me や A）</label>
+            <input id="gh-name" type="text" placeholder="me" autocomplete="off" style="padding:8px; margin:2px 0 10px 0; border-color:var(--p);">
+            
+            <button class="main-btn btn-edit" style="width:100%; margin-bottom:8px; background:linear-gradient(135deg, var(--gold), #001299);" onclick="saveGitHubSettings()">設定を保存</button>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:4px;">
+                <button class="main-btn" style="background:linear-gradient(135deg, #00ff80, #00994d); color:#000; padding:10px 4px; font-size:13px;" onclick="syncToGitHubCloud()">クラウドへ保存</button>
+                <button class="main-btn" style="background:linear-gradient(135deg, #00cccc, #008080); color:#000; padding:10px 4px; font-size:13px;" onclick="loadFromGitHubCloud()">クラウドから読込</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin:0 0 8px 0;">新規フォルダ作成</h3>
+            <div style="display:flex; gap:6px;">
+                <input id="new-playlist-name" type="text" placeholder="例: Eiken Pre-1" autocomplete="off" style="margin:0;">
+                <button class="main-btn btn-p" style="width:auto; padding:0 15px; white-space:nowrap;" onclick="createPlaylist()">作成</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="menu">
+        <button id="nav-add" onclick="showPage('add')"><span-icon>📝</span-icon><span>登録</span></button>
+        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')"><span-icon>⚔️</span-icon><span>クイズ</span></button>
+        <button id="nav-list" onclick="showPage('list')"><span-icon>🗂️</span-icon><span>一覧</span></button>
+        <button id="nav-settings" onclick="showPage('settings')"><span-icon>⚙️</span-icon><span>設定</span></button>
+    </nav>
+
+    <script>
+        // データモデル定義
+        let data = {
+            words: [],
+            playlists: ["デフォルト"]
+        };
+        let currentPlaylist = "デフォルト";
+        let selectedWordIds = new Set();
+
+        // クイズ状態変数
+        let quizWords = [];
+        let currentQuizIndex = 0;
+        let quizMode = 'new'; 
+        let countdownInterval = null;
+        let quizTimerTimeout = null;
+
+        // GitHub同期用設定
+        let gitHubConfig = {
+            username: "",
+            repo: "",
+            token: "",
+            name: "me"
+        };
+
+        // ローカルストレージ即座同期
+        function saveData() {
+            localStorage.setItem("domemory_v75_unified_data", JSON.stringify(data));
+        }
+
+        function loadData() {
+            const local = localStorage.getItem("domemory_v75_unified_data");
+            if (local) {
+                try {
+                    data = JSON.parse(local);
+                    if (!data.playlists || data.playlists.length === 0) {
+                        data.playlists = ["デフォルト"];
+                    }
+                } catch(e) {
+                    console.error("データ読み込み失敗", e);
+                }
+            }
+            const ghLocal = localStorage.getItem("domemory_github_config");
+            if (ghLocal) {
+                try {
+                    gitHubConfig = JSON.parse(ghLocal);
+                    document.getElementById('gh-user').value = gitHubConfig.username || "";
+                    document.getElementById('gh-repo').value = gitHubConfig.repo || "";
+                    document.getElementById('gh-token').value = gitHubConfig.token || "";
+                    document.getElementById('gh-name').value = gitHubConfig.name || "me";
+                } catch(e) {}
+            }
+        }
+
+        function saveGitHubSettings() {
+            gitHubConfig.username = document.getElementById('gh-user').value.trim();
+            gitHubConfig.repo = document.getElementById('gh-repo').value.trim();
+            gitHubConfig.token = document.getElementById('gh-token').value.trim();
+            let inputName = document.getElementById('gh-name').value.trim();
+            if(!inputName) inputName = "me";
+            gitHubConfig.name = inputName;
+
+            localStorage.setItem("domemory_github_config", JSON.stringify(gitHubConfig));
+            showToast(`クラウド接続設定（名義: ${inputName}）を保存しました！`);
+        }
+
+        async function uploadToGitHubFile(filename) {
+            const { username, repo, token } = gitHubConfig;
+            if (!username || !repo || !token) {
+                throw new Error("GitHub設定が不完全です。");
+            }
+            const url = `https://api.github.com/repos/${username}/${repo}/contents/${filename}`;
+            const jsonStr = JSON.stringify(data, null, 2);
+            const contentBase64 = btoa(unescape(encodeURIComponent(jsonStr)));
+
+            let sha = null;
+            try {
+                const res = await fetch(url, { headers: { "Authorization": `token ${token}` } });
+                if (res.ok) { const fileData = await res.json(); sha = fileData.sha; }
+            } catch (e) {}
+
+            const bodyObj = { message: `Update ${filename}`, content: contentBase64 };
+            if (sha) bodyObj.sha = sha;
+
+            const putRes = await fetch(url, {
+                method: "PUT",
+                headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
+                body: JSON.stringify(bodyObj)
+            });
+            if (!putRes.ok) throw new Error(`${filename} の送信エラー`);
+        }
+
+        async function syncToGitHubCloud() {
+            const targetName = gitHubConfig.name || "me";
+            const filename = `domemory_data_${targetName}.json`;
+            showToast(`クラウドの ${filename} へ送信中...`, false);
+            try {
+                await uploadToGitHubFile(filename);
+                showToast(`☁️ 「${filename}」へ保存完了しました！`);
+            } catch (error) {
+                showToast("保存に失敗しました。設定を確認してください。", true);
+            }
+        }
+
+        async function loadFromGitHubCloud() {
+            const { username, repo, token, name } = gitHubConfig;
+            const targetName = name || "me";
+            const filename = `domemory_data_${targetName}.json`;
+
+            if (!username || !repo || !token) {
+                showToast("GitHub同期設定が不完全です", true);
+                return;
+            }
+            showToast(`クラウドから ${filename} を読込中...`, false);
+            try {
+                let response = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${filename}`, {
+                    headers: { "Authorization": `token ${token}` }
+                });
+                if (!response.ok) throw new Error();
+                
+                const fileData = await response.json();
+                const jsonStr = decodeURIComponent(escape(atob(fileData.content)));
+                const downloadedData = JSON.parse(jsonStr);
+                
+                if (downloadedData && Array.isArray(downloadedData.words)) {
+                    data = downloadedData;
+                    saveData();
+                    updateUI();
+                    showToast(`☁️ 名義「${targetName}」から読み込みました！`);
+                }
+            } catch (error) {
+                showToast(`「${filename}」が見つからないか、読込に失敗しました。`, true);
+            }
+        }
+
+        window.addEventListener('beforeunload', function (e) {
+            if (gitHubConfig.username && gitHubConfig.repo && gitHubConfig.token) {
+                e.preventDefault(); e.returnValue = '保存しますか？';
+            }
+        });
+
+        window.addEventListener('pagehide', function() {
+            if (gitHubConfig.username && gitHubConfig.repo && gitHubConfig.token) {
+                uploadToGitHubFile(`domemory_data_${gitHubConfig.name || "me"}.json`).catch(()=>{});
+            }
+        });
+
+        function migrateToUnifiedData() {
+            loadData();
+        }
+
+        function showToast(message, isError = false) {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = `toast ${isError ? 'toast-error' : ''}`;
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3000);
+        }
+
+        function showConfirm(title, message, onConfirm) {
+            document.getElementById("confirm-title").innerText = title;
+            document.getElementById("confirm-msg").innerText = message;
+            const modal = document.getElementById("confirm-modal");
+            modal.style.display = "flex";
+            document.getElementById("confirm-ok-btn").onclick = () => { onConfirm(); modal.style.display = "none"; };
+            document.getElementById("confirm-cancel-btn").onclick = () => { modal.style.display = "none"; };
+        }
+
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active-nav'));
+            
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if(targetPage) targetPage.classList.add('active');
+            
+            const targetNav = document.getElementById(`nav-${pageId}`);
+            if(targetNav) targetNav.classList.add('active-nav');
+            
+            if(pageId === 'quiz') abortQuiz();
+            updateUI();
+        }
+
+        function switchAddMode(mode) {
+            document.getElementById('sub-tab-single').classList.toggle('sub-tab-active', mode === 'single');
+            document.getElementById('sub-tab-bulk').classList.toggle('sub-tab-active', mode === 'bulk');
+            document.getElementById('add-single-container').classList.toggle('hidden', mode !== 'single');
+            document.getElementById('add-bulk-container').classList.toggle('hidden', mode !== 'bulk');
+        }
+
+        function updatePlaylistDropdowns() {
+            const addSelect = document.getElementById("add-to-playlist");
+            const quizSelect = document.getElementById("quiz-from-playlist");
+            if(!addSelect || !quizSelect) return;
+
+            const prevQuizVal = quizSelect.value;
+            addSelect.innerHTML = ""; quizSelect.innerHTML = "";
+
+            const optAll = document.createElement("option");
+            optAll.value = "__ALL__"; optAll.innerText = "全フォルダ対象";
+            quizSelect.appendChild(optAll);
+
+            data.playlists.forEach(pl => {
+                const opt1 = document.createElement("option"); opt1.value = pl; opt1.innerText = pl; addSelect.appendChild(opt1);
+                const opt2 = document.createElement("option"); opt2.value = pl; opt2.innerText = pl; quizSelect.appendChild(opt2);
+            });
+
+            addSelect.value = currentPlaylist;
+            if(prevQuizVal && [...quizSelect.options].some(o => o.value === prevQuizVal)) {
+                quizSelect.value = prevQuizVal;
+            } else {
+                quizSelect.value = "__ALL__";
+            }
+        }
+
+        function createPlaylist() {
+            const inputEl = document.getElementById("new-playlist-name");
+            const name = inputEl.value.trim();
+            if(!name) return;
+            if(data.playlists.includes(name)) { showToast("既に同名のフォルダが存在します", true); return; }
+            
+            data.playlists.push(name);
+            inputEl.value = ""; 
+            saveData(); updateUI();
+            showToast(`リスト「${name}」を作成しました！`);
+        }
+
+        function saveWord() {
+            const en = document.getElementById("en-in").value.trim();
+            const ja = document.getElementById("ja-in").value.trim();
+            const playlist = document.getElementById("add-to-playlist").value;
+
+            if(!en || !ja) { showToast("英語と日本語の両方を入力してください", true); return; }
+
+            data.words.unshift({
+                id: "w-" + Date.now() + Math.random(), en, ja, playlist,
+                status: "new", missCount: 0, lastTested: null, nextReview: null, interval: 0
+            });
+            currentPlaylist = playlist;
+            saveData();
+            document.getElementById("en-in").value = "";
+            document.getElementById("ja-in").value = "";
+            document.getElementById("en-in").focus();
+            showToast("単語を登録しました！");
+            updateUI();
+        }
+
+        function saveBulkWords() {
+            const text = document.getElementById("bulk-import-area").value;
+            const playlist = document.getElementById("add-to-playlist").value;
+            if(!text.trim()) { showToast("テキストが空です", true); return; }
+
+            const lines = text.split('\n');
+            let successCount = 0;
+
+            lines.forEach(line => {
+                if(!line.trim()) return;
+                let parts = line.split(',');
+                if(parts.length < 2) parts = line.split('，'); 
+                if(parts.length < 2) parts = line.split('\t'); 
+
+                if(parts.length >= 2) {
+                    const en = parts[0].trim();
+                    const ja = parts.slice(1).join(',').trim();
+                    if(en && ja) {
+                        data.words.unshift({
+                            id: "w-" + Date.now() + Math.random(), en, ja, playlist,
+                            status: "new", missCount: 0, lastTested: null, nextReview: null, interval: 0
+                        });
+                        successCount++;
+                    }
+                }
+            });
+
+            if(successCount > 0) {
+                currentPlaylist = playlist; saveData();
+                document.getElementById("bulk-import-area").value = "";
+                showToast(`${successCount}件の一括登録に成功！`);
+                updateUI();
+            } else {
+                showToast("有効な行が見つかりませんでした", true);
+            }
+        }
+
+        let editingWordId = null;
+        function openEditModal(id) {
+            editingWordId = id;
+            const w = data.words.find(item => item.id === id);
+            if(!w) return;
+            document.getElementById("edit-en-in").value = w.en;
+            document.getElementById("edit-ja-in").value = w.ja;
+            document.getElementById("edit-modal").style.display = "flex";
+        }
+        function executeEditWord() {
+            const en = document.getElementById("edit-en-in").value.trim();
+            const ja = document.getElementById("edit-ja-in").value.trim();
+            if(!en || !ja) return;
+            const w = data.words.find(item => item.id === editingWordId);
+            if(w) { w.en = en; w.ja = ja; saveData(); updateUI(); showToast("更新しました"); }
+            closeModal('edit-modal');
+        }
+
+        function deleteWord(id) {
+            showConfirm("削除確認", "この単語を削除しますか？", () => {
+                data.words = data.words.filter(w => w.id !== id);
+                selectedWordIds.delete(id); saveData(); updateUI(); showToast("削除しました");
+            });
+        }
+
+        function resetWordSRS(id) {
+            const w = data.words.find(item => item.id === id);
+            if(w) {
+                w.status = "new"; w.missCount = 0; w.lastTested = null; w.nextReview = null; w.interval = 0;
+                saveData(); updateUI(); showToast("SRSリセット完了");
+            }
+        }
+
+        function toggleItemSelection(id) {
+            if(selectedWordIds.has(id)) selectedWordIds.delete(id);
+            else selectedWordIds.add(id);
+            updateBulkActionBarUI();
+        }
+        function toggleSelectAllItems() {
+            const query = document.getElementById("word-search-input").value.toLowerCase().trim();
+            const filtered = data.words.filter(w => {
+                const matchTab = (currentPlaylist === "__ALL__" || w.playlist === currentPlaylist);
+                const matchQuery = !query || w.en.toLowerCase().includes(query) || w.ja.toLowerCase().includes(query);
+                return matchTab && matchQuery;
+            });
+            const allSelected = filtered.every(w => selectedWordIds.has(w.id));
+            filtered.forEach(w => {
+                if(allSelected) selectedWordIds.delete(w.id);
+                else selectedWordIds.add(w.id);
+            });
+            updateBulkActionBarUI(); renderWordList();
+        }
+        function toggleBulkActionBar() { document.getElementById("bulk-action-bar").classList.toggle("hidden"); }
+        function updateBulkActionBarUI() { document.getElementById("selected-count").innerText = selectedWordIds.size; }
+        
+        function openBulkMoveModal() {
+            if(selectedWordIds.size === 0) { showToast("選択されていません", true); return; }
+            const select = document.getElementById("modal-pl-select"); select.innerHTML = "";
+            data.playlists.forEach(pl => {
+                const opt = document.createElement("option"); opt.value = pl; opt.innerText = pl; select.appendChild(opt);
+            });
+            document.getElementById("list-modal").style.display = "flex";
+        }
+        function executeAddToList() {
+            const targetPl = document.getElementById("modal-pl-select").value;
+            data.words.forEach(w => { if(selectedWordIds.has(w.id)) w.playlist = targetPl; });
+            saveData(); selectedWordIds.clear(); closeModal('list-modal'); updateUI(); showToast("移動完了");
+        }
+        function executeBulkDelete() {
+            if(selectedWordIds.size === 0) return;
+            showConfirm("一括削除", `${selectedWordIds.size}件を本当に削除しますか？`, () => {
+                data.words = data.words.filter(w => !selectedWordIds.has(w.id));
+                selectedWordIds.clear(); saveData(); updateUI(); showToast("一括削除しました");
+            });
+        }
+        function executeBulkResetSRS() {
+            if(selectedWordIds.size === 0) return;
+            showConfirm("一括リセット", `${selectedWordIds.size}件の進捗を初期化しますか？`, () => {
+                data.words.forEach(w => {
+                    if(selectedWordIds.has(w.id)) {
+                        w.status = "new"; w.missCount = 0; w.lastTested = null; w.nextReview = null; w.interval = 0;
+                    }
+                });
+                saveData(); selectedWordIds.clear(); updateUI(); showToast("初期化しました");
+            });
+        }
+
+        // 横スライドタブと収録語数の正確な計算レンダリング
+        function renderTabs() {
+            const container = document.getElementById("list-tabs-container");
+            if(!container) return;
+            container.innerHTML = "";
+
+            const allTabs = ["__ALL__", ...data.playlists];
+            allTabs.forEach(tabName => {
+                // 正確にリアルタイムの全単語データを数える
+                const count = tabName === "__ALL__" ? data.words.length : data.words.filter(w => w.playlist === tabName).length;
+                
+                const btn = document.createElement("div");
+                btn.className = `tab ${currentPlaylist === tabName ? 'tab-active' : ''}`;
+                btn.innerText = `${tabName === '__ALL__' ? '全て' : tabName} (${count})`;
+                btn.onclick = () => { currentPlaylist = tabName; selectedWordIds.clear(); updateUI(); };
+                container.appendChild(btn);
+            });
+        }
+
+        // 単語リストの表示（検索バーとのリアルタイム連動）
+        function renderWordList() {
+            const container = document.getElementById("word-list-container");
+            if(!container) return;
+            container.innerHTML = "";
+
+            const searchQuery = document.getElementById("word-search-input") ? document.getElementById("word-search-input").value.toLowerCase().trim() : "";
+
+            // フォルダ判定 ＋ 検索クエリ判定
+            const filtered = data.words.filter(w => {
+                const matchTab = (currentPlaylist === "__ALL__" || w.playlist === currentPlaylist);
+                const matchSearch = !searchQuery || w.en.toLowerCase().includes(searchQuery) || w.ja.toLowerCase().includes(searchQuery);
+                return matchTab && matchSearch;
+            });
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:#543f2f; font-size:13px; margin-top:15px;">対象の単語が見つかりません</p>`;
+                return;
+            }
+
+            filtered.forEach(w => {
+                const card = document.createElement("div");
+                card.className = `card li-item status-${w.status || 'new'}`;
+
+                let badgeTxt = w.status === 'wait' ? "復習待ち" : w.status === 'miss' ? "苦手" : "新規";
+                let dueTxt = "";
+                if(w.status === 'wait' && w.nextReview) {
+                    const diff = w.nextReview - Date.now();
+                    if(diff <= 0) dueTxt = "⏱️ 復習可能";
+                    else {
+                        const mins = Math.ceil(diff / 60000);
+                        dueTxt = mins > 60 ? `⏱️ 約${Math.ceil(mins/60)}時間後` : `⏱️ あと${mins}分`;
+                    }
+                }
+
+                const isChecked = selectedWordIds.has(w.id) ? "checked" : "";
+
+                card.innerHTML = `
+                    <div class="li-checkbox-area">
+                        <input type="checkbox" class="li-checkbox" ${isChecked} onchange="toggleItemSelection('${w.id}')">
+                    </div>
+                    <div class="li-info" onclick="openEditModal('${w.id}')">
+                        <div style="font-weight:bold; font-size:17px; color:#000;">${w.en}</div>
+                        <div style="font-size:13px; color:#342a1e; margin-top:1px;">${w.ja}</div>
+                        <div>
+                            <span class="badge">${badgeTxt}</span>
+                            ${dueTxt ? `<span class="due-timer">${dueTxt}</span>` : ''}
+                            ${currentPlaylist === '__ALL__' ? `<span class="badge" style="background:rgba(0,0,0,0.04); color:#555;">📁${w.playlist}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="action-btns">
+                        <button class="btn-edit" onclick="openEditModal('${w.id}')">編集</button>
+                        <button class="btn-sub" onclick="resetWordSRS('${w.id}')">リセット</button>
+                        <button class="btn-d" onclick="deleteWord('${w.id}')">削除</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            updateBulkActionBarUI();
+        }
+
+        function updateUI() {
+            updatePlaylistDropdowns();
+            renderTabs();
+            renderWordList();
+            
+            const quizTarget = document.getElementById("quiz-from-playlist") ? document.getElementById("quiz-from-playlist").value : "__ALL__";
+            const pool = data.words.filter(w => quizTarget === "__ALL__" || w.playlist === quizTarget);
+            const msgEl = document.getElementById("limit-msg");
+            if(msgEl) {
+                msgEl.innerText = pool.length < 4 ? `⚠️ 単語数が不足しています (現在:${pool.length}/4件)` : `✅ 開始可能 (対象:${pool.length}件)`;
+            }
+        }
+
+        // ==================== クイズシステム ====================
+        function startQuiz(mode) {
+            const targetPl = document.getElementById("quiz-from-playlist").value;
+            let pool = data.words.filter(w => targetPl === "__ALL__" || w.playlist === targetPl);
+            if(pool.length < 4) { showToast("単語数が4件未満です。", true); return; }
+
+            quizMode = mode; const now = Date.now();
+            if(mode === 'new') quizWords = pool.filter(w => !w.status || w.status === 'new');
+            else if(mode === 'srs') quizWords = pool.filter(w => w.status === 'wait' && w.nextReview && w.nextReview <= now);
+            else if(mode === 'miss') quizWords = pool.filter(w => w.missCount && w.missCount > 0).sort((a,b) => b.missCount - a.missCount);
+            else quizWords = [...pool];
+
+            if(quizWords.length === 0) { showToast("対象となる単語がありません。", false); return; }
+
+            quizWords.sort(() => Math.random() - 0.5);
+            if(mode !== 'miss' && quizWords.length > 20) quizWords = quizWords.slice(0, 20);
+
+            currentQuizIndex = 0;
+            document.getElementById("quiz-setup").classList.add("hidden");
+            document.getElementById("abort-ui").classList.remove("hidden");
+            nextQuestion();
+        }
+
+        function abortQuiz() {
+            clearTimeout(quizTimerTimeout); clearInterval(countdownInterval);
+            document.getElementById("quiz-ui").classList.add("hidden");
+            document.getElementById("choice-ui").classList.add("hidden");
+            document.getElementById("abort-ui").classList.add("hidden");
+            document.getElementById("quiz-setup").classList.remove("hidden");
+            document.getElementById("q-display").innerText = "クイズ道場";
+        }
+
+        function nextQuestion() {
+            if(currentQuizIndex >= quizWords.length) {
+                document.getElementById("complete-modal").style.display = "flex"; abortQuiz(); return;
+            }
+            const w = quizWords[currentQuizIndex];
+            document.getElementById("q-display").innerText = w.en;
+
+            if(quizMode === 'all' || quizMode === 'miss' && Math.random() > 0.6) {
+                document.getElementById("quiz-ui").classList.remove("hidden");
+                document.getElementById("choice-ui").classList.add("hidden");
+                const inEl = document.getElementById("ans-in"); inEl.value = "";
+                setTimeout(() => { inEl.focus(); }, 50);
+            } else {
+                document.getElementById("quiz-ui").classList.add("hidden");
+                document.getElementById("choice-ui").classList.remove("hidden");
+                setupChoices(w);
+            }
+        }
+
+        function setupChoices(correctWord) {
+            const waitArea = document.getElementById("wait-area");
+            const grid = document.getElementById("choices-grid");
+            const timerTxt = document.getElementById("wait-timer");
+
+            grid.classList.add("hidden"); grid.classList.remove("choices-disabled"); waitArea.classList.remove("hidden");
+            const choiceCount = quizMode === 'srs' ? 6 : 4;
+            
+            let targetPl = document.getElementById("quiz-from-playlist").value;
+            let siblings = data.words.filter(w => (targetPl === "__ALL__" || w.playlist === targetPl) && w.id !== correctWord.id);
+            if(siblings.length < choiceCount - 1) siblings = data.words.filter(w => w.id !== correctWord.id);
+            
+            siblings.sort(() => Math.random() - 0.5);
+            let selectedChoices = siblings.slice(0, choiceCount - 1);
+            selectedChoices.push(correctWord); selectedChoices.sort(() => Math.random() - 0.5);
+
+            grid.innerHTML = "";
+            selectedChoices.forEach(c => {
+                const btn = document.createElement("div"); btn.className = "choice-btn"; btn.innerText = c.ja;
+                btn.onclick = () => handleChoiceCheck(c.id === correctWord.id, correctWord);
+                grid.appendChild(btn);
+            });
+
+            let waitSeconds = correctWord.missCount ? 2 + Math.min(6, correctWord.missCount * 2) : 2;
+            timerTxt.innerText = `選択肢表示まであと ${waitSeconds} 秒`;
+            
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                waitSeconds--;
+                if(waitSeconds <= 0) { clearInterval(countdownInterval); waitArea.classList.add("hidden"); grid.classList.remove("hidden"); }
+                else timerTxt.innerText = `選択肢表示まであと ${waitSeconds} 秒`;
+            }, 1000);
+
+            clearTimeout(quizTimerTimeout);
+            quizTimerTimeout = setTimeout(() => { clearInterval(countdownInterval); waitArea.classList.add("hidden"); grid.classList.remove("hidden"); }, waitSeconds * 1000);
+        }
+
+        function skipWait() {
+            clearInterval(countdownInterval); clearTimeout(quizTimerTimeout);
+            document.getElementById("wait-area").classList.add("hidden"); document.getElementById("choices-grid").classList.remove("hidden");
+        }
+
+        function handleCheck() {
+            const inEl = document.getElementById("ans-in"); const userAns = inEl.value.trim().toLowerCase();
+            const w = quizWords[currentQuizIndex]; if(!userAns) return;
+            processResult(w.ja.toLowerCase().includes(userAns) || userAns === w.ja.toLowerCase(), w);
+        }
+
+        function handleChoiceCheck(isCorrect, w) {
+            document.getElementById("choices-grid").classList.add("choices-disabled"); processResult(isCorrect, w);
+        }
+
+        function processResult(isCorrect, w) {
+            clearInterval(countdownInterval); clearTimeout(quizTimerTimeout);
+            const overlay = document.getElementById("bg-effect-overlay");
+            const effectLayer = document.getElementById("quiz-effect-layer"); effectLayer.innerHTML = "";
+            const mainDataWord = data.words.find(item => item.id === w.id);
+
+            if(isCorrect) {
+                overlay.className = "bg-correct-active"; setTimeout(() => { overlay.className = ""; }, 250);
+                const box = document.createElement("div"); box.className = "quiz-effect-box";
+                box.innerHTML = `<div class="quiz-effect-txt txt-correct">💮 CORRECT !!</div>`;
+                effectLayer.appendChild(box);
+
+                for(let i=0; i<15; i++){
+                    const p = document.createElement("div"); p.className = "particle";
+                    p.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+                    p.style.setProperty('--mx', `${(Math.random()-0.5)*200}px`); p.style.setProperty('--my', `${(Math.random()-0.5)*200}px`);
+                    box.appendChild(p);
+                }
+
+                if(mainDataWord) {
+                    mainDataWord.lastTested = Date.now();
+                    if(mainDataWord.status === 'new' || !mainDataWord.status || mainDataWord.status === 'miss') {
+                        mainDataWord.interval = 1; mainDataWord.status = 'wait';
+                    } else { mainDataWord.interval = mainDataWord.interval * 2 + 1; }
+                    mainDataWord.nextReview = Date.now() + (mainDataWord.interval * 60 * 1000); 
+                }
+            } else {
+                overlay.className = "bg-miss-active"; setTimeout(() => { overlay.className = ""; }, 250);
+                const box = document.createElement("div"); box.className = "quiz-effect-box";
+                box.innerHTML = `<div class="quiz-effect-txt txt-miss">❌ MISS</div><div class="miss-ans-subtext">正解: ${w.ja}</div>`;
+                effectLayer.appendChild(box);
+
+                if(mainDataWord) {
+                    mainDataWord.lastTested = Date.now(); mainDataWord.missCount = (mainDataWord.missCount || 0) + 1;
+                    mainDataWord.status = 'miss'; mainDataWord.interval = 0; mainDataWord.nextReview = null; 
+                }
+            }
+
+            saveData();
+            setTimeout(() => { effectLayer.innerHTML = ""; currentQuizIndex++; nextQuestion(); }, isCorrect ? 900 : 1850);
+        }
+
+        // ==================== 都会の夜景ハイウェイ背景アニメーション ====================
+        const canvas = document.getElementById('highway-canvas'); const ctx = canvas?.getContext('2d');
+        let backgroundLines = [];
+        function resizeCanvas() { if(!canvas) return; canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function initLines() {
+            backgroundLines = [];
+            for (let i = 0; i < 20; i++) {
+                backgroundLines.push({
+                    x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+                    length: Math.random() * 60 + 30, speed: Math.random() * 3 + 2,
+                    color: Math.random() > 0.5 ? '#ff0c00' : '#00ff80' 
+                });
+            }
+        }
+        function animateCity() {
+            if(!ctx || !canvas) return; ctx.clearRect(0, 0, canvas.width, canvas.height);
+            backgroundLines.forEach(l => {
+                ctx.beginPath(); ctx.moveTo(l.x, l.y); ctx.lineTo(l.x + l.length, l.y);
+                ctx.strokeStyle = l.color; ctx.lineWidth = 1.2; ctx.stroke();
+                l.x += l.speed; if (l.x > canvas.width) { l.x = -l.length; l.y = Math.random() * canvas.height; }
+            });
+            requestAnimationFrame(animateCity);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); initLines(); animateCity();
+
+        // キーボード表示等によるスクロールバグスマホ最適化
+        document.addEventListener('focusout', (e) => {
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+                setTimeout(() => { window.scrollTo({ top: 0, left: 0, behavior: 'smooth' }); }, 60);
+            }
+        });
+        document.addEventListener('focusin', (e) => {
+            if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+                setTimeout(() => { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 120);
+            }
+        });
+
+        // 起動時初期化
+        migrateToUnifiedData();
+        updateUI();
+        showPage('quiz');
+    </script>
+</body>
+</html>
