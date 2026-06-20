@@ -1,0 +1,63 @@
+{
+  "words": [
+    {
+      "id": "w-17819669803620.4083374634179613",
+      "en": "O",
+      "ja": "お",
+      "playlist": "a",
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0
+    },
+    {
+      "id": "w-17819669736680.9503723780972652",
+      "en": "E",
+      "ja": "え",
+      "playlist": "デフォルト",
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0
+    },
+    {
+      "id": "w-17819669690680.16520927321399104",
+      "en": "C",
+      "ja": "し",
+      "playlist": "デフォルト",
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0
+    },
+    {
+      "id": "w-17819669656740.6383341434001425",
+      "en": "B",
+      "ja": "び",
+      "playlist": "デフォルト",
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0
+    },
+    {
+      "id": "w-17819669624110.36957759820206926",
+      "en": "A",
+      "ja": "あ",
+      "playlist": "デフォルト",
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0
+    }
+  ],
+  "playlists": [
+    "デフォルト",
+    "a"
+  ]
+}
