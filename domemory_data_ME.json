@@ -15,7 +15,7 @@
       "id": "w-17819669736680.9503723780972652",
       "en": "E",
       "ja": "え",
-      "playlist": "デフォルト",
+      "playlist": "全て",
       "status": "miss",
       "missCount": 3,
       "lastTested": 1781967805201,
@@ -26,18 +26,19 @@
       "id": "w-17819669690680.16520927321399104",
       "en": "C",
       "ja": "し",
-      "playlist": "デフォルト",
+      "playlist": "全て",
       "status": "miss",
-      "missCount": 2,
-      "lastTested": 1781967808846,
+      "missCount": 5,
+      "lastTested": 1781970628588,
       "nextReview": null,
-      "interval": 0
+      "interval": 0,
+      "recentMissTimestamp": 1781970628588
     },
     {
       "id": "w-17819669656740.6383341434001425",
       "en": "B",
       "ja": "び",
-      "playlist": "デフォルト",
+      "playlist": "全て",
       "status": "miss",
       "missCount": 3,
       "lastTested": 1781967798993,
@@ -48,16 +49,19 @@
       "id": "w-17819669624110.36957759820206926",
       "en": "A",
       "ja": "あ",
-      "playlist": "デフォルト",
+      "playlist": "全て",
       "status": "wait",
       "missCount": 0,
-      "lastTested": 1781967770998,
-      "nextReview": 1781967830998,
-      "interval": 1
+      "lastTested": 1781970574135,
+      "nextReview": 1782056974135,
+      "interval": 1,
+      "recentMissTimestamp": null
     }
   ],
   "playlists": [
-    "デフォルト",
-    "a"
+    "全て",
+    "一度でも間違えた単語",
+    "a",
+    "A"
   ]
 }
