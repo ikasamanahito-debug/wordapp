@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v75 - Stream Highway Edition</title>
+    <title>Domemory v76 - Stream Highway Edition</title>
     <style>
         /* ==================== さわやかポップサイバー テーマ定義（真反対に反転） ==================== */
         :root { 
@@ -30,7 +30,7 @@
             background: var(--bg); 
             margin: 0; 
             color: var(--text); 
-            padding-bottom: calc(100px + env(safe-area-inset-bottom, 16px)); 
+            padding-bottom: calc(85px + env(safe-area-inset-bottom, 16px)); 
             overflow-x: hidden; 
             position: relative; 
             min-height: 100dvh; 
@@ -64,7 +64,7 @@
         }
 
         .page { 
-            padding: 15px; 
+            padding: 12px; 
             width: 100%;
             max-width: 500px; 
             margin: 0 auto; 
@@ -76,7 +76,7 @@
         .active { display: block; }
         
         #page-add, #page-quiz {
-            min-height: calc(100dvh - 100px);
+            min-height: calc(100dvh - 90px);
             display: none;
             flex-direction: column;
             justify-content: center; 
@@ -92,11 +92,11 @@
             background: var(--card-bg); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            padding: 20px; 
-            border-radius: 16px; 
-            box-shadow: 0 8px 32px rgba(255, 12, 0, 0.15); 
-            margin-bottom: 15px; 
-            border: 1px solid rgba(255, 12, 0, 0.25); 
+            padding: 16px; 
+            border-radius: 14px; 
+            box-shadow: 0 6px 24px rgba(255, 12, 0, 0.12); 
+            margin-bottom: 12px; 
+            border: 1px solid rgba(255, 12, 0, 0.22); 
             position: relative; 
             transition: all 0.3s ease; 
             width: 100%; 
@@ -106,7 +106,7 @@
         }
 
         .menu { 
-            background: rgba(249, 242, 233, 0.93); 
+            background: rgba(249, 242, 233, 0.95); 
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px); 
             color: #000; 
@@ -114,224 +114,188 @@
             bottom: 0; left: 0; right: 0; 
             display: flex; 
             justify-content: space-around; 
-            padding: 12px 0 calc(12px + env(safe-area-inset-bottom, 16px)) 0; 
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 12px)) 0; 
             z-index: 2000; 
             border-top: 2px solid rgba(255, 12, 0, 0.3); 
             box-shadow: 0 -4px 20px rgba(255, 12, 0, 0.1); 
         }
         .menu button { 
-            height: 40px;
+            height: 44px;
             background: none; 
             color: #8f7764; 
-            font-size: 20px; 
+            font-size: 11px; 
             font-weight: bold;
             border: none; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            gap: 4px; 
+            justify-content: center;
+            gap: 2px; 
             flex: 1; 
             cursor: pointer; 
             transition: color 0.2s ease;
         }
+        .menu button span-icon {
+            font-size: 18px;
+        }
         .menu button.active-nav { 
             color: var(--p); 
-            text-shadow: 0 0 8px rgba(255, 12, 0, 0.6); 
+            text-shadow: 0 0 8px rgba(255, 12, 0, 0.5); 
         }
 
-        .status-miss { background-color: rgba(0, 255, 128, 0.15) !important; border-left: 6px solid var(--acc); border-right: 1px solid var(--acc); } 
-        .status-new { background-color: rgba(255, 0, 51, 0.1) !important; border-left: 6px solid var(--new); } 
-        .status-wait { background-color: rgba(255, 12, 0, 0.1) !important; border-left: 6px solid var(--p); } 
-        .status-veteran { background-color: rgba(0, 25, 255, 0.1) !important; border-left: 6px solid var(--gold); border: 1px solid var(--gold); } 
+        .status-miss { background-color: rgba(0, 255, 128, 0.12) !important; border-left: 5px solid var(--acc); border-right: 1px solid var(--acc); } 
+        .status-new { background-color: rgba(255, 0, 51, 0.08) !important; border-left: 5px solid var(--new); } 
+        .status-wait { background-color: rgba(255, 12, 0, 0.08) !important; border-left: 5px solid var(--p); } 
+        .status-veteran { background-color: rgba(0, 25, 255, 0.08) !important; border-left: 5px solid var(--gold); border: 1px solid var(--gold); } 
 
         input, select, textarea { 
             width: 100%; 
             max-width: 100%;
-            padding: 14px; 
-            margin: 8px 0; 
-            font-size: 16px !important; 
-            border: 2px solid rgba(255, 12, 0, 0.3); 
-            border-radius: 10px; 
+            padding: 11px 14px; 
+            margin: 6px 0; 
+            font-size: 15px !important; 
+            border: 2px solid rgba(255, 12, 0, 0.25); 
+            border-radius: 9px; 
             outline: none; 
             scroll-margin-top: 80px;
             background: rgba(0, 0, 0, 0.95); 
             color: var(--text-dark);
             font-family: inherit; 
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1); 
             transition: border-color 0.2s;
         }
         input:focus, select:focus, textarea:focus {
             border-color: var(--p);
-            box-shadow: 0 0 8px rgba(255, 12, 0, 0.5); 
+            box-shadow: 0 0 6px rgba(255, 12, 0, 0.4); 
         }
-        textarea { resize: vertical; min-height: 120px; }
+        textarea { resize: vertical; min-height: 100px; }
+
+        .search-bar-container {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .search-input {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            border: 2px solid rgba(255, 12, 0, 0.3);
+            font-weight: 500;
+        }
+        .search-input::placeholder {
+            color: #777;
+        }
 
         .main-btn { 
             width: 100%; 
             max-width: 100%;
-            padding: 15px; 
+            padding: 12px; 
             border: none; 
-            border-radius: 10px; 
-            font-size: 16px; 
+            border-radius: 9px; 
+            font-size: 15px; 
             font-weight: bold; 
             cursor: pointer; 
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(255,255,255,0.2); 
-            text-shadow: 0 1px 2px rgba(255,255,255,0.3); 
         }
         .main-btn:active { transform: scale(0.98); }
         
         .btn-p { background: linear-gradient(135deg, var(--p), var(--p-dark)); color: var(--text-dark); }
-        .btn-sub { background: rgba(0, 0, 0, 0.15); color: #000; padding: 6px 10px; font-size: 12px; border: 1px solid rgba(0,0,0,0.2); border-radius: 6px; cursor: pointer; } 
-        .btn-edit { background: linear-gradient(135deg, var(--gold), #334900); color: var(--text-dark); padding: 6px 10px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; } 
-        .btn-d { background: linear-gradient(135deg, var(--danger), #33dbdb); color: #000; padding: 6px 10px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; } 
+        .btn-sub { background: rgba(0, 0, 0, 0.08); color: #000; padding: 5px 8px; font-size: 11px; border: 1px solid rgba(0,0,0,0.15); border-radius: 5px; cursor: pointer; } 
+        .btn-edit { background: linear-gradient(135deg, var(--gold), #1122cc); color: var(--text-dark); padding: 5px 8px; font-size: 11px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; } 
+        .btn-d { background: linear-gradient(135deg, var(--danger), #33dbdb); color: #000; padding: 5px 8px; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: bold; } 
         
-        .q-text { font-size: 32px; font-weight: bold; margin: 25px 0; text-align: center; word-break: break-all; color: #000000; } 
-        .countdown { font-size: 80px; color: var(--p); text-align: center; font-weight: bold; margin: 20px 0; text-shadow: 0 0 20px rgba(255, 12, 0, 0.6); } 
+        .q-text { font-size: 28px; font-weight: bold; margin: 20px 0; text-align: center; word-break: break-all; color: #000000; } 
+        .countdown { font-size: 70px; color: var(--p); text-align: center; font-weight: bold; margin: 15px 0; text-shadow: 0 0 15px rgba(255, 12, 0, 0.6); } 
         
         #quiz-ui-container { position: relative; width: 100%; }
 
-        .choices-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; width: 100%; }
-        .choice-btn { background: rgba(0, 0, 0, 0.95); border: 2px solid rgba(255, 12, 0, 0.2); padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; color: var(--text-dark); text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(255,255,255,0.15); transition: all 0.1s ease; } 
+        .choices-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; width: 100%; }
+        .choice-btn { background: rgba(0, 0, 0, 0.95); border: 2px solid rgba(255, 12, 0, 0.15); padding: 14px; border-radius: 10px; font-size: 15px; font-weight: bold; color: var(--text-dark); text-align: center; cursor: pointer; transition: all 0.1s ease; } 
         .choice-btn:active { transform: scale(0.97); background: var(--p); color: var(--text-dark); }
         .choices-disabled .choice-btn { pointer-events: none; opacity: 0.4; } 
 
-        .wait-timer { font-size: 15px; color: var(--new); text-align: center; margin-bottom: 10px; font-weight: bold; text-shadow: 0 0 8px rgba(255, 0, 51, 0.4); } 
+        .wait-timer { font-size: 14px; color: var(--new); text-align: center; margin-bottom: 8px; font-weight: bold; } 
 
         .tabs { 
             display: flex; 
             overflow-x: auto; 
             overflow-y: hidden;
-            gap: 8px; 
-            padding: 10px 4px; 
+            gap: 6px; 
+            padding: 6px 2px; 
             width: 100%; 
             -webkit-overflow-scrolling: touch; 
-            position: relative;
-            z-index: 100;
         }
-        .tabs::-webkit-scrollbar { 
-            display: block;
-            margin-top: 44px;
-            height: 20px; 
-        }
-        .tabs::-webkit-scrollbar-thumb {
-            background: rgba(255, 12, 0, 0.3); 
-            border-radius: 2px;
-        }
+        .tabs::-webkit-scrollbar { display: none; }
         
         .tab { 
             display: inline-block;
             white-space: nowrap; 
-            background: rgba(0,0,0,0.1); 
-            border: 1px solid rgba(255,12,0,0.2); 
-            padding: 8px 16px; 
-            border-radius: 20px; 
-            font-size: 13px; 
+            background: rgba(0,0,0,0.06); 
+            border: 1px solid rgba(255,12,0,0.15); 
+            padding: 6px 12px; 
+            border-radius: 16px; 
+            font-size: 12px; 
             color: #000; 
             cursor: pointer; 
-            backdrop-filter: blur(5px); 
-            -webkit-backdrop-filter: blur(5px);
             flex-shrink: 0; 
         }
-        .tab-active { background: var(--p); color: var(--text-dark); font-weight: bold; box-shadow: 0 0 10px rgba(255,12,0,0.4); border-color: var(--p); } 
+        .tab-active { background: var(--p); color: var(--text-dark); font-weight: bold; border-color: var(--p); } 
 
-        .sub-tabs { display: flex; gap: 6px; background: rgba(255,255,255,0.3); padding: 4px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.1); width: 100%; } 
-        .sub-tab { flex: 1; text-align: center; padding: 10px; font-size: 13px; font-weight: bold; color: #5f4f3f; border-radius: 8px; cursor: pointer; transition: all 0.2s; } 
-        .sub-tab-active { background: var(--p); color: var(--text-dark); box-shadow: 0 2px 8px rgba(255,12,0,0.3); } 
+        .sub-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.4); padding: 3px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(0,0,0,0.08); width: 100%; } 
+        .sub-tab { flex: 1; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; color: #5f4f3f; border-radius: 6px; cursor: pointer; } 
+        .sub-tab-active { background: var(--p); color: var(--text-dark); } 
 
-        .li-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; position: relative; padding: 14px; width: 100%; }
-        .li-checkbox-area { display: flex; align-items: center; justify-content: center; padding-right: 2px; flex-shrink: 0; }
-        .li-checkbox { width: 24px; height: 24px; cursor: pointer; accent-color: var(--p); margin: 0; }
-        .li-info { flex: 1; min-width: 0; word-break: break-all; padding-right: 4px; } 
-        .action-btns { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; justify-content: center; z-index: 10; width: 70px; } 
-        .action-btns button { text-align: center; width: 100%; padding: 6px 4px; }
+        .li-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; position: relative; padding: 12px; width: 100%; }
+        .li-checkbox-area { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .li-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: var(--p); margin: 0; }
+        .li-info { flex: 1; min-width: 0; word-break: break-all; padding-left: 4px; } 
+        .action-btns { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; justify-content: center; width: 66px; } 
+        .action-btns button { text-align: center; width: 100%; padding: 5px 2px; font-size: 10px; }
 
-        .badge { display: inline-block; padding: 3px 8px; font-size: 11px; border-radius: 4px; margin-top: 6px; font-weight: bold; background: rgba(0,0,0,0.15); color: #000; } 
-        .due-timer { font-size: 11px; color: #543f2f; margin-top: 6px; margin-left: 5px; display: inline-block; } 
+        .badge { display: inline-block; padding: 2px 6px; font-size: 10px; border-radius: 3px; margin-top: 4px; font-weight: bold; background: rgba(0,0,0,0.1); color: #000; } 
+        .due-timer { font-size: 10px; color: #543f2f; margin-top: 4px; margin-left: 4px; display: inline-block; } 
 
         .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100dvh; background:rgba(251, 247, 240, 0.8); z-index:3000; align-items:center; justify-content:center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 20px; } 
         .hidden { display: none !important; }
-        .abort-container { margin-top: 20px; text-align: center; border-top: 1px dashed rgba(255,12,0,0.3); padding-top: 15px; width: 100%; } 
+        .abort-container { margin-top: 15px; text-align: center; border-top: 1px dashed rgba(255,12,0,0.2); padding-top: 10px; width: 100%; } 
         
-        .pl-actions-container { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 15px; width: 100%; margin-top:7px; }
-        .bulk-action-bar { background: rgba(239, 231, 219, 0.95); border: 2px solid var(--p); border-radius: 14px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 20px rgba(255,12,0,0.2); animation: slideDown 0.2s ease; width: 100%; } 
-        @keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .pl-actions-container { display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 10px; width: 100%; margin-top:4px; }
+        .bulk-action-bar { background: rgba(239, 231, 219, 0.95); border: 2px solid var(--p); border-radius: 12px; padding: 12px; margin-bottom: 12px; width: 100%; } 
 
-        .prompt-example-box { background: rgba(0,0,0,0.05); border-left: 4px solid var(--p); padding: 12px; border-radius: 0 8px 8px 0; margin-top: 15px; font-size: 12px; color: #333; line-height: 1.5; width: 100%; } 
-        .prompt-code-block { background: rgba(255,255,255,0.4); border: 1px solid rgba(255,12,0,0.2); color: #ff0033; padding: 10px; border-radius: 6px; margin-top: 6px; font-family: monospace; white-space: pre-wrap; word-break: break-all; font-size: 11px; } 
+        .prompt-example-box { background: rgba(0,0,0,0.04); border-left: 4px solid var(--p); padding: 10px; border-radius: 0 6px 6px 0; margin-top: 12px; font-size: 11px; color: #333; line-height: 1.4; width: 100%; } 
+        .prompt-code-block { background: rgba(255,255,255,0.4); border: 1px solid rgba(255,12,0,0.15); color: #ff0033; padding: 8px; border-radius: 5px; margin-top: 4px; font-family: monospace; white-wrap: pre-wrap; word-break: break-all; font-size: 10px; } 
         
-        .mode-desc-container { margin-top: 25px; border-top: 1px dashed rgba(255,12,0,0.3); padding-top: 15px; width: 100%; } 
-        .mode-desc-title { font-size: 13px; font-weight: bold; color: var(--p); margin-bottom: 10px; display: flex; align-items: center; gap: 4px; }
-        .mode-desc-item { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 12px; line-height: 1.4; color: #342a1e; } 
-        .mode-desc-tag { display: inline-block; padding: 2px 6px; font-size: 10px; font-weight: bold; border-radius: 4px; color: var(--text-dark); margin-right: 6px; vertical-align: middle; }
+        .mode-desc-container { margin-top: 15px; border-top: 1px dashed rgba(255,12,0,0.2); padding-top: 12px; width: 100%; } 
+        .mode-desc-title { font-size: 12px; font-weight: bold; color: var(--p); margin-bottom: 8px; }
+        .mode-desc-item { background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; font-size: 11px; color: #342a1e; } 
+        .mode-desc-tag { display: inline-block; padding: 1px 5px; font-size: 9px; font-weight: bold; border-radius: 3px; color: var(--text-dark); margin-right: 4px; }
 
-        #toast-container { position: fixed; top: 20px; left: 0; right: 0; margin: 0 auto; z-index: 9999; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: rgba(239, 231, 219, 0.95); color: #000; padding: 15px 20px; border-radius: 12px; font-size: 14px; font-weight: bold; box-shadow: 0 8px 24px rgba(255,12,0,0.25); display: flex; align-items: center; justify-content: center; animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, toastOut 0.3s ease 2.7s forwards; border-left: 6px solid var(--p); pointer-events: auto; border-top: 1px solid rgba(255,12,0,0.2); width: 100%; text-align: center; } 
-        .toast.toast-error { border-left-color: var(--danger); box-shadow: 0 8px 24px rgba(0,204,204,0.25); } 
+        #toast-container { position: fixed; top: 20px; left: 0; right: 0; margin: 0 auto; z-index: 9999; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+        .toast { background: rgba(239, 231, 219, 0.95); color: #000; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: bold; box-shadow: 0 6px 20px rgba(255,12,0,0.2); display: flex; align-items: center; justify-content: center; animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, toastOut 0.3s ease 2.7s forwards; border-left: 5px solid var(--p); pointer-events: auto; width: 100%; text-align: center; } 
+        .toast.toast-error { border-left-color: var(--danger); } 
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-        #bg-effect-overlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100dvh; 
-            pointer-events: none; 
-            z-index: 5; 
-            opacity: 0; 
-            transition: all 0.2s ease; 
-        }
+        #bg-effect-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; pointer-events: none; z-index: 5; opacity: 0; transition: all 0.2s ease; }
         .bg-correct-active { opacity: 1 !important; background: rgba(255, 0, 51, 0.1); } 
         .bg-miss-active { opacity: 1 !important; background: rgba(0, 255, 128, 0.15) !important; } 
 
-        #quiz-effect-layer { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            pointer-events: none; 
-            z-index: 1500; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        
-        .quiz-effect-box {
-            background: rgba(244, 235, 221, 0.96); 
-            padding: 16px 24px;         
-            border-radius: 12px;         
-            box-shadow: 0 8px 32px rgba(255,12,0,0.3); 
-            border: 1px solid rgba(255,12,0,0.3); 
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;                 
-            position: relative;
-        }
-
-        .quiz-effect-txt { font-size: 38px; font-weight: 900; position: relative; z-index: 1600; letter-spacing: 2px; text-align: center; width: 100%; }
+        #quiz-effect-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1500; display: flex; justify-content: center; align-items: center; }
+        .quiz-effect-box { background: rgba(244, 235, 221, 0.96); padding: 14px 20px; border-radius: 10px; box-shadow: 0 6px 24px rgba(255,12,0,0.25); border: 1px solid rgba(255,12,0,0.25); display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+        .quiz-effect-txt { font-size: 34px; font-weight: 900; letter-spacing: 1px; text-align: center; width: 100%; }
         
         .txt-correct { background: linear-gradient(90deg, #ff0033, #ff1200, #0019ff, #ff1200, #ff0033); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldWhiteFlow 2s linear infinite, correctPop 800ms ease-out forwards; } 
-        @keyframes goldWhiteFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes correctPop { 0% { transform: scale(0.6); opacity: 0; } 25% { transform: scale(1.05); opacity: 1; } 85% { transform: scale(1.0); opacity: 1; } 100% { transform: scale(0.95); opacity: 0; } }
         
-        .particle { position: absolute; width: 7px; height: 7px; border-radius: 50%; pointer-events: none; animation: particleBlow 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; left: 50%; top: 50%; }
+        .particle { position: absolute; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; animation: particleBlow 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; left: 50%; top: 50%; }
         @keyframes particleBlow { 0% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(calc(-50% + var(--mx)), calc(-50% + var(--my))) scale(0); opacity: 0; } }
 
-        .txt-miss { background: linear-gradient(135deg, #00ff80, #00cccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 36px; animation: missShake 1950ms ease-in-out forwards; text-shadow: 0 0 10px rgba(0,255,128,0.3); width: 100%; text-align: center; } 
-        .miss-ans-subtext { display: block; font-size: 15px; color: #000; font-weight: bold; background: rgba(0,0,0,0.1); padding: 10px 14px; border-radius: 8px; margin-top: 8px; border: 1px solid rgba(255,12,0,0.2); max-width: 100%; word-break: break-all; text-align: center; } 
-        @keyframes missShake { 0% { transform: translateX(0) scale(0.9); opacity: 0; } 4%, 12%, 20%, 28% { transform: translateX(-5px); opacity: 1; } 8%, 16%, 24%, 32% { transform: translateX(5px); } 36% { transform: translateX(0) translateY(0); opacity: 1; } 88% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(15px); opacity: 0; } }
+        .txt-miss { background: linear-gradient(135deg, #00ff80, #00cccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; animation: missShake 1950ms ease-in-out forwards; width: 100%; text-align: center; } 
+        .miss-ans-subtext { display: block; font-size: 14px; color: #000; font-weight: bold; background: rgba(0,0,0,0.08); padding: 8px 12px; border-radius: 6px; margin-top: 6px; border: 1px solid rgba(255,12,0,0.15); width: 100%; text-align: center; word-break: break-all; } 
+        @keyframes missShake { 0% { transform: translateX(0) scale(0.9); opacity: 0; } 4%, 12%, 20%, 28% { transform: translateX(-4px); opacity: 1; } 8%, 16%, 24%, 32% { transform: translateX(4px); } 36% { transform: translateX(0) translateY(0); opacity: 1; } 88% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(15px); opacity: 0; } }
 
-        .txt-complete { background: linear-gradient(90deg, var(--acc), var(--shuffle), var(--p), var(--new), var(--gold)); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: rainbowFlow 4s linear infinite, completeZoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; font-size: 38px; font-weight: 900; text-align: center; margin-bottom: 15px; }
-        @keyframes rainbowFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .txt-complete { background: linear-gradient(90deg, var(--acc), var(--shuffle), var(--p), var(--new), var(--gold)); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: rainbowFlow 4s linear infinite, completeZoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; font-size: 34px; font-weight: 900; text-align: center; margin-bottom: 12px; }
         @keyframes completeZoom { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
 
-        .confirm-btn-grid { display: flex; gap: 10px; margin-top: 20px; width: 100%; }
-        .confirm-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        .confirm-btn-grid { display: flex; gap: 8px; margin-top: 15px; width: 100%; }
+        .confirm-btn { flex: 1; padding: 10px; border: none; border-radius: 7px; font-size: 14px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -345,42 +309,42 @@
     <div id="bg-effect-overlay"></div>
 
     <div id="confirm-modal" class="modal-overlay" style="z-index: 5000;">
-        <div class="card" style="width:85%; max-width:350px; text-align: center; animation: completeZoom 0.3s ease;">
-            <h3 style="margin-top:0; color:#000;" id="confirm-title">最終確認</h3> 
-            <p id="confirm-msg" style="font-size:14px; color:#342a1e; line-height:1.5; margin-bottom:20px;">本当に実行しますか？</p> 
+        <div class="card" style="width:85%; max-width:330px; text-align: center;">
+            <h3 style="margin-top:0;" id="confirm-title">最終確認</h3> 
+            <p id="confirm-msg" style="font-size:13px; color:#342a1e; line-height:1.5; margin-bottom:15px;"></p> 
             <div class="confirm-btn-grid">
-                <button class="confirm-btn" style="background:rgba(0,0,0,0.2); color:#000;" id="confirm-cancel-btn">いいえ</button> 
-                <button class="confirm-btn" style="background:linear-gradient(135deg, var(--danger), #33dbdb); color:#000;" id="confirm-ok-btn">はい</button> 
+                <button class="confirm-btn" style="background:rgba(0,0,0,0.15);" id="confirm-cancel-btn">いいえ</button> 
+                <button class="confirm-btn" style="background:linear-gradient(135deg, var(--danger), #33dbdb);" id="confirm-ok-btn">はい</button> 
             </div>
         </div>
     </div>
 
     <div id="complete-modal" class="modal-overlay">
-        <div class="card" style="width:85%; max-width:380px; text-align: center; padding: 30px 20px;">
+        <div class="card" style="width:85%; max-width:350px; text-align: center; padding: 25px 15px;">
             <div class="txt-complete">🎉 COMPLETE !!</div>
-            <p style="font-size:16px; font-weight:bold; color:#1d170f; margin: 0 0 20px 0;">すべてのクイズが終了しました！</p> 
-            <button class="main-btn btn-p" onclick="closeModal('complete-modal')">達成感を胸に戻る</button>
+            <p style="font-size:15px; font-weight:bold; margin: 0 0 15px 0;">すべてのクイズが終了しました！</p> 
+            <button class="main-btn btn-p" onclick="closeModal('complete-modal')">戻る</button>
         </div>
     </div>
 
     <div id="list-modal" class="modal-overlay">
-        <div class="card" style="width:85%; max-width:350px;">
-            <h3 style="margin-top:0">追加先のリストを選択</h3>
+        <div class="card" style="width:85%; max-width:330px;">
+            <h3 style="margin-top:0">移動先のフォルダを選択</h3>
             <select id="modal-pl-select"></select>
-            <div style="display:flex; gap:10px; margin-top:10px;">
-                <button class="main-btn" style="background:rgba(0,0,0,0.2); color:#000; flex:1;" onclick="closeModal('list-modal')">戻る</button> 
-                <button class="main-btn btn-p" style="flex:1;" onclick="executeAddToList()">追加</button>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+                <button class="main-btn" style="background:rgba(0,0,0,0.15); flex:1;" onclick="closeModal('list-modal')">戻る</button> 
+                <button class="main-btn btn-p" style="flex:1;" onclick="executeAddToList()">移動する</button>
             </div>
         </div>
     </div>
 
     <div id="edit-modal" class="modal-overlay">
-        <div class="card" style="width:85%; max-width:350px;">
+        <div class="card" style="width:85%; max-width:330px;">
             <h3 style="margin-top:0">単語を編集</h3>
-            <label style="font-size:12px; color:#543f2f;">English</label> <input id="edit-en-in" type="text" autocomplete="off">
-            <label style="font-size:12px; color:#543f2f;">日本語</label> <input id="edit-ja-in" type="text" autocomplete="off">
-            <div style="display:flex; gap:10px; margin-top:15px;">
-                <button class="main-btn" style="background:rgba(0,0,0,0.2); color:#000; flex:1;" onclick="closeModal('edit-modal')">戻る</button> 
+            <label style="font-size:11px; color:#543f2f;">English</label> <input id="edit-en-in" type="text" autocomplete="off">
+            <label style="font-size:11px; color:#543f2f;">日本語</label> <input id="edit-ja-in" type="text" autocomplete="off">
+            <div style="display:flex; gap:8px; margin-top:12px;">
+                <button class="main-btn" style="background:rgba(0,0,0,0.15); flex:1;" onclick="closeModal('edit-modal')">戻る</button> 
                 <button class="main-btn btn-edit" style="flex:1;" onclick="executeEditWord()">更新</button>
             </div>
         </div>
@@ -388,9 +352,9 @@
 
     <div id="page-add" class="page">
         <div class="card">
-            <h2 style="margin:0 0 15px 0; color:var(--p); text-shadow:0 0 8px rgba(255,12,0,0.3)">単語を登録</h2> 
-            <label style="font-size:12px; color:#543f2f; font-weight:bold;">追加先フォルダ</label> 
-            <select id="add-to-playlist" style="margin-top:4px; margin-bottom:15px;"></select>
+            <h2 style="margin:0 0 12px 0; color:var(--p); text-shadow:0 0 6px rgba(255,12,0,0.2)">単語を登録</h2> 
+            <label style="font-size:11px; color:#543f2f; font-weight:bold;">追加先フォルダ</label> 
+            <select id="add-to-playlist" style="margin-top:4px; margin-bottom:12px;"></select>
 
             <div class="sub-tabs">
                 <div id="sub-tab-single" class="sub-tab sub-tab-active" onclick="switchAddMode('single')">1件ずつ登録</div>
@@ -404,20 +368,11 @@
             </div>
 
             <div id="add-bulk-container" class="hidden" style="width: 100%;">
-                <p style="font-size:12px; color:#543f2f; margin: 0 0 8px 0; line-height: 1.4;"> 
-                    AIが抽出したテキストをそのまま貼り付けてください。<br>
-                    行ごとに <b>英語,日本語</b> の形式で解析してまとめて保存します。
-                </p>
-                <textarea id="bulk-import-area" placeholder="rational, 合理的な、理性的な&#10;irrational, 非合理的な&#10;reason, 理由、根拠、理性、論理的に考える"></textarea>
-                <button class="main-btn btn-p" style="background:linear-gradient(135deg, var(--new), #ff4c70); color:var(--text-dark); margin-bottom: 10px;" onclick="saveBulkWords()">一括保存する</button> 
+                <textarea id="bulk-import-area" placeholder="rational, 合理的な&#10;irrational, 非合理的な"></textarea>
+                <button class="main-btn btn-p" style="background:linear-gradient(135deg, var(--new), #ff4c70); margin-bottom: 8px;" onclick="saveBulkWords()">一括保存する</button> 
                 <div class="prompt-example-box">
-                    <span style="font-weight: bold; color: var(--p);">💡 AI（Geminiなど）への指示文テンプレート</span><br>
-                    単語帳の写真をAIに送る際、以下の文章をコピーして指示文として使ってください。
-                    <div class="prompt-code-block" id="prompt-text-template">添付した画像から、見出し英単語と、それに対応する日本語訳だけをすべて抜き出してください。
-以下のフォーマット（英語と日本語を半角カンマで区切る形）だけで出力してください。
-
-【出力フォーマット】
-hurtle, 突進する
+                    <span style="font-weight: bold; color: var(--p);">💡 AIへのフォーマット指示</span>
+                    <div class="prompt-code-block" id="prompt-text-template">hurtle, 突進する
 lineage, 血統
 accomplish, 達成</div>
                 </div>
@@ -440,80 +395,35 @@ accomplish, 達成</div>
                 <div id="choice-ui" class="hidden">
                     <div id="wait-area">
                         <div id="wait-timer" class="wait-timer">選択肢表示まであと 8 秒</div>
-                        <button class="main-btn btn-sub" style="width:100%; margin-bottom:10px;" onclick="skipWait()">今すぐ表示</button>
+                        <button class="main-btn btn-sub" style="width:100%; margin-bottom:8px;" onclick="skipWait()">今すぐ表示</button>
                     </div>
                     <div id="choices-grid" class="choices-grid hidden"></div>
                 </div>
             </div>
 
             <div id="abort-ui" class="abort-container hidden">
-                <button class="btn-sub" style="background:none; color:#543f2f; text-decoration:underline; border:none;" onclick="abortQuiz()">クイズを中止する</button>
+                <button class="btn-sub" style="background:none; border:none; text-decoration:underline;" onclick="abortQuiz()">クイズを中止する</button>
             </div>
 
             <div id="quiz-setup" style="width: 100%;">
-                <p style="text-align:center; font-weight: bold; color:#000;">対象: <select id="quiz-from-playlist" style="width:auto; display:inline-block; padding:8px 12px; margin:0; background:rgba(0,0,0,0.95); color:var(--text-dark);"></select></p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:10px;">
-                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(203, 139, 74), rgb(214, 164, 112)); color: #000000;" onclick="startQuiz('new')">新規(4択)</button>
-                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(187, 115, 139), rgb(202, 148, 166)); color: #000000;" onclick="startQuiz('srs')">復習(6択)</button>
+                <p style="text-align:center; font-weight: bold;">対象: <select id="quiz-from-playlist" style="width:auto; display:inline-block; padding:6px 10px; margin:0; background:rgba(0,0,0,0.95); color:var(--text-dark);"></select></p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom:8px;">
+                    <button class="main-btn" style="background: linear-gradient(135deg, #cb8b4a, #d6a470);" onclick="startQuiz('new')">新規(4択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, #bb738b, #ca94a6);" onclick="startQuiz('srs')">復習(6択)</button>
                 </div>
-                <button class="main-btn" style="background: linear-gradient(135deg, rgb(65, 150, 175), rgb(105, 180, 200)); color: #000000; margin-bottom: 10px;" onclick="startQuiz('miss')">苦手特訓(4択)</button>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(145, 155, 115), rgb(170, 180, 145)); color: #000000;" onclick="startQuiz('all_choice')">既習(選択)</button>
-                    <button class="main-btn" style="background: linear-gradient(135deg, rgb(145, 155, 115), rgb(170, 180, 145)); color: #000000;" onclick="startQuiz('all')">既習(入力)</button>
+                <button class="main-btn" style="background: linear-gradient(135deg, #4196af, #69b4c8); margin-bottom: 8px;" onclick="startQuiz('miss')">苦手特訓(4択)</button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button class="main-btn" style="background: linear-gradient(135deg, #919b73, #aab491);" onclick="startQuiz('all_choice')">既習(選択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, #919b73, #aab491);" onclick="startQuiz('all')">既習(入力)</button>
                 </div>
-                <p id="limit-msg" style="font-size:11px; color: rgba(203, 139, 74, 0.9); text-align:center; margin-top:10px; font-weight:bold;">※4単語以上の登録で開始できます</p>
-                
-                <div class="mode-desc-container" style="background: rgb(10, 8, 5); border: 1px solid rgb(37, 24, 10); border-radius:12px; padding:15px; margin-top:20px;">
-                    <div class="mode-desc-title">💡 出題モードのルール解説</div>
-                    <div class="mode-desc-item">
-                        <span class="mode-desc-tag" style="background:rgb(203, 139, 74);">新規</span> まだテストしていない新単語のみが出題されます。(4択)
-                    </div>
-                    <div class="mode-desc-item">
-                        <span class="mode-desc-tag" style="background:rgb(187, 115, 139);">復習</span> 忘却曲線(SRS)に基づき、復習タイミングが来た単語が出題されます。(6択)
-                    </div>
-                    <div class="mode-desc-item">
-                        <span class="mode-desc-tag" style="background:rgb(65, 150, 175);">苦手特訓</span> 間違えた回数が1回以上の単語が、ミス数の多い順に出題されます。(4択)
-                    </div>
-                    <div class="mode-desc-item">
-                        <span class="mode-desc-tag" style="background:rgb(145, 155, 115);">既習</span> 一度でもテストしたことのある単語がランダムに出題されます。(選択/入力)
-                    </div>
-                </div>
+                <p id="limit-msg" style="font-size:11px; color: #cb8b4a; text-align:center; margin-top:8px; font-weight:bold;"></p>
             </div>
         </div>
     </div>
 
     <div id="page-list" class="page">
-        <div class="card" style="border: 2px solid var(--gold);">
-            <h3 style="margin:0 0 10px 0; color:var(--gold); display:flex; align-items:center; gap:6px;">☁️ GitHub クラウド同期設定</h3>
-            <p style="font-size:12px; color:#543f2f; margin:0 0 10px 0; line-height:1.4;">
-                名義ごとのデータ識別キーを使って、狙ったJSONデータベース（DB）を読み書きします。
-            </p>
-            <label style="font-size:11px; color:#543f2f; font-weight:bold;">GitHub ユーザー名</label>
-            <input id="gh-user" type="text" placeholder="example-user" autocomplete="off" style="padding:10px; margin:4px 0 10px 0;">
-            
-            <label style="font-size:11px; color:#543f2f; font-weight:bold;">リポジトリ名</label>
-            <input id="gh-repo" type="text" placeholder="my-domemory-db" autocomplete="off" style="padding:10px; margin:4px 0 10px 0;">
-            
-            <label style="font-size:11px; color:#543f2f; font-weight:bold;">パーソナルアクセストークン (ghp_...)</label>
-            <input id="gh-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" style="padding:10px; margin:4px 0 10px 0;">
-
-            <label style="font-size:11px; color:var(--p); font-weight:bold;">あなたのなまえ（識別用の名義：例 me や A）</label>
-            <input id="gh-name" type="text" placeholder="me" autocomplete="off" style="padding:10px; margin:4px 0 12px 0; border-color:var(--p);">
-            
-            <button class="main-btn btn-edit" style="width:100%; margin-bottom:10px; background:linear-gradient(135deg, var(--gold), #001299);" onclick="saveGitHubSettings()">設定を保存</button>
-            
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
-                <button class="main-btn" style="background:linear-gradient(135deg, #00ff80, #00994d); color:#000; padding:12px 5px; font-size:14px;" onclick="syncToGitHubCloud()">クラウドへ保存</button>
-                <button class="main-btn" style="background:linear-gradient(135deg, #00cccc, #008080); color:#000; padding:12px 5px; font-size:14px;" onclick="loadFromGitHubCloud()">クラウドから読込</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3 style="margin:0 0 10px 0;">新規フォルダ作成</h3>
-            <div style="display:flex; gap:8px;">
-                <input id="new-playlist-name" type="text" placeholder="例: Eiken Pre-1" autocomplete="off" style="margin:0;">
-                <button class="main-btn btn-p" style="width:auto; padding:0 20px; white-space:nowrap;" onclick="createPlaylist()">作成</button>
-            </div>
+        <div class="search-bar-container">
+            <input type="text" id="word-search-input" class="search-input" placeholder="🔍 単語・意味を検索..." autocomplete="off" oninput="renderWordList()">
         </div>
 
         <div class="tabs" id="list-tabs-container"></div>
@@ -523,26 +433,60 @@ accomplish, 達成</div>
         </div>
 
         <div id="bulk-action-bar" class="bulk-action-bar hidden">
-            <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:var(--p);">一括操作メニュー (<span id="selected-count">0</span>件選択中)</div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div style="font-size:11px; font-weight:bold; margin-bottom:6px; color:var(--p);">一括操作メニュー (<span id="selected-count">0</span>件選択中)</div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
                 <button class="btn-sub" style="background:var(--p); color:var(--text-dark); border:none;" onclick="openBulkMoveModal()">フォルダ移動</button>
                 <button class="btn-sub" style="background:var(--shuffle); color:var(--text-dark); border:none;" onclick="executeBulkResetSRS()">SRS初期化</button>
                 <button class="btn-d" onclick="executeBulkDelete()">削除</button>
-                <button class="btn-sub" onclick="toggleSelectAllItems()">すべて選択/解除</button>
+                <button class="btn-sub" onclick="toggleSelectAllItems()">全選択/解除</button>
             </div>
         </div>
 
         <div id="word-list-container"></div>
     </div>
 
+    <div id="page-settings" class="page">
+        <div class="card" style="border: 2px solid var(--gold);">
+            <h3 style="margin:0 0 8px 0; color:var(--gold);">☁️ GitHub クラウド同期設定</h3>
+            
+            <label style="font-size:11px; font-weight:bold;">GitHub ユーザー名</label>
+            <input id="gh-user" type="text" placeholder="example-user" autocomplete="off" style="padding:8px; margin:2px 0 8px 0;">
+            
+            <label style="font-size:11px; font-weight:bold;">リポジトリ名</label>
+            <input id="gh-repo" type="text" placeholder="my-domemory-db" autocomplete="off" style="padding:8px; margin:2px 0 8px 0;">
+            
+            <label style="font-size:11px; font-weight:bold;">パーソナルアクセストークン (ghp_...)</label>
+            <input id="gh-token" type="password" placeholder="ghp_xxxxxxxx" autocomplete="off" style="padding:8px; margin:2px 0 8px 0;">
+
+            <label style="font-size:11px; color:var(--p); font-weight:bold;">あなたのなまえ（データ識別キー: me や A）</label>
+            <input id="gh-name" type="text" placeholder="me" autocomplete="off" style="padding:8px; margin:2px 0 10px 0; border-color:var(--p);">
+            
+            <button class="main-btn btn-edit" style="width:100%; margin-bottom:8px; background:linear-gradient(135deg, var(--gold), #001299);" onclick="saveGitHubSettings()">設定を保存</button>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:4px;">
+                <button class="main-btn" style="background:linear-gradient(135deg, #00ff80, #00994d); color:#000; padding:10px 4px; font-size:13px;" onclick="syncToGitHubCloud()">クラウドへ保存</button>
+                <button class="main-btn" style="background:linear-gradient(135deg, #00cccc, #008080); color:#000; padding:10px 4px; font-size:13px;" onclick="loadFromGitHubCloud()">クラウドから読込</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin:0 0 8px 0;">新規フォルダ作成</h3>
+            <div style="display:flex; gap:6px;">
+                <input id="new-playlist-name" type="text" placeholder="例: Eiken Pre-1" autocomplete="off" style="margin:0;">
+                <button class="main-btn btn-p" style="width:auto; padding:0 15px; white-space:nowrap;" onclick="createPlaylist()">作成</button>
+            </div>
+        </div>
+    </div>
+
     <nav class="menu">
-        <button id="nav-add" onclick="showPage('add')">📝<span>単語登録</span></button>
-        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')">⚔️<span>クイズ</span></button>
-        <button id="nav-list" onclick="showPage('list')">🗂️<span>一覧・設定</span></button>
+        <button id="nav-add" onclick="showPage('add')"><span-icon>📝</span-icon><span>登録</span></button>
+        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')"><span-icon>⚔️</span-icon><span>クイズ</span></button>
+        <button id="nav-list" onclick="showPage('list')"><span-icon>🗂️</span-icon><span>一覧</span></button>
+        <button id="nav-settings" onclick="showPage('settings')"><span-icon>⚙️</span-icon><span>設定</span></button>
     </nav>
 
     <script>
-        // データモデルの定義
+        // データモデル定義
         let data = {
             words: [],
             playlists: ["デフォルト"]
@@ -562,10 +506,10 @@ accomplish, 達成</div>
             username: "",
             repo: "",
             token: "",
-            name: "me" // デフォルトはme
+            name: "me"
         };
 
-        // ローカルストレージへの即座同期（既存の動きを100%維持）
+        // ローカルストレージ即座同期
         function saveData() {
             localStorage.setItem("domemory_v75_unified_data", JSON.stringify(data));
         }
@@ -582,7 +526,6 @@ accomplish, 達成</div>
                     console.error("データ読み込み失敗", e);
                 }
             }
-            // GitHub設定の読込
             const ghLocal = localStorage.getItem("domemory_github_config");
             if (ghLocal) {
                 try {
@@ -595,25 +538,22 @@ accomplish, 達成</div>
             }
         }
 
-        // GitHub設定の保存
         function saveGitHubSettings() {
             gitHubConfig.username = document.getElementById('gh-user').value.trim();
             gitHubConfig.repo = document.getElementById('gh-repo').value.trim();
             gitHubConfig.token = document.getElementById('gh-token').value.trim();
-            
             let inputName = document.getElementById('gh-name').value.trim();
-            if(!inputName) inputName = "me"; // 空欄の場合はmeにする
+            if(!inputName) inputName = "me";
             gitHubConfig.name = inputName;
 
             localStorage.setItem("domemory_github_config", JSON.stringify(gitHubConfig));
             showToast(`クラウド接続設定（名義: ${inputName}）を保存しました！`);
         }
 
-        // GitHub APIを用いた正確なターゲットファイル送信・上書き処理
         async function uploadToGitHubFile(filename) {
             const { username, repo, token } = gitHubConfig;
             if (!username || !repo || !token) {
-                throw new Error("GitHub設定が不完全です。ユーザー名、リポジトリ名、トークンを入力してください。");
+                throw new Error("GitHub設定が不完全です。");
             }
             const url = `https://api.github.com/repos/${username}/${repo}/contents/${filename}`;
             const jsonStr = JSON.stringify(data, null, 2);
@@ -621,73 +561,48 @@ accomplish, 達成</div>
 
             let sha = null;
             try {
-                const res = await fetch(url, {
-                    headers: { "Authorization": `token ${token}` }
-                });
-                if (res.ok) {
-                    const fileData = await res.json();
-                    sha = fileData.sha;
-                }
-            } catch (e) {
-                console.log(`${filename} の事前確認スキップ`);
-            }
+                const res = await fetch(url, { headers: { "Authorization": `token ${token}` } });
+                if (res.ok) { const fileData = await res.json(); sha = fileData.sha; }
+            } catch (e) {}
 
-            const bodyObj = {
-                message: `Update ${filename} via Domemory Cloud Sync`,
-                content: contentBase64
-            };
+            const bodyObj = { message: `Update ${filename}`, content: contentBase64 };
             if (sha) bodyObj.sha = sha;
 
             const putRes = await fetch(url, {
                 method: "PUT",
-                headers: {
-                    "Authorization": `token ${token}`,
-                    "Content-Type": "application/json"
-                },
+                headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
                 body: JSON.stringify(bodyObj)
             });
-
-            if (!putRes.ok) {
-                const errData = await putRes.json();
-                throw new Error(`${filename} の保存に失敗しました: ${errData.message}`);
-            }
+            if (!putRes.ok) throw new Error(`${filename} の送信エラー`);
         }
 
-        // クラウドへ保存関数（ピンポイントで domemory_data_（なまえ）.json に保存する）
         async function syncToGitHubCloud() {
             const targetName = gitHubConfig.name || "me";
             const filename = `domemory_data_${targetName}.json`;
-            
             showToast(`クラウドの ${filename} へ送信中...`, false);
             try {
                 await uploadToGitHubFile(filename);
-                showToast(`☁️ 名義ファイル「${filename}」への保存が完了しました！`);
+                showToast(`☁️ 「${filename}」へ保存完了しました！`);
             } catch (error) {
-                console.error(error);
-                showToast(error.message, true);
+                showToast("保存に失敗しました。設定を確認してください。", true);
             }
         }
 
-        // クラウドから読込関数（ピンポイントで設定された名義ファイルを読み込む）
         async function loadFromGitHubCloud() {
             const { username, repo, token, name } = gitHubConfig;
             const targetName = name || "me";
             const filename = `domemory_data_${targetName}.json`;
 
             if (!username || !repo || !token) {
-                showToast("GitHub同期設定が入力されていません", true);
+                showToast("GitHub同期設定が不完全です", true);
                 return;
             }
-            
             showToast(`クラウドから ${filename} を読込中...`, false);
             try {
                 let response = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${filename}`, {
                     headers: { "Authorization": `token ${token}` }
                 });
-                
-                if (!response.ok) {
-                    throw new Error(`GitHub上に「${filename}」が見つかりません。まずは一度保存を実行してください。`);
-                }
+                if (!response.ok) throw new Error();
                 
                 const fileData = await response.json();
                 const jsonStr = decodeURIComponent(escape(atob(fileData.content)));
@@ -695,60 +610,31 @@ accomplish, 達成</div>
                 
                 if (downloadedData && Array.isArray(downloadedData.words)) {
                     data = downloadedData;
-                    saveData(); // 即座にローカルストレージへ保存
+                    saveData();
                     updateUI();
-                    showToast(`☁️ 名義「${targetName}」の最新データから一瞬で読み込みました！`);
-                } else {
-                    throw new Error("データ構造が不正です。");
+                    showToast(`☁️ 名義「${targetName}」から読み込みました！`);
                 }
             } catch (error) {
-                console.error(error);
-                showToast(error.message, true);
+                showToast(`「${filename}」が見つからないか、読込に失敗しました。`, true);
             }
         }
 
-        // ウェブを閉じる・更新する際の確認ログ設定
         window.addEventListener('beforeunload', function (e) {
             if (gitHubConfig.username && gitHubConfig.repo && gitHubConfig.token) {
-                e.preventDefault();
-                e.returnValue = 'クラウドに現在の状態を送信しますか？';
+                e.preventDefault(); e.returnValue = '保存しますか？';
             }
         });
 
-        // 閉じるときの送信ロジック（現在設定されている名義ファイルに向けて保存）
         window.addEventListener('pagehide', function() {
             if (gitHubConfig.username && gitHubConfig.repo && gitHubConfig.token) {
-                const targetName = gitHubConfig.name || "me";
-                uploadToGitHubFile(`domemory_data_${targetName}.json`).catch(()=>{});
+                uploadToGitHubFile(`domemory_data_${gitHubConfig.name || "me"}.json`).catch(()=>{});
             }
         });
 
-
-        // データのマイグレーション（旧バージョン互換性担保）
         function migrateToUnifiedData() {
             loadData();
-            const oldWords = localStorage.getItem("domemory_words");
-            if (oldWords && data.words.length === 0) {
-                try {
-                    const parsed = JSON.parse(oldWords);
-                    data.words = parsed.map(w => ({
-                        id: w.id || "w-" + Date.now() + Math.random(),
-                        en: w.en || "",
-                        ja: w.ja || "",
-                        playlist: "デフォルト",
-                        status: w.status || "new",
-                        missCount: w.missCount || 0,
-                        lastTested: w.lastTested || null,
-                        nextReview: w.nextReview || null,
-                        interval: w.interval || 0
-                    }));
-                    saveData();
-                    localStorage.removeItem("domemory_words");
-                } catch(e){}
-            }
         }
 
-        // トースト通知システム
         function showToast(message, isError = false) {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
@@ -758,27 +644,17 @@ accomplish, 達成</div>
             setTimeout(() => { toast.remove(); }, 3000);
         }
 
-        // カスタム確認ダイアログ
         function showConfirm(title, message, onConfirm) {
             document.getElementById("confirm-title").innerText = title;
             document.getElementById("confirm-msg").innerText = message;
             const modal = document.getElementById("confirm-modal");
             modal.style.display = "flex";
-            
-            const okBtn = document.getElementById("confirm-ok-btn");
-            const cancelBtn = document.getElementById("confirm-cancel-btn");
-            
-            const cleanUp = () => { modal.style.display = "none"; };
-            
-            okBtn.onclick = () => { onConfirm(); cleanUp(); };
-            cancelBtn.onclick = () => { cleanUp(); };
+            document.getElementById("confirm-ok-btn").onclick = () => { onConfirm(); modal.style.display = "none"; };
+            document.getElementById("confirm-cancel-btn").onclick = () => { modal.style.display = "none"; };
         }
 
-        function closeModal(id) {
-            document.getElementById(id).style.display = "none";
-        }
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
 
-        // ページ切り替え
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active-nav'));
@@ -789,9 +665,7 @@ accomplish, 達成</div>
             const targetNav = document.getElementById(`nav-${pageId}`);
             if(targetNav) targetNav.classList.add('active-nav');
             
-            if(pageId === 'quiz') {
-                abortQuiz();
-            }
+            if(pageId === 'quiz') abortQuiz();
             updateUI();
         }
 
@@ -802,28 +676,21 @@ accomplish, 達成</div>
             document.getElementById('add-bulk-container').classList.toggle('hidden', mode !== 'bulk');
         }
 
-        // フォルダ周りのUI更新
         function updatePlaylistDropdowns() {
             const addSelect = document.getElementById("add-to-playlist");
             const quizSelect = document.getElementById("quiz-from-playlist");
-            
             if(!addSelect || !quizSelect) return;
 
             const prevQuizVal = quizSelect.value;
+            addSelect.innerHTML = ""; quizSelect.innerHTML = "";
 
-            addSelect.innerHTML = "";
-            quizSelect.innerHTML = "";
-
-            // 全てフォルダをクイズ対象に追加
             const optAll = document.createElement("option");
             optAll.value = "__ALL__"; optAll.innerText = "全フォルダ対象";
             quizSelect.appendChild(optAll);
 
             data.playlists.forEach(pl => {
-                const opt1 = document.createElement("option"); opt1.value = pl; opt1.innerText = pl;
-                addSelect.appendChild(opt1);
-                const opt2 = document.createElement("option"); opt2.value = pl; opt2.innerText = pl;
-                quizSelect.appendChild(opt2);
+                const opt1 = document.createElement("option"); opt1.value = pl; opt1.innerText = pl; addSelect.appendChild(opt1);
+                const opt2 = document.createElement("option"); opt2.value = pl; opt2.innerText = pl; quizSelect.appendChild(opt2);
             });
 
             addSelect.value = currentPlaylist;
@@ -838,52 +705,38 @@ accomplish, 達成</div>
             const inputEl = document.getElementById("new-playlist-name");
             const name = inputEl.value.trim();
             if(!name) return;
-            if(data.playlists.includes(name)) {
-                showToast("既に同名のフォルダが存在します", true);
-                return;
-            }
+            if(data.playlists.includes(name)) { showToast("既に同名のフォルダが存在します", true); return; }
             
             data.playlists.push(name);
             inputEl.value = ""; 
-            saveData(); 
-            updateUI();
+            saveData(); updateUI();
             showToast(`リスト「${name}」を作成しました！`);
         }
 
-        // 単語保存（1件）
         function saveWord() {
             const en = document.getElementById("en-in").value.trim();
             const ja = document.getElementById("ja-in").value.trim();
             const playlist = document.getElementById("add-to-playlist").value;
 
-            if(!en || !ja) {
-                showToast("英語と日本語の両方を入力してください", true);
-                return;
-            }
+            if(!en || !ja) { showToast("英語と日本語の両方を入力してください", true); return; }
 
-            const newWord = {
-                id: "w-" + Date.now() + Math.random(),
-                en, ja, playlist,
+            data.words.unshift({
+                id: "w-" + Date.now() + Math.random(), en, ja, playlist,
                 status: "new", missCount: 0, lastTested: null, nextReview: null, interval: 0
-            };
-
-            data.words.unshift(newWord);
+            });
             currentPlaylist = playlist;
             saveData();
-
             document.getElementById("en-in").value = "";
             document.getElementById("ja-in").value = "";
             document.getElementById("en-in").focus();
-
             showToast("単語を登録しました！");
             updateUI();
         }
 
-        // 単語保存（一括解析）
         function saveBulkWords() {
             const text = document.getElementById("bulk-import-area").value;
             const playlist = document.getElementById("add-to-playlist").value;
-            if(!text.trim()) { showToast("インポートするテキストが空です", true); return; }
+            if(!text.trim()) { showToast("テキストが空です", true); return; }
 
             const lines = text.split('\n');
             let successCount = 0;
@@ -899,8 +752,7 @@ accomplish, 達成</div>
                     const ja = parts.slice(1).join(',').trim();
                     if(en && ja) {
                         data.words.unshift({
-                            id: "w-" + Date.now() + Math.random(),
-                            en, ja, playlist,
+                            id: "w-" + Date.now() + Math.random(), en, ja, playlist,
                             status: "new", missCount: 0, lastTested: null, nextReview: null, interval: 0
                         });
                         successCount++;
@@ -909,17 +761,15 @@ accomplish, 達成</div>
             });
 
             if(successCount > 0) {
-                currentPlaylist = playlist;
-                saveData();
+                currentPlaylist = playlist; saveData();
                 document.getElementById("bulk-import-area").value = "";
-                showToast(`${successCount}件の単語を一括登録しました！`);
+                showToast(`${successCount}件の一括登録に成功！`);
                 updateUI();
             } else {
-                showToast("有効なフォーマット（英語, 日本語）の行が見つかりませんでした", true);
+                showToast("有効な行が見つかりませんでした", true);
             }
         }
 
-        // 単語編集
         let editingWordId = null;
         function openEditModal(id) {
             editingWordId = id;
@@ -933,63 +783,51 @@ accomplish, 達成</div>
             const en = document.getElementById("edit-en-in").value.trim();
             const ja = document.getElementById("edit-ja-in").value.trim();
             if(!en || !ja) return;
-
             const w = data.words.find(item => item.id === editingWordId);
-            if(w) {
-                w.en = en; w.ja = ja;
-                saveData();
-                updateUI();
-                showToast("単語を更新しました");
-            }
+            if(w) { w.en = en; w.ja = ja; saveData(); updateUI(); showToast("更新しました"); }
             closeModal('edit-modal');
         }
 
-        // 単語削除
         function deleteWord(id) {
-            showConfirm("単語の削除", "この単語を削除してもよろしいですか？", () => {
+            showConfirm("削除確認", "この単語を削除しますか？", () => {
                 data.words = data.words.filter(w => w.id !== id);
-                selectedWordIds.delete(id);
-                saveData();
-                updateUI();
-                showToast("単語を削除しました");
+                selectedWordIds.delete(id); saveData(); updateUI(); showToast("削除しました");
             });
         }
 
-        // SRSステータスリセット
         function resetWordSRS(id) {
             const w = data.words.find(item => item.id === id);
             if(w) {
                 w.status = "new"; w.missCount = 0; w.lastTested = null; w.nextReview = null; w.interval = 0;
-                saveData(); updateUI(); showToast("SRS学習進捗を初期化しました");
+                saveData(); updateUI(); showToast("SRSリセット完了");
             }
         }
 
-        // 一括選択ロジック
         function toggleItemSelection(id) {
             if(selectedWordIds.has(id)) selectedWordIds.delete(id);
             else selectedWordIds.add(id);
             updateBulkActionBarUI();
         }
         function toggleSelectAllItems() {
-            const currentFiltered = data.words.filter(w => currentPlaylist === "__ALL__" || w.playlist === currentPlaylist);
-            const allSelected = currentFiltered.every(w => selectedWordIds.has(w.id));
-            currentFiltered.forEach(w => {
+            const query = document.getElementById("word-search-input").value.toLowerCase().trim();
+            const filtered = data.words.filter(w => {
+                const matchTab = (currentPlaylist === "__ALL__" || w.playlist === currentPlaylist);
+                const matchQuery = !query || w.en.toLowerCase().includes(query) || w.ja.toLowerCase().includes(query);
+                return matchTab && matchQuery;
+            });
+            const allSelected = filtered.every(w => selectedWordIds.has(w.id));
+            filtered.forEach(w => {
                 if(allSelected) selectedWordIds.delete(w.id);
                 else selectedWordIds.add(w.id);
             });
-            updateBulkActionBarUI();
-            renderWordList();
+            updateBulkActionBarUI(); renderWordList();
         }
-        function toggleBulkActionBar() {
-            document.getElementById("bulk-action-bar").classList.toggle("hidden");
-        }
-        function updateBulkActionBarUI() {
-            document.getElementById("selected-count").innerText = selectedWordIds.size;
-        }
+        function toggleBulkActionBar() { document.getElementById("bulk-action-bar").classList.toggle("hidden"); }
+        function updateBulkActionBarUI() { document.getElementById("selected-count").innerText = selectedWordIds.size; }
+        
         function openBulkMoveModal() {
-            if(selectedWordIds.size === 0) { showToast("項目が選択されていません", true); return; }
-            const select = document.getElementById("modal-pl-select");
-            select.innerHTML = "";
+            if(selectedWordIds.size === 0) { showToast("選択されていません", true); return; }
+            const select = document.getElementById("modal-pl-select"); select.innerHTML = "";
             data.playlists.forEach(pl => {
                 const opt = document.createElement("option"); opt.value = pl; opt.innerText = pl; select.appendChild(opt);
             });
@@ -998,28 +836,28 @@ accomplish, 達成</div>
         function executeAddToList() {
             const targetPl = document.getElementById("modal-pl-select").value;
             data.words.forEach(w => { if(selectedWordIds.has(w.id)) w.playlist = targetPl; });
-            saveData(); selectedWordIds.clear(); closeModal('list-modal'); updateUI(); showToast("フォルダを移動しました");
+            saveData(); selectedWordIds.clear(); closeModal('list-modal'); updateUI(); showToast("移動完了");
         }
         function executeBulkDelete() {
-            if(selectedWordIds.size === 0) { showToast("項目が選択されていません", true); return; }
-            showConfirm("一括削除", `選択された ${selectedWordIds.size} 件を完全に削除しますか？`, () => {
+            if(selectedWordIds.size === 0) return;
+            showConfirm("一括削除", `${selectedWordIds.size}件を本当に削除しますか？`, () => {
                 data.words = data.words.filter(w => !selectedWordIds.has(w.id));
                 selectedWordIds.clear(); saveData(); updateUI(); showToast("一括削除しました");
             });
         }
         function executeBulkResetSRS() {
-            if(selectedWordIds.size === 0) { showToast("項目が選択されていません", true); return; }
-            showConfirm("SRS一括初期化", `選択された ${selectedWordIds.size} 件の進捗を初期化しますか？`, () => {
+            if(selectedWordIds.size === 0) return;
+            showConfirm("一括リセット", `${selectedWordIds.size}件の進捗を初期化しますか？`, () => {
                 data.words.forEach(w => {
                     if(selectedWordIds.has(w.id)) {
                         w.status = "new"; w.missCount = 0; w.lastTested = null; w.nextReview = null; w.interval = 0;
                     }
                 });
-                saveData(); selectedWordIds.clear(); updateUI(); showToast("進捗を初期化しました");
+                saveData(); selectedWordIds.clear(); updateUI(); showToast("初期化しました");
             });
         }
 
-        // リスト表示UI生成
+        // 横スライドタブと収録語数の正確な計算レンダリング
         function renderTabs() {
             const container = document.getElementById("list-tabs-container");
             if(!container) return;
@@ -1027,7 +865,9 @@ accomplish, 達成</div>
 
             const allTabs = ["__ALL__", ...data.playlists];
             allTabs.forEach(tabName => {
+                // 正確にリアルタイムの全単語データを数える
                 const count = tabName === "__ALL__" ? data.words.length : data.words.filter(w => w.playlist === tabName).length;
+                
                 const btn = document.createElement("div");
                 btn.className = `tab ${currentPlaylist === tabName ? 'tab-active' : ''}`;
                 btn.innerText = `${tabName === '__ALL__' ? '全て' : tabName} (${count})`;
@@ -1036,14 +876,23 @@ accomplish, 達成</div>
             });
         }
 
+        // 単語リストの表示（検索バーとのリアルタイム連動）
         function renderWordList() {
             const container = document.getElementById("word-list-container");
             if(!container) return;
             container.innerHTML = "";
 
-            const filtered = data.words.filter(w => currentPlaylist === "__ALL__" || w.playlist === currentPlaylist);
+            const searchQuery = document.getElementById("word-search-input") ? document.getElementById("word-search-input").value.toLowerCase().trim() : "";
+
+            // フォルダ判定 ＋ 検索クエリ判定
+            const filtered = data.words.filter(w => {
+                const matchTab = (currentPlaylist === "__ALL__" || w.playlist === currentPlaylist);
+                const matchSearch = !searchQuery || w.en.toLowerCase().includes(searchQuery) || w.ja.toLowerCase().includes(searchQuery);
+                return matchTab && matchSearch;
+            });
+
             if(filtered.length === 0) {
-                container.innerHTML = `<p style="text-align:center; color:#543f2f; font-size:14px; margin-top:20px;">単語が登録されていません</p>`;
+                container.innerHTML = `<p style="text-align:center; color:#543f2f; font-size:13px; margin-top:15px;">対象の単語が見つかりません</p>`;
                 return;
             }
 
@@ -1051,18 +900,14 @@ accomplish, 達成</div>
                 const card = document.createElement("div");
                 card.className = `card li-item status-${w.status || 'new'}`;
 
-                let badgeTxt = "新規";
-                if(w.status === 'wait') badgeTxt = "復習待ち";
-                if(w.status === 'miss') badgeTxt = "苦手";
-                if(w.status === 'veteran') badgeTxt = "初期化対象外";
-
+                let badgeTxt = w.status === 'wait' ? "復習待ち" : w.status === 'miss' ? "苦手" : "新規";
                 let dueTxt = "";
                 if(w.status === 'wait' && w.nextReview) {
                     const diff = w.nextReview - Date.now();
                     if(diff <= 0) dueTxt = "⏱️ 復習可能";
                     else {
                         const mins = Math.ceil(diff / 60000);
-                        dueTxt = mins > 60 ? `⏱️ 約${Math.ceil(mins/60)}時間後` : `⏱️ あろ${mins}分`;
+                        dueTxt = mins > 60 ? `⏱️ 約${Math.ceil(mins/60)}時間後` : `⏱️ あと${mins}分`;
                     }
                 }
 
@@ -1073,17 +918,17 @@ accomplish, 達成</div>
                         <input type="checkbox" class="li-checkbox" ${isChecked} onchange="toggleItemSelection('${w.id}')">
                     </div>
                     <div class="li-info" onclick="openEditModal('${w.id}')">
-                        <div style="font-weight:bold; font-size:18px; color:#000;">${w.en}</div>
-                        <div style="font-size:14px; color:#342a1e; margin-top:2px;">${w.ja}</div>
+                        <div style="font-weight:bold; font-size:17px; color:#000;">${w.en}</div>
+                        <div style="font-size:13px; color:#342a1e; margin-top:1px;">${w.ja}</div>
                         <div>
                             <span class="badge">${badgeTxt}</span>
                             ${dueTxt ? `<span class="due-timer">${dueTxt}</span>` : ''}
-                            ${currentPlaylist === '__ALL__' ? `<span class="badge" style="background:rgba(0,0,0,0.05); color:#666;">📁${w.playlist}</span>` : ''}
+                            ${currentPlaylist === '__ALL__' ? `<span class="badge" style="background:rgba(0,0,0,0.04); color:#555;">📁${w.playlist}</span>` : ''}
                         </div>
                     </div>
                     <div class="action-btns">
                         <button class="btn-edit" onclick="openEditModal('${w.id}')">編集</button>
-                        <button class="btn-sub" style="font-size:10px;" onclick="resetWordSRS('${w.id}')">SRSリセット</button>
+                        <button class="btn-sub" onclick="resetWordSRS('${w.id}')">リセット</button>
                         <button class="btn-d" onclick="deleteWord('${w.id}')">削除</button>
                     </div>
                 `;
@@ -1097,86 +942,57 @@ accomplish, 達成</div>
             renderTabs();
             renderWordList();
             
-            // クイズ制限の表示
             const quizTarget = document.getElementById("quiz-from-playlist") ? document.getElementById("quiz-from-playlist").value : "__ALL__";
             const pool = data.words.filter(w => quizTarget === "__ALL__" || w.playlist === quizTarget);
             const msgEl = document.getElementById("limit-msg");
             if(msgEl) {
-                msgEl.innerText = pool.length < 4 ? `※単語数が足りません (現在:${pool.length}件、4件以上必要)` : `※クイズ開始可能 (対象:${pool.length}件)`;
+                msgEl.innerText = pool.length < 4 ? `⚠️ 単語数が不足しています (現在:${pool.length}/4件)` : `✅ 開始可能 (対象:${pool.length}件)`;
             }
         }
 
-        // ==================== クイズロジック ====================
+        // ==================== クイズシステム ====================
         function startQuiz(mode) {
             const targetPl = document.getElementById("quiz-from-playlist").value;
             let pool = data.words.filter(w => targetPl === "__ALL__" || w.playlist === targetPl);
+            if(pool.length < 4) { showToast("単語数が4件未満です。", true); return; }
 
-            if(pool.length < 4) {
-                showToast("選択された対象の単語数が4件未満のため、クイズを開始できません。", true);
-                return;
-            }
+            quizMode = mode; const now = Date.now();
+            if(mode === 'new') quizWords = pool.filter(w => !w.status || w.status === 'new');
+            else if(mode === 'srs') quizWords = pool.filter(w => w.status === 'wait' && w.nextReview && w.nextReview <= now);
+            else if(mode === 'miss') quizWords = pool.filter(w => w.missCount && w.missCount > 0).sort((a,b) => b.missCount - a.missCount);
+            else quizWords = [...pool];
 
-            quizMode = mode;
-            const now = Date.now();
+            if(quizWords.length === 0) { showToast("対象となる単語がありません。", false); return; }
 
-            if(mode === 'new') {
-                quizWords = pool.filter(w => !w.status || w.status === 'new');
-            } else if(mode === 'srs') {
-                quizWords = pool.filter(w => w.status === 'wait' && w.nextReview && w.nextReview <= now);
-            } else if(mode === 'miss') {
-                quizWords = pool.filter(w => w.missCount && w.missCount > 0).sort((a,b) => b.missCount - a.missCount);
-            } else if(mode === 'all' || mode === 'all_choice') {
-                quizWords = [...pool];
-            }
-
-            if(quizWords.length === 0) {
-                let msg = "対象となる単語がありません。";
-                if(mode === 'new') msg = "未テストの新単語がありません！";
-                if(mode === 'srs') msg = "現在、復習タイミングが来ている単語はありません！";
-                if(mode === 'miss') msg = "ミス記録のある苦手単語はありません！";
-                showToast(msg, false);
-                return;
-            }
-
-            // シャッフル
             quizWords.sort(() => Math.random() - 0.5);
-            if(mode !== 'miss' && quizWords.length > 20) {
-                quizWords = quizWords.slice(0, 20); // 1セット最大20問
-            }
+            if(mode !== 'miss' && quizWords.length > 20) quizWords = quizWords.slice(0, 20);
 
             currentQuizIndex = 0;
             document.getElementById("quiz-setup").classList.add("hidden");
             document.getElementById("abort-ui").classList.remove("hidden");
-            
             nextQuestion();
         }
 
         function abortQuiz() {
-            clearTimeout(quizTimerTimeout);
-            clearInterval(countdownInterval);
-            document.getElementById("count-area").classList.add("hidden");
+            clearTimeout(quizTimerTimeout); clearInterval(countdownInterval);
             document.getElementById("quiz-ui").classList.add("hidden");
             document.getElementById("choice-ui").classList.add("hidden");
             document.getElementById("abort-ui").classList.add("hidden");
             document.getElementById("quiz-setup").classList.remove("hidden");
-            document.getElementById("q-display").innerHTML = "クイズ道場";
+            document.getElementById("q-display").innerText = "クイズ道場";
         }
 
         function nextQuestion() {
             if(currentQuizIndex >= quizWords.length) {
-                document.getElementById("complete-modal").style.display = "flex";
-                abortQuiz();
-                return;
+                document.getElementById("complete-modal").style.display = "flex"; abortQuiz(); return;
             }
-
             const w = quizWords[currentQuizIndex];
             document.getElementById("q-display").innerText = w.en;
 
             if(quizMode === 'all' || quizMode === 'miss' && Math.random() > 0.6) {
                 document.getElementById("quiz-ui").classList.remove("hidden");
                 document.getElementById("choice-ui").classList.add("hidden");
-                const inEl = document.getElementById("ans-in");
-                inEl.value = "";
+                const inEl = document.getElementById("ans-in"); inEl.value = "";
                 setTimeout(() => { inEl.focus(); }, 50);
             } else {
                 document.getElementById("quiz-ui").classList.add("hidden");
@@ -1190,230 +1006,135 @@ accomplish, 達成</div>
             const grid = document.getElementById("choices-grid");
             const timerTxt = document.getElementById("wait-timer");
 
-            grid.classList.add("hidden");
-            grid.classList.remove("choices-disabled");
-            waitArea.classList.remove("hidden");
-
+            grid.classList.add("hidden"); grid.classList.remove("choices-disabled"); waitArea.classList.remove("hidden");
             const choiceCount = quizMode === 'srs' ? 6 : 4;
             
             let targetPl = document.getElementById("quiz-from-playlist").value;
             let siblings = data.words.filter(w => (targetPl === "__ALL__" || w.playlist === targetPl) && w.id !== correctWord.id);
-            if(siblings.length < choiceCount - 1) {
-                siblings = data.words.filter(w => w.id !== correctWord.id);
-            }
+            if(siblings.length < choiceCount - 1) siblings = data.words.filter(w => w.id !== correctWord.id);
+            
             siblings.sort(() => Math.random() - 0.5);
             let selectedChoices = siblings.slice(0, choiceCount - 1);
-            selectedChoices.push(correctWord);
-            selectedChoices.sort(() => Math.random() - 0.5);
+            selectedChoices.push(correctWord); selectedChoices.sort(() => Math.random() - 0.5);
 
             grid.innerHTML = "";
             selectedChoices.forEach(c => {
-                const btn = document.createElement("div");
-                btn.className = "choice-btn";
-                btn.innerText = c.ja;
+                const btn = document.createElement("div"); btn.className = "choice-btn"; btn.innerText = c.ja;
                 btn.onclick = () => handleChoiceCheck(c.id === correctWord.id, correctWord);
                 grid.appendChild(btn);
             });
 
-            let waitSeconds = 2; 
-            if(correctWord.missCount) {
-                waitSeconds += Math.min(6, correctWord.missCount * 2);
-            }
-
+            let waitSeconds = correctWord.missCount ? 2 + Math.min(6, correctWord.missCount * 2) : 2;
             timerTxt.innerText = `選択肢表示まであと ${waitSeconds} 秒`;
             
             clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
                 waitSeconds--;
-                if(waitSeconds <= 0) {
-                    clearInterval(countdownInterval);
-                    waitArea.classList.add("hidden");
-                    grid.classList.remove("hidden");
-                } else {
-                    timerTxt.innerText = `選択肢表示まであと ${waitSeconds} 秒`;
-                }
+                if(waitSeconds <= 0) { clearInterval(countdownInterval); waitArea.classList.add("hidden"); grid.classList.remove("hidden"); }
+                else timerTxt.innerText = `選択肢表示まであと ${waitSeconds} 秒`;
             }, 1000);
 
             clearTimeout(quizTimerTimeout);
-            quizTimerTimeout = setTimeout(() => {
-                clearInterval(countdownInterval);
-                waitArea.classList.add("hidden");
-                grid.classList.remove("hidden");
-            }, waitSeconds * 1000);
+            quizTimerTimeout = setTimeout(() => { clearInterval(countdownInterval); waitArea.classList.add("hidden"); grid.classList.remove("hidden"); }, waitSeconds * 1000);
         }
 
-        // 待機スキップ
         function skipWait() {
-            clearInterval(countdownInterval);
-            clearTimeout(quizTimerTimeout);
-            document.getElementById("wait-area").classList.add("hidden");
-            document.getElementById("choices-grid").classList.remove("hidden");
+            clearInterval(countdownInterval); clearTimeout(quizTimerTimeout);
+            document.getElementById("wait-area").classList.add("hidden"); document.getElementById("choices-grid").classList.remove("hidden");
         }
 
-        // 入力式チェック
         function handleCheck() {
-            const inEl = document.getElementById("ans-in");
-            const userAns = inEl.value.trim().toLowerCase();
-            const w = quizWords[currentQuizIndex];
-            
-            if(!userAns) return;
-
-            const isCorrect = w.ja.toLowerCase().includes(userAns) || userAns === w.ja.toLowerCase();
-            processResult(isCorrect, w);
+            const inEl = document.getElementById("ans-in"); const userAns = inEl.value.trim().toLowerCase();
+            const w = quizWords[currentQuizIndex]; if(!userAns) return;
+            processResult(w.ja.toLowerCase().includes(userAns) || userAns === w.ja.toLowerCase(), w);
         }
 
-        // 選択肢チェック
         function handleChoiceCheck(isCorrect, w) {
-            document.getElementById("choices-grid").classList.add("choices-disabled");
-            processResult(isCorrect, w);
+            document.getElementById("choices-grid").classList.add("choices-disabled"); processResult(isCorrect, w);
         }
 
-        // 結果判定・エフェクト・SRS更新
         function processResult(isCorrect, w) {
-            clearInterval(countdownInterval);
-            clearTimeout(quizTimerTimeout);
-
+            clearInterval(countdownInterval); clearTimeout(quizTimerTimeout);
             const overlay = document.getElementById("bg-effect-overlay");
-            const effectLayer = document.getElementById("quiz-effect-layer");
-            effectLayer.innerHTML = "";
-
-            const targetWordInMainData = data.words.find(item => item.id === w.id);
+            const effectLayer = document.getElementById("quiz-effect-layer"); effectLayer.innerHTML = "";
+            const mainDataWord = data.words.find(item => item.id === w.id);
 
             if(isCorrect) {
-                overlay.className = "bg-correct-active";
-                setTimeout(() => { overlay.className = ""; }, 250);
-
-                const box = document.createElement("div");
-                box.className = "quiz-effect-box";
+                overlay.className = "bg-correct-active"; setTimeout(() => { overlay.className = ""; }, 250);
+                const box = document.createElement("div"); box.className = "quiz-effect-box";
                 box.innerHTML = `<div class="quiz-effect-txt txt-correct">💮 CORRECT !!</div>`;
                 effectLayer.appendChild(box);
 
-                for(let i=0; i<20; i++){
-                    const p = document.createElement("div");
-                    p.className = "particle";
+                for(let i=0; i<15; i++){
+                    const p = document.createElement("div"); p.className = "particle";
                     p.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
-                    p.style.setProperty('--mx', `${(Math.random()-0.5)*250}px`);
-                    p.style.setProperty('--my', `${(Math.random()-0.5)*250}px`);
+                    p.style.setProperty('--mx', `${(Math.random()-0.5)*200}px`); p.style.setProperty('--my', `${(Math.random()-0.5)*200}px`);
                     box.appendChild(p);
                 }
 
-                if(targetWordInMainData) {
-                    targetWordInMainData.lastTested = Date.now();
-                    if(targetWordInMainData.status === 'new' || !targetWordInMainData.status) {
-                        targetWordInMainData.interval = 1; 
-                        targetWordInMainData.status = 'wait';
-                    } else if(targetWordInMainData.status === 'miss') {
-                        targetWordInMainData.interval = 1;
-                        targetWordInMainData.status = 'wait';
-                    } else {
-                        targetWordInMainData.interval = targetWordInMainData.interval * 2 + 1; 
-                    }
-                    targetWordInMainData.nextReview = Date.now() + (targetWordInMainData.interval * 60 * 1000); 
+                if(mainDataWord) {
+                    mainDataWord.lastTested = Date.now();
+                    if(mainDataWord.status === 'new' || !mainDataWord.status || mainDataWord.status === 'miss') {
+                        mainDataWord.interval = 1; mainDataWord.status = 'wait';
+                    } else { mainDataWord.interval = mainDataWord.interval * 2 + 1; }
+                    mainDataWord.nextReview = Date.now() + (mainDataWord.interval * 60 * 1000); 
                 }
-
             } else {
-                overlay.className = "bg-miss-active";
-                setTimeout(() => { overlay.className = ""; }, 250);
-
-                const box = document.createElement("div");
-                box.className = "quiz-effect-box";
-                box.innerHTML = `
-                    <div class="quiz-effect-txt txt-miss">❌ MISS</div>
-                    <div class="miss-ans-subtext">正解: ${w.ja}</div>
-                `;
+                overlay.className = "bg-miss-active"; setTimeout(() => { overlay.className = ""; }, 250);
+                const box = document.createElement("div"); box.className = "quiz-effect-box";
+                box.innerHTML = `<div class="quiz-effect-txt txt-miss">❌ MISS</div><div class="miss-ans-subtext">正解: ${w.ja}</div>`;
                 effectLayer.appendChild(box);
 
-                if(targetWordInMainData) {
-                    targetWordInMainData.lastTested = Date.now();
-                    targetWordInMainData.missCount = (targetWordInMainData.missCount || 0) + 1;
-                    targetWordInMainData.status = 'miss';
-                    targetWordInMainData.interval = 0;
-                    targetWordInMainData.nextReview = null; 
+                if(mainDataWord) {
+                    mainDataWord.lastTested = Date.now(); mainDataWord.missCount = (mainDataWord.missCount || 0) + 1;
+                    mainDataWord.status = 'miss'; mainDataWord.interval = 0; mainDataWord.nextReview = null; 
                 }
             }
 
-            saveData(); // 100%ローカルに即座保存
-
-            setTimeout(() => {
-                effectLayer.innerHTML = "";
-                currentQuizIndex++;
-                nextQuestion();
-            }, isCorrect ? 900 : 1850);
+            saveData();
+            setTimeout(() => { effectLayer.innerHTML = ""; currentQuizIndex++; nextQuestion(); }, isCorrect ? 900 : 1850);
         }
 
-        /* ==================== 都会の夜景ハイウェイアニメーション ==================== */
-        const canvas = document.getElementById('highway-canvas');
-        const ctx = canvas?.getContext('2d');
-        let lines = [];
-
-        function resizeCanvas() {
-            if(!canvas) return;
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
+        // ==================== 都会の夜景ハイウェイ背景アニメーション ====================
+        const canvas = document.getElementById('highway-canvas'); const ctx = canvas?.getContext('2d');
+        let backgroundLines = [];
+        function resizeCanvas() { if(!canvas) return; canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         function initLines() {
-            lines = [];
-            for (let i = 0; i < 25; i++) {
-                lines.push({
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    length: Math.random() * 80 + 40,
-                    speed: Math.random() * 4 + 2,
+            backgroundLines = [];
+            for (let i = 0; i < 20; i++) {
+                backgroundLines.push({
+                    x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+                    length: Math.random() * 60 + 30, speed: Math.random() * 3 + 2,
                     color: Math.random() > 0.5 ? '#ff0c00' : '#00ff80' 
                 });
             }
         }
-
         function animateCity() {
-            if(!ctx || !canvas) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            lines.forEach(l => {
-                ctx.beginPath();
-                ctx.moveTo(l.x, l.y);
-                ctx.lineTo(l.x + l.length, l.y);
-                ctx.strokeStyle = l.color;
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-                l.x += l.speed;
-                if (l.x > canvas.width) {
-                    l.x = -l.length;
-                    l.y = Math.random() * canvas.height;
-                }
+            if(!ctx || !canvas) return; ctx.clearRect(0, 0, canvas.width, canvas.height);
+            backgroundLines.forEach(l => {
+                ctx.beginPath(); ctx.moveTo(l.x, l.y); ctx.lineTo(l.x + l.length, l.y);
+                ctx.strokeStyle = l.color; ctx.lineWidth = 1.2; ctx.stroke();
+                l.x += l.speed; if (l.x > canvas.width) { l.x = -l.length; l.y = Math.random() * canvas.height; }
             });
             requestAnimationFrame(animateCity);
         }
 
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        initLines();
-        animateCity();
+        resizeCanvas(); initLines(); animateCity();
 
-        // スマホ最適化
+        // キーボード表示等によるスクロールバグスマホ最適化
         document.addEventListener('focusout', (e) => {
             if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
                 setTimeout(() => { window.scrollTo({ top: 0, left: 0, behavior: 'smooth' }); }, 60);
             }
         });
-
         document.addEventListener('focusin', (e) => {
             if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
                 setTimeout(() => { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 120);
             }
         });
 
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length > 1) { e.preventDefault(); }
-        }, { passive: false });
-
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', (e) => {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) { e.preventDefault(); }
-            lastTouchEnd = now;
-        }, { passive: false });
-
-        // 初期化起動
+        // 起動時初期化
         migrateToUnifiedData();
         updateUI();
         showPage('quiz');
