@@ -1,6 +1,2786 @@
 {
   "words": [
     {
+      "id": "w-17820523272720.9517516737733467",
+      "en": "accurate の名詞形は？",
+      "ja": "[熟]accuracy",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052641628,
+      "nextReview": 1782139041628,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820523272720.18197815583893595",
+      "en": "The GPS can pinpoint your location with an accuracy of millimeters.",
+      "ja": "「GPSはミリ単位の精度で位置を示すことができる。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052689028,
+      "nextReview": 1782139089028,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820523272720.9007182079096212",
+      "en": "accuracy",
+      "ja": "[名]正確さ[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820523272720.11414237108540992",
+      "en": "an accurate calculation",
+      "ja": "[熟]正確な計算",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053156894,
+      "nextReview": 1782139556894,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820523272720.2326965665211954",
+      "en": "accurate",
+      "ja": "[形]正確な（＝exact）",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053077544,
+      "nextReview": 1782139477544,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820523272720.9805697733476683",
+      "en": "precision",
+      "ja": "[名]正確さ[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782053338527,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782053338527,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820523272720.10387130320687599",
+      "en": "precisely",
+      "ja": "[副]正確に[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782052615575,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782052615575,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820520220540.15314071797526496",
+      "en": "We need more precise information.",
+      "ja": "「私たちはより正確な情報を必要としている。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.7269641232154984",
+      "en": "precise",
+      "ja": "[形]正確な（＝exact）",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.15088316234915422",
+      "en": "respectful / respectable / respective の意味は？",
+      "ja": "[熟]礼儀正しい／ちゃんとした／それぞれの",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.11224774961776784",
+      "en": "The documentary is in every detail based on facts.",
+      "ja": "「そのドキュメンタリーは、細部にわたるまで事実に基づいている。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.1631614902869143",
+      "en": "in detail",
+      "ja": "[熟]「詳細に」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.44426109473335496",
+      "en": "detail",
+      "ja": "[名]（in）詳細",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.6224152104841788",
+      "en": "The twins are alike in every aspect.",
+      "ja": "「その双子はあらゆる点で似ている。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "苦手単語"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052367301,
+      "nextReview": 1782138767301,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.7567413679932803",
+      "en": "aspect",
+      "ja": "[名]（in）側面、様相、点",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.46525753137212655",
+      "en": "Tom and Mary got an A and a C on the exam, respectively.",
+      "ja": "「トムとメアリーは試験でそれぞれAとCをとった。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053202080,
+      "nextReview": 1782139602080,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.14492335004279056",
+      "en": "respectively",
+      "ja": "[副]それぞれ[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.5984778962689539",
+      "en": "The tourists went to their respective rooms to get some rest.",
+      "ja": "「旅行客は、休憩するために各々の部屋に行った。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.5293880826935575",
+      "en": "respective",
+      "ja": "[形]それぞれの、各々の[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820520220540.40049545341886283",
+      "en": "The father emphasized to his son that he needed to get a respectable job for the family's sake.",
+      "ja": "「父親は、家族のためにちゃんとした職に就くべきだと息子に強調した。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.8337078852277657",
+      "en": "respectable",
+      "ja": "[形]ちゃんとした[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.34970398517849666",
+      "en": "respectful behavior",
+      "ja": "[熟]「礼儀正しい態度」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.3959517851433375",
+      "en": "respectful",
+      "ja": "[形]礼儀正しい[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053172351,
+      "nextReview": 1782139572351,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.562919338881904",
+      "en": "He resembles his father in many respects.",
+      "ja": "「多くの点で彼は父親に似ている。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.38918136726324626",
+      "en": "in this respect",
+      "ja": "[熟]「この点で」（＝in this regard）",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.8725941938697269",
+      "en": "respect",
+      "ja": "[名]①尊敬、尊重 ②（in）点、事項 [他]～を尊敬する、尊重する（＝look up to）",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "苦手単語"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052520961,
+      "nextReview": 1782138920961,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.2928288368088714",
+      "en": "apparently の意味は？",
+      "ja": "[熟]見たところは",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052724343,
+      "nextReview": 1782139124343,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.5586134147786551",
+      "en": "Apparently, no one was hurt in the accident.",
+      "ja": "「見たところは誰もその事故で負傷しなかったようだった。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053130582,
+      "nextReview": 1782139530582,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.5599389062207771",
+      "en": "apparently",
+      "ja": "[副]見たところは（＝seemingly）[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.898949416996649",
+      "en": "for no apparent reason",
+      "ja": "[熟]「明白な理由もなく」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517965770.33514590841436076",
+      "en": "apparent",
+      "ja": "[形]①見たところの ②明白な",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.9772772007271306",
+      "en": "obscure",
+      "ja": "[形]①不明確な、ぼやけた ②世に知られていない",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782052390407,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782052390407,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820517356790.48247063322489514",
+      "en": "vaguely",
+      "ja": "[副]漠然と[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053235720,
+      "nextReview": 1782139635720,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.10235557874932699",
+      "en": "I only have a vague idea of what is going on.",
+      "ja": "「何が起こっているのか、私には漠然としか分からない。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.3256096763126961",
+      "en": "vague",
+      "ja": "[形]曖昧な、漠然とした",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052595426,
+      "nextReview": 1782138995426,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.30384606436701356",
+      "en": "define の名詞形は？",
+      "ja": "[熟]definition",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782052405043,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782052405043,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820517356790.16384826678410613",
+      "en": "distinguish の名詞形 / 形容詞形は？",
+      "ja": "[熟]distinction / distinct [distinctive]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782053253753,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782053253753,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820517356790.3508902800742698",
+      "en": "indefinite",
+      "ja": "[形]不明確な[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.07126001416528305",
+      "en": "Definitely yes.",
+      "ja": "「全くその通りです。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.7079866171296539",
+      "en": "definitely",
+      "ja": "[副]絶対に[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053266245,
+      "nextReview": 1782139666245,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.14958627680532355",
+      "en": "the definition of a word",
+      "ja": "[熟]単語の定義",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.6800988650687718",
+      "en": "by definition",
+      "ja": "[熟]定義上、当然",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052657868,
+      "nextReview": 1782139057868,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.8958796158024281",
+      "en": "definition",
+      "ja": "[名]定義[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052667387,
+      "nextReview": 1782139067387,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.4315636657581112",
+      "en": "You must give me a definite answer so that we can start planning our trip.",
+      "ja": "「旅行の計画を立てられるように、明確な返事をしてよ。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517356790.4556531925543458",
+      "en": "definite",
+      "ja": "[形]明確な[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782053298829,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782053298829,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820517003200.5213344459588247",
+      "en": "I cannot define the word exactly, but I know its meaning in my head.",
+      "ja": "「私はその単語を正確に定義することはできないが、頭の中ではその意味を知っている。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.12119272209038656",
+      "en": "define",
+      "ja": "[他]～を定義する、明確にする",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052506198,
+      "nextReview": 1782138906198,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.278900518305366",
+      "en": "the distinction ( ) right and wrong",
+      "ja": "between [熟]「善悪の区別」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.36464540093999065",
+      "en": "distinction",
+      "ja": "[名]区別、識別[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.0016758325521042394",
+      "en": "The most distinctive feature of his art is his color.",
+      "ja": "「彼の芸術の最も独特な特徴は色だ。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.3080195072239068",
+      "en": "distinctive",
+      "ja": "[形]独特の[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782052702572,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782052702572,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820517003200.7867907304637042",
+      "en": "stand out",
+      "ja": "[自]目立つ",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.9985873551527708",
+      "en": "The puppy stood out because of the distinct pattern on its back.",
+      "ja": "「その子犬は背中の明確な模様で目立った。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.1959198810927648",
+      "en": "distinct",
+      "ja": "[形]明確な、はっきりした；異なる[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.3214449511072405",
+      "en": "I'm easily able to distinguish ripe fruit ( ) unripe fruit.",
+      "ja": "from 訳.「私は熟した果物と熟していない果物を容易に見分けられる。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.2001263498794399",
+      "en": "a distinguished journalist",
+      "ja": "[熟]著名な新聞記者",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782053149821,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782053149821,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820517003200.6922187646374274",
+      "en": "distinguish ( ) A and B",
+      "ja": "between [熟]AとBを区別する",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053180066,
+      "nextReview": 1782139580066,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.9920005397184801",
+      "en": "distinguish A ( ) B",
+      "ja": "from [熟]AをBと区別する",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.16687945761774303",
+      "en": "distinguish",
+      "ja": "[他]～を（…と）区別する、見分ける（from ...） [自]区別する",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052652157,
+      "nextReview": 1782139052157,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.8384894164096749",
+      "en": "I'm not sure I get your point. Can you be more specific?",
+      "ja": "「要点がよく分かりません。もっと具体的に言ってもらえますか。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.5293369699252496",
+      "en": "specific",
+      "ja": "[形]具体的な、特定の（＝particular）[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820517003200.7150605202435576",
+      "en": "The recipe doesn't specify which type of butter to be used.",
+      "ja": "「そのレシピはどのタイプのバターを使うべきか指定していない。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782052573401,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782052573401,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820517003200.5247794545612641",
+      "en": "specify",
+      "ja": "[他]～を（具体的に）指定する",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.9575921642177088",
+      "en": "peculiarity",
+      "ja": "[名]特性、風変わりな点[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.934139697618514",
+      "en": "I knew he was a foreigner because he ate in a peculiar manner.",
+      "ja": "「風変わりな方法で食べていたので、彼が外国人だと分かった。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782053094223,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782053094223,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820514893180.7881238908273006",
+      "en": "peculiar",
+      "ja": "[形]（～に）特有の (to ~) ；風変わりな",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.8675141214998552",
+      "en": "Language is unique to human beings.",
+      "ja": "「言語は人間だけが持つものだ。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053121782,
+      "nextReview": 1782139521782,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.703040520991656",
+      "en": "be unique ( ) A",
+      "ja": "to [熟]Aに特有の、Aだけの",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.8107449456071434",
+      "en": "unique",
+      "ja": "[形]（～に）特有の (to ~)、独自の；唯一の",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.7683800282207577",
+      "en": "typically",
+      "ja": "[副]典型的に、一般的に[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "苦手単語",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052709645,
+      "nextReview": 1782139109645,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.8527189926226417",
+      "en": "It is typical ( ) my father to forget the names of his children.",
+      "ja": "of 訳.「子供の名前を忘れるとはいかにも私の父らしい。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053229377,
+      "nextReview": 1782139629377,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.998676702449291",
+      "en": "it is typical of A to do",
+      "ja": "[熟]～するとはAらしい",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.782624950125791",
+      "en": "typical",
+      "ja": "[形]典型的な、（～）らしい (of ~)",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053327755,
+      "nextReview": 1782139727755,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.4086095862535657",
+      "en": "Diligence is said to be a trait commonly found in Japanese people.",
+      "ja": "「勤勉は日本人によく見られる特徴だと言われる。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052631729,
+      "nextReview": 1782139031729,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514893180.4625944449375453",
+      "en": "trait",
+      "ja": "[名]（性格・身体の）特徴、特質",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514274420.2579748992183991",
+      "en": "notable",
+      "ja": "[形]注目すべき",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782053304134,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782053304134,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820514274420.1073683911806591",
+      "en": "The nature magazine featured babies of different animals.",
+      "ja": "「自然専門誌は様々な動物の赤ちゃんを特集した。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782053290980,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782053290980,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820514274420.26099261747588753",
+      "en": "A notable feature of this wordbook is the abundant illustrations.",
+      "ja": "「この単語集の注目すべき1つの特徴は豊富なイラストである。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514274420.7390983050709563",
+      "en": "feature",
+      "ja": "[名]（目立った）特徴、顔立ち [他]～を特集する、呼び物にする",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782052384525,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782052384525,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820514274420.2094153720790346",
+      "en": "One major characteristic of the Japanese car is its compact size.",
+      "ja": "「日本車の主な特徴の1つは、コンパクトなサイズだ。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053222326,
+      "nextReview": 1782139622326,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514274420.550034571554741",
+      "en": "characteristic",
+      "ja": "[形]（個々の）特徴的な（of ~） [名]（個々の）特徴[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514274420.7437860188047434",
+      "en": "characterize",
+      "ja": "[他]～を特徴づける[記載用]",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514274420.28656489813293695",
+      "en": "Our school puts emphasis on character building to nurture future leaders.",
+      "ja": "「未来の指導者を養成するために、当校は人格形成を重視している。」",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782052565399,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782052565399,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820514274420.38253826878273944",
+      "en": "a person of great character",
+      "ja": "[熟]優れた人格の持ち主",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782053315858,
+      "nextReview": 1782139715858,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514274420.4990363328791154",
+      "en": "Chinese characters",
+      "ja": "[熟]漢字",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514274420.5405396762006668",
+      "en": "the main [leading] character",
+      "ja": "[熟]主役",
+      "playlists": [
+        "section2 26/06/21",
+        "全て",
+        "苦手単語"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782052715663,
+      "nextReview": 1782139115663,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820514274420.7148952406485518",
+      "en": "character",
+      "ja": "[名]①性格、人格、特徴 ②登場人物 ③文字",
+      "playlists": [
+        "section2 26/06/21",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.7586251024327918",
+      "en": "The company put an emphasis on the quality of their products.",
+      "ja": "「その会社は商品の質を重視した。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051088241,
+      "nextReview": 1782137488241,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.770587764148344",
+      "en": "put [lay, place] (an) emphasis ( ) A",
+      "ja": "on [熟]Aを重視する",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050448398,
+      "nextReview": 1782136848398,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.6308615053447353",
+      "en": "emphasis",
+      "ja": "[名]強調、重視[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051183715,
+      "nextReview": 1782137583715,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.43505543750880193",
+      "en": "The coach emphasized the importance of the next game.",
+      "ja": "「監督は次の試合の重要性を強調した。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050729438,
+      "nextReview": 1782137129438,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.6748160850151612",
+      "en": "emphasize",
+      "ja": "[他]～を強調する",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050337990,
+      "nextReview": 1782136737990,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.7787373469053918",
+      "en": "This place is familiar (1. with / 2. to) me.",
+      "ja": "[Ans]2",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050443515,
+      "nextReview": 1782136843515,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.9944188853503527",
+      "en": "This is (1. extraordinary / 2. extraordinarily) good.",
+      "ja": "[Ans]2",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050648558,
+      "nextReview": 1782137048558,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.8780240657755253",
+      "en": "extra-",
+      "ja": "[語根]外",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050351570,
+      "nextReview": 1782136751570,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.15732933310629815",
+      "en": "familiarity",
+      "ja": "[名]精通[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050373494,
+      "nextReview": 1782136773494,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.6067276517942692",
+      "en": "I'm familiar ( ) this place.",
+      "ja": "with 訳.「私はこの場所に精通している。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050760924,
+      "nextReview": 1782137160924,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.2800025554863541",
+      "en": "This place is familiar ( ) me.",
+      "ja": "to 訳.「私はこの場所をよく知っている。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050673856,
+      "nextReview": 1782137073856,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.2395670496326593",
+      "en": "a familiar voice",
+      "ja": "[熟]聞き覚えのある声",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050515476,
+      "nextReview": 1782136915476,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.7922995419643698",
+      "en": "familiar",
+      "ja": "[形]（～に）よく知られた (to ~) ；（～に）精通している (with ~)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051235992,
+      "nextReview": 1782137635992,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.8713377328338636",
+      "en": "You have an extraordinary talent, so use it!",
+      "ja": "「君には並はずれた才能があるのだから、それを使え！」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050509070,
+      "nextReview": 1782136909070,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820483495440.29657518624299595",
+      "en": "extraordinarily",
+      "ja": "[副]並はずれて、非常に[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050614071,
+      "nextReview": 1782137014071,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.09278595806616363",
+      "en": "I was ignorant ( ) recent trends in fashion, but I tried to keep up with the subject.",
+      "ja": "of 訳.「最近のファッションのトレンドを知らなかったが、話題に付いていこうとした。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050742356,
+      "nextReview": 1782137142356,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.02434203149726033",
+      "en": "be ignorant ( ) A",
+      "ja": "of [熟]Aを知らない",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050344249,
+      "nextReview": 1782136744249,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.9660751105277494",
+      "en": "be ignorant ( )",
+      "ja": "of [形]無知の、（～を）知らない (of ~)[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051292770,
+      "nextReview": 1782137692770,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.6987118593656733",
+      "en": "I ignored the incoming phone calls since I wanted to be alone.",
+      "ja": "「私は1人になりたかったので電話の呼び出しを無視した。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050478947,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050478947,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820482699690.602400399554611",
+      "en": "ignore",
+      "ja": "[他]～を（意図的に）無視する、知らないふりをする",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051110543,
+      "nextReview": 1782137510543,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.26267948071433933",
+      "en": "negligible",
+      "ja": "[形]無視し得る、つまらない[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050459338,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050459338,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820482699690.4821816945640107",
+      "en": "negligence",
+      "ja": "[名]無視、怠慢[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050402689,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050402689,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820482699690.030041694765304716",
+      "en": "The mother was indulged in her hobby and neglected housework.",
+      "ja": "「その母親は趣味に没頭して家事を怠った。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050527018,
+      "nextReview": 1782136927018,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.26442662347627877",
+      "en": "neglect",
+      "ja": "[他]～を（うっかり）怠る、軽視する",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051200710,
+      "nextReview": 1782137600710,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.23139812496558854",
+      "en": "politician",
+      "ja": "[名]政治家",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051229052,
+      "nextReview": 1782137629052,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.24044945663658546",
+      "en": "The politician placed stress on education and childcare.",
+      "ja": "「その政治家は教育と育児を重視した。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050435717,
+      "nextReview": 1782136835717,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.8584976413233663",
+      "en": "put [lay, place] (a) stress ( ) A",
+      "ja": "on [熟]Aを重視する",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050620325,
+      "nextReview": 1782137020325,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.658149474971781",
+      "en": "feel stress",
+      "ja": "[熟]ストレスを感じる",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050854895,
+      "nextReview": 1782137254895,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.7310845367299909",
+      "en": "relieve stress",
+      "ja": "[熟]ストレスを軽減する",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "苦手単語"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050707540,
+      "nextReview": 1782137107540,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820482699690.02433908918122607",
+      "en": "stress",
+      "ja": "[他]～を強調する [名]①ストレス ②重点、強調",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782051303492,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782051303492,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820482699690.6367387636490366",
+      "en": "emphatic",
+      "ja": "[形]強調された[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050389672,
+      "nextReview": 1782136789672,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465766780.6715912627901804",
+      "en": "primarily",
+      "ja": "[副]第1に[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050362582,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050362582,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820465766780.5994400381427912",
+      "en": "safety",
+      "ja": "[名]安全",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050411873,
+      "nextReview": 1782136811873,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465766780.7676106713451003",
+      "en": "The mother's primary concern was the safety of her child.",
+      "ja": "「母親の第1の関心は子供の安全だった。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051017073,
+      "nextReview": 1782137417073,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465766780.6686178724645173",
+      "en": "primary",
+      "ja": "[形]第1の、主要な (↔ secondary 「第2の、副次的な」)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051331177,
+      "nextReview": 1782137731177,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465766780.9196029554756493",
+      "en": "prominence",
+      "ja": "[名]目立つこと、卓越[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050425601,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050425601,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820465766780.4223652943672611",
+      "en": "hook",
+      "ja": "[名]かぎ（鉤）",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782051346279,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782051346279,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820465766780.18036012593042172",
+      "en": "The most prominent feature of his face is his hooked nose.",
+      "ja": "「彼の顔の最も目立った特徴はかぎ形の鼻（わし鼻）だ。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782051174002,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782051174002,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820465766780.11305125396063909",
+      "en": "prominent",
+      "ja": "[形]目立った；有名な",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782051324833,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782051324833,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820465766780.7635026601497162",
+      "en": "an eminent scientist",
+      "ja": "[熟]著名な科学者",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050491654,
+      "nextReview": 1782136891654,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465766780.30163694168041466",
+      "en": "eminent",
+      "ja": "[形]著名な",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050496402,
+      "nextReview": 1782136896402,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465766780.02885409197304123",
+      "en": "He is ignorant (1. of / 2. in) the fact.",
+      "ja": "[Ans]1",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051077874,
+      "nextReview": 1782137477874,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465766780.6623371537470946",
+      "en": "They put emphasis (1. in / 2. on) health.",
+      "ja": "[Ans]2",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050639772,
+      "nextReview": 1782137039772,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465766780.20549960121559208",
+      "en": "bliss",
+      "ja": "[名]至福",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050778571,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050778571,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820465766780.2965564248474417",
+      "en": "Ignorance is bliss.",
+      "ja": "「無知は至福である。（知らぬが仏）」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050890242,
+      "nextReview": 1782137290242,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465766780.6800478903598196",
+      "en": "ignorance",
+      "ja": "[名]無知[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050923036,
+      "nextReview": 1782137323036,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465640980.4615347658058577",
+      "en": "prim",
+      "ja": "[語根]第1の",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782051093244,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782051093244,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820465640980.08080642753913991",
+      "en": "min",
+      "ja": "[語根]突き出る",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050931461,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050931461,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820465640980.9105759594201444",
+      "en": "This year's sales are slightly higher than last year's.",
+      "ja": "「今年の売り上げは昨年のよりもわずかに上回っている。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050961559,
+      "nextReview": 1782137361559,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465640980.14403450470334356",
+      "en": "slightly",
+      "ja": "[副]わずかに[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050332976,
+      "nextReview": 1782136732976,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465640980.011255189928370268",
+      "en": "A slight misunderstanding can ruin a relationship.",
+      "ja": "「わずかな誤解が関係をだめにしてしまうことがある。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050697709,
+      "nextReview": 1782137097709,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465640980.8688542084105989",
+      "en": "slight",
+      "ja": "[形]わずかな、取るに足りない",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051190392,
+      "nextReview": 1782137590392,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465640980.23192205620712825",
+      "en": "Tiny pieces of glass were found scattered at the scene of the accident.",
+      "ja": "「ちっぽけなガラスの破片が事故現場に散乱していた。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050632980,
+      "nextReview": 1782137032980,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465640980.9761187700415864",
+      "en": "tiny",
+      "ja": "[形]ちっぽけな (= very small)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050746188,
+      "nextReview": 1782137146188,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465640980.4656471058218553",
+      "en": "a prime number",
+      "ja": "[熟]素数",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051156175,
+      "nextReview": 1782137556175,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465640980.7121167144274371",
+      "en": "Prime Minister",
+      "ja": "[熟]首相",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050899259,
+      "nextReview": 1782137299259,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820465640980.14689503952393912",
+      "en": "prime",
+      "ja": "[形]最高の、主要な[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050988249,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050988249,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820371392070.7215453905149157",
+      "en": "Arguing over trivialities does not help a relationship.",
+      "ja": "「ささいな事で言い合っても関係は良くならない。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050790010,
+      "nextReview": 1782137190010,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.10508896335405726",
+      "en": "triviality",
+      "ja": "[名]ささいな事、くだらない事[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050602098,
+      "nextReview": 1782137002098,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.07319378005726118",
+      "en": "a trivial matter",
+      "ja": "[熟]ささいな事、どうでもいい事",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050951275,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050951275,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820371392070.6103204730368368",
+      "en": "a trivial detail",
+      "ja": "[熟]つまらない細部",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782050771334,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782050771334,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820371392070.16343087353043284",
+      "en": "trivial",
+      "ja": "[形]ささいな、ありふれた (↔ important)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "苦手単語"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051022701,
+      "nextReview": 1782137422701,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.2869866229276784",
+      "en": "Money makes (1. different / 2. a difference).",
+      "ja": "[Ans]2",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051219569,
+      "nextReview": 1782137619569,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.6565532934991426",
+      "en": "It makes no difference ( ) me who you were with last night.",
+      "ja": "to 訳.「君が昨夜誰といたかなんて僕にはどうでもいい事だ。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051310854,
+      "nextReview": 1782137710854,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.6509489912998051",
+      "en": "Money makes a difference in politics.",
+      "ja": "「政治では金が重要だ。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051128460,
+      "nextReview": 1782137528460,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.23580206869907683",
+      "en": "make a difference",
+      "ja": "[熟]重要である、影響を及ぼす (= count, matter)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051351263,
+      "nextReview": 1782137751263,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.6102470832347242",
+      "en": "The only thing that counts is the result, not the process.",
+      "ja": "「唯一重要なのは結果であって過程ではない。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051342772,
+      "nextReview": 1782137742772,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.9737746132633857",
+      "en": "count",
+      "ja": "[他]～を数える [自]重要である (= be important, matter)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051355331,
+      "nextReview": 1782137755331,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.8013263911483517",
+      "en": "What really matters is not what you read, but how you read it.",
+      "ja": "「本当に重要なのは何を読むかではなくどう読むかだ。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050667457,
+      "nextReview": 1782137067457,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820371392070.31079915427741145",
+      "en": "matter",
+      "ja": "[名]事柄、問題 [自]重要である (= be important, count)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051118480,
+      "nextReview": 1782137518480,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654660.4194470071104066",
+      "en": "This problem is (1. in / 2. of) great significance.",
+      "ja": "[Ans]2",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051284129,
+      "nextReview": 1782137684129,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654660.5072244137484994",
+      "en": "consequently",
+      "ja": "[副]その結果、従って[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "苦手単語",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050717599,
+      "nextReview": 1782137117599,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.6145164209169609",
+      "en": "I forgot to take out the trash. Consequently [As a consequence], my apartment smelled awful.",
+      "ja": "「ゴミを出し忘れた。その結果アパートがひどい臭いになった。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051068887,
+      "nextReview": 1782137468887,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.3196315994322445",
+      "en": "a matter of [no] consequence",
+      "ja": "[熟]重要な [重要でない] 事柄",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051005440,
+      "nextReview": 1782137405440,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.3234125129930946",
+      "en": "be ( ) consequence",
+      "ja": "of [熟]重要である (= be important)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050926100,
+      "nextReview": 1782137326100,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.27975208210540725",
+      "en": "as a consequence",
+      "ja": "[熟]その結果 (= consequently)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051101123,
+      "nextReview": 1782137501123,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.6557678033612117",
+      "en": "consequence",
+      "ja": "[名]①結果 (= result) ②重要さ (= importance, significance)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051249014,
+      "nextReview": 1782137649014,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.07207185605165001",
+      "en": "significantly",
+      "ja": "[副]かなり[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050977406,
+      "nextReview": 1782137377406,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.26936975739314184",
+      "en": "The Internet has become the most significant information resource.",
+      "ja": "「インターネットは最も重要な情報源となった。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051149570,
+      "nextReview": 1782137549570,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.6801825863549237",
+      "en": "significant amount",
+      "ja": "[熟]かなりの量",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051136029,
+      "nextReview": 1782137536029,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.8453298294630137",
+      "en": "significant",
+      "ja": "[形]重要な (= important); かなりの（大きさの）[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て",
+        "記載練習"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782051226354,
+      "nextReview": 1782137626354,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.016063812318659387",
+      "en": "Wealth does not necessarily signify happiness.",
+      "ja": "「富は必ずしも幸福を意味しない。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050756186,
+      "nextReview": 1782137156186,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.10755430170941571",
+      "en": "signify",
+      "ja": "[他]～を意味する (= mean)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050683613,
+      "nextReview": 1782137083613,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820368654650.21589193772137105",
+      "en": "Travel is ( ) great significance in that it broadens your mind.",
+      "ja": "of 訳.「旅は視野を広げてくれる点で極めて重要である。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782050912288,
+      "nextReview": 1782137312288,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
       "id": "w-17820358336310.2459515385167379",
       "en": "a matter of great significance",
       "ja": "[熟]非常に重要な問題",
@@ -134,7 +2914,8 @@
       "ja": "[名]形式的なこと[記載用]",
       "playlists": [
         "section1 26/06/21",
-        "全て"
+        "全て",
+        "記載練習"
       ],
       "status": "wait",
       "missCount": 0,
@@ -262,7 +3043,8 @@
       "ja": "[副]本質的に[記載用]",
       "playlists": [
         "section1 26/06/21",
-        "全て"
+        "全て",
+        "記載練習"
       ],
       "status": "wait",
       "missCount": 0,
@@ -342,7 +3124,8 @@
       "ja": "[名]生き返り、蘇生[記載用]",
       "playlists": [
         "section1 26/06/21",
-        "全て"
+        "全て",
+        "記載練習"
       ],
       "status": "wait",
       "missCount": 0,
@@ -438,7 +3221,8 @@
       "ja": "[名]生命力、活力 (= vigor, energy)[記載用]",
       "playlists": [
         "section1 26/06/21",
-        "全て"
+        "全て",
+        "記載練習"
       ],
       "status": "wait",
       "missCount": 0,
@@ -516,16 +3300,17 @@
       "id": "w-17819669803620.4083374634179613",
       "en": "O",
       "ja": "お",
-      "status": "miss",
+      "status": "wait",
       "missCount": 5,
-      "lastTested": 1782022232828,
-      "nextReview": null,
-      "interval": 0,
-      "inRecentMissList": true,
+      "lastTested": 1782036680826,
+      "nextReview": 1782123080826,
+      "interval": 1,
+      "inRecentMissList": false,
       "recentMissTimestamp": 1782022232828,
       "playlists": [
         "a",
-        "全て"
+        "全て",
+        "A"
       ]
     },
     {
@@ -540,7 +3325,8 @@
       "inRecentMissList": false,
       "recentMissTimestamp": 1782022181100,
       "playlists": [
-        "全て"
+        "全て",
+        "A"
       ]
     },
     {
@@ -555,7 +3341,8 @@
       "recentMissTimestamp": 1782022187868,
       "inRecentMissList": false,
       "playlists": [
-        "全て"
+        "全て",
+        "A"
       ]
     },
     {
@@ -570,7 +3357,8 @@
       "inRecentMissList": false,
       "recentMissTimestamp": 1782022199090,
       "playlists": [
-        "全て"
+        "全て",
+        "A"
       ]
     },
     {
@@ -585,7 +3373,8 @@
       "recentMissTimestamp": null,
       "inRecentMissList": false,
       "playlists": [
-        "全て"
+        "全て",
+        "A"
       ]
     }
   ],
@@ -595,6 +3384,9 @@
     "一度でも間違えた単語",
     "a",
     "A",
-    "section1 26/06/21"
+    "section1 26/06/21",
+    "section2 26/06/21",
+    "苦手単語",
+    "記載練習"
   ]
 }
