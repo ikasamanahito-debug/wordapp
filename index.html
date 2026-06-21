@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v78 - Neon Highway</title>
+    <title>Domemory v80 - Neon Highway (SRS Fix)</title>
     <style>
-        /* ==================== ネオン街 テーマ定義 (視認性最優先) ==================== */
+        /* ==================== ネオン街 テーマ定義 ==================== */
         :root { 
             --p: #ff0055;            /* ネオンピンク */
             --p-dark: #cc0044;       
@@ -13,11 +13,11 @@
             --acc: #00ffaa;          /* ネオングリーン */
             --danger: #00f0ff;       /* ネオンシアン */
             --new: #ffcc00;          /* ネオンイエロー */
-            --text: #ffffff;         /* メ意・基本文字（白） */
+            --text: #ffffff;         
             --text-dark: #ffffff;    
             --gold: #7000ff;         /* ネオンパープル */
             --shuffle: #99ff00;      
-            --card-bg: rgba(20, 22, 34, 0.92); /* カード背景（視認性のために濃く） */
+            --card-bg: rgba(20, 22, 34, 0.92); 
             --input-bg: #05060b;
         }
         
@@ -53,7 +53,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: url('http://googleusercontent.com/image_generation_content/16') center center / cover no-repeat;
             z-index: 1;
-            opacity: 0.15; /* ネオン街の雰囲気を残しつつ文字を邪魔しない透過度 */
+            opacity: 0.15; 
             filter: grayscale(30%) brightness(50%);
         }
         #highway-canvas {
@@ -441,7 +441,9 @@
     </nav>
 
     <script>
-        // 固定のベースリスト構造
+        const STORAGE_KEY = "domemory_v78_unified_data";
+
+        // メインデータ構造
         let data = {
             words: [],
             playlists: ["全て", "最近間違えたリスト", "一度でも間違えた単語"]
@@ -460,27 +462,36 @@
         let gitHubConfig = { username: "", repo: "", token: "", name: "me" };
 
         function saveData() {
-            localStorage.setItem("domemory_v78_unified_data", JSON.stringify(data));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
-        // 動的・一時的間違えフォルダ用カスタム個別プロパティの完全同期保証
         function ensureCustomPlaylists(w) {
             if (!w.hasOwnProperty('inRecentMissList')) {
                 w.inRecentMissList = (w.missCount > 0); 
             }
         }
 
+        // データの平坦化（サーバーデータのネスト構造崩れを修復する防衛処理）
+        function sanitizeAndUnwrapData(obj) {
+            if (!obj) return null;
+            if (obj.data && Array.isArray(obj.data.words)) return sanitizeAndUnwrapData(obj.data);
+            if (obj.words && Array.isArray(obj.words)) return obj;
+            return null;
+        }
+
         function loadData() {
-            const local = localStorage.getItem("domemory_v78_unified_data");
+            const local = localStorage.getItem(STORAGE_KEY);
             if (local) {
                 try {
                     let parsed = JSON.parse(local);
-                    if (parsed && Array.isArray(parsed.words)) data.words = parsed.words;
-                    if (parsed && Array.isArray(parsed.playlists)) data.playlists = parsed.playlists;
+                    let cleanData = sanitizeAndUnwrapData(parsed);
+                    if (cleanData) {
+                        data.words = cleanData.words;
+                        data.playlists = cleanData.playlists || data.playlists;
+                    }
                 } catch(e) { console.error(e); }
             }
             
-            // 固定初期フォルダの完全ガード生成
             if (!data.playlists.includes("全て")) data.playlists.unshift("全て");
             if (!data.playlists.includes("最近間違えたリスト")) {
                 data.playlists.splice(1, 0, "最近間違えたリスト");
@@ -554,15 +565,24 @@
             showToast("クラウドからデータを読込中...");
             try {
                 let response = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${filename}`, {
-                    headers: { "Authorization": `token ${token}` }
+                    headers: { "Authorization": `token ${token}`, "Cache-Control": "no-cache" }
                 });
                 if (response.ok) {
                     const fileData = await response.json();
-                    const downloadedData = JSON.parse(decodeURIComponent(escape(atob(fileData.content))));
-                    if (downloadedData && Array.isArray(downloadedData.words)) {
-                        data = downloadedData;
-                        saveData(); loadData(); updateUI();
-                        showToast("☁️ クラウドから復元しました");
+                    const rawText = decodeURIComponent(escape(atob(fileData.content)));
+                    const downloadedData = JSON.parse(rawText);
+                    
+                    let cleanData = sanitizeAndUnwrapData(downloadedData);
+                    
+                    if (cleanData && Array.isArray(cleanData.words)) {
+                        data.words = cleanData.words;
+                        data.playlists = cleanData.playlists || ["全て", "最近間違えたリスト", "一度でも間違えた単語"];
+                        saveData(); 
+                        loadData(); 
+                        updateUI();
+                        showToast(`☁️ クラウドから ${data.words.length} 件の単語を正常読込！`);
+                    } else {
+                        showToast("サーバーデータの構造が正しくありません", true);
                     }
                 } else { showToast("データが見つかりません", true); }
             } catch (e) { showToast("読込失敗しました", true); }
@@ -870,21 +890,15 @@
             const quizTarget = document.getElementById("quiz-from-playlist") ? document.getElementById("quiz-from-playlist").value : "全て";
             let pool = data.words.filter(w => quizTarget === "全て" || w.playlist === quizTarget);
             
-            // 苦手特訓選択時はプール数を「最近間違えたリスト」単語数に固定してラベル表示
-            if (document.getElementById("quiz-setup") && !document.getElementById("quiz-setup").classList.contains("hidden")) {
-                const isMissModeActive = (quizMode === 'miss');
-            }
-            
             const msgEl = document.getElementById("limit-msg");
             if(msgEl) msgEl.innerText = pool.length < 4 ? `⚠️ 単語数が不足しています (現在:${pool.length}/4件必要)` : `✅ 出題可能エリア (対象:${pool.length}件)`;
         }
 
-        // ==================== 進化版クイズシステム ====================
+        // ==================== クイズシステム ====================
         function startQuizWithCountdown(mode) {
             if(isProcessingResult) return;
             const targetPl = document.getElementById("quiz-from-playlist").value;
             
-            // 苦手特訓は「最近間違えたリスト」に入っている単語だけを抽出対象にする
             let pool = [];
             if(mode === 'miss') {
                 pool = data.words.filter(w => w.inRecentMissList);
@@ -1060,16 +1074,16 @@
             const mainDataWord = data.words.find(item => item.id === w.id);
             const now = Date.now();
 
-            // 修正1の条件分岐：SRS更新をかけるかどうかのフラグ制御
+            // === [重要] メリハリをつけたSRS更新条件の厳密化判定 ===
             let canUpdateSRS = false;
-            if (quizMode === 'new' || quizMode === 'srs') {
-                canUpdateSRS = true;
-            } else if (quizMode === 'miss' && mainDataWord) {
-                // 苦手特訓で正解した際、ステータスが「new」なら更新可能に、「wait」なら更新しないように制御
-                if (mainDataWord.status === 'new' || !mainDataWord.status) {
+            if (mainDataWord) {
+                // 条件A: まだ一度もテストされていない新規、または苦手状態（タイマーなし）のとき
+                if (mainDataWord.status === 'new' || !mainDataWord.status || mainDataWord.status === 'miss') {
                     canUpdateSRS = true;
-                } else if (mainDataWord.status === 'wait') {
-                    canUpdateSRS = false;
+                }
+                // 条件B: 復習待ち状態であり、かつタイマー（nextReview）が切れて【復習可能】になっているとき
+                else if (mainDataWord.status === 'wait' && mainDataWord.nextReview && mainDataWord.nextReview <= now) {
+                    canUpdateSRS = true;
                 }
             }
 
@@ -1087,25 +1101,27 @@
                 }
 
                 if(mainDataWord) {
-                    // 追加1の仕様：正解したら「最近間違えたリスト」から自動で除去
                     mainDataWord.inRecentMissList = false;
 
                     if (quizMode === 'today' || quizMode === 'yesterday') {
                         mainDataWord.recentMissTimestamp = null;
                     }
 
+                    // 条件を満たした場合のみ間隔を進行
                     if (canUpdateSRS) {
                         mainDataWord.lastTested = now;
                         if(mainDataWord.status === 'new' || !mainDataWord.status || mainDataWord.status === 'miss') {
-                            mainDataWord.interval = 1; 
+                            mainDataWord.interval = 1; // ステージ1（1日後）から開始
                             mainDataWord.status = 'wait';
                         } else { 
-                            mainDataWord.interval = mainDataWord.interval * 2; 
+                            mainDataWord.interval = mainDataWord.interval * 2; // 間隔を倍に延長
                         }
                         mainDataWord.nextReview = now + (mainDataWord.interval * 24 * 60 * 60 * 1000); 
                     }
+                    // 「復習待ち中（あと〇時間）」のフライング正解時は、ここをスルーして元のタイマーを完全維持
                 }
             } else {
+                // 間違えた場合はフライング中であってもペナルティを適用して即座に復習可能（miss）にする
                 overlay.className = "bg-miss-active"; setTimeout(() => { overlay.className = ""; }, 250);
                 const box = document.createElement("div"); box.className = "quiz-effect-box";
                 box.innerHTML = `<div class="quiz-effect-txt txt-miss">❌ MISS</div><div class="miss-ans-subtext">正解: ${quizMode === 'all_reverse' ? w.en : w.ja}</div>`;
@@ -1115,15 +1131,12 @@
                     mainDataWord.lastTested = now;
                     mainDataWord.missCount = (mainDataWord.missCount || 0) + 1;
                     mainDataWord.recentMissTimestamp = now; 
-                    
-                    // 追加1の仕様：間違えたら「最近間違えたリスト」フォルダの対象に追加
                     mainDataWord.inRecentMissList = true;
 
-                    if (quizMode === 'new' || quizMode === 'srs' || quizMode === 'miss') {
-                        mainDataWord.status = 'miss'; 
-                        mainDataWord.interval = 0; 
-                        mainDataWord.nextReview = null; 
-                    }
+                    // 一発で「苦手」状態に落として、タイマーなし（即座に出題可能）にする
+                    mainDataWord.status = 'miss'; 
+                    mainDataWord.interval = 0; 
+                    mainDataWord.nextReview = null; 
                 }
             }
 
@@ -1137,7 +1150,7 @@
             }, isCorrect ? 900 : 1850);
         }
 
-        // ==================== ハイウェイアニメーション背景 ====================
+        // ==================== 背景アニメーション ====================
         const canvas = document.getElementById('highway-canvas'); const ctx = canvas?.getContext('2d');
         let backgroundLines = [];
         function resizeCanvas() { if(!canvas) return; canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -1164,7 +1177,7 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas(); initLines(); animateCity();
 
-        // 起動時初期化
+        // 起動
         loadData();
         updateUI();
         showPage('quiz');
