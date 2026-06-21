@@ -734,7 +734,7 @@
             updateUI();
         }
 
-        function saveBulkWords() {
+function saveBulkWords() {
             const text = document.getElementById("bulk-import-area").value;
             let selectedPls = getSelectedOptions(document.getElementById("add-to-playlist"));
             if(selectedPls.length === 0) selectedPls = ["全て"];
@@ -744,13 +744,15 @@
             const lines = text.split('\n');
             let successCount = 0;
             lines.forEach(line => {
-                if(!line.trim()) return;// === ここから書き換え ===
-                let parts = line.split('|'); // パイプライン「|」で分割
+                if(!line.trim()) return;
+                
+                let parts = line.split('|'); 
                 if(parts.length >= 2) {
                     const en = parts[0].trim(); 
-                    const ja = parts.slice(1).join('|').trim(); // 2つ以上「|」があっても崩れないように結合
-                // === ここまで書き換え ===
-                    if(en && ja) {
+                    const ja = parts.slice(1).join('|').trim(); 
+                
+                    // enが空欄（スペースのみ等含む）でなければ登録に進む
+                    if(en !== "" && ja !== "") {
                         data.words.unshift({
                             id: "w-" + Date.now() + Math.random(), en, ja, playlists: [...selectedPls],
                             status: "new", missCount: 0, lastTested: null, nextReview: null, interval: 0,
@@ -759,10 +761,13 @@
                         successCount++;
                     }
                 }
-            });
+            }); // lines.forEach の閉じ
+            
             if(successCount > 0) {
-                saveData(); document.getElementById("bulk-import-area").value = "";
-                showToast(`${successCount}件一括登録成功`); updateUI();
+                saveData(); 
+                document.getElementById("bulk-import-area").value = "";
+                showToast(`${successCount}件一括登録成功`); 
+                updateUI();
             }
         }
 
