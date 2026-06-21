@@ -565,7 +565,7 @@
             showToast("クラウドからデータを読込中...");
             try {
                 let response = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${filename}`, {
-                    headers: { "Authorization": `token ${token}`, "Cache-Control": "no-cache" }
+                    headers: { "Authorization": `token ${token}` }
                 });
                 if (response.ok) {
                     const fileData = await response.json();
