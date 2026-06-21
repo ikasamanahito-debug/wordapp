@@ -1133,7 +1133,8 @@ function saveBulkWords() {
                 grid.appendChild(btn);
             });
 
-            let waitSeconds = correctWord.missCount ? 2 + Math.min(6, correctWord.missCount * 1.5) : 2;
+// 修正後（パターン1）
+            let waitSeconds = correctWord.missCount ? 4 + (correctWord.missCount * 2) : 8; // 新規は5秒、苦手は6秒〜
             timerTxt.innerText = `選択肢表示まであと ${Math.ceil(waitSeconds)} 秒`;
             
             clearInterval(countdownInterval);
