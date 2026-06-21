@@ -1,6 +1,518 @@
 {
   "words": [
     {
+      "id": "w-17820358336310.2459515385167379",
+      "en": "a matter of great significance",
+      "ja": "[熟]非常に重要な問題",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036157684,
+      "nextReview": 1782122557684,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.3597676875106349",
+      "en": "be ( ) significance",
+      "ja": "of [熟]重要である (= be important)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036165492,
+      "nextReview": 1782122565492,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.10078305027363887",
+      "en": "significance",
+      "ja": "[名]重要性 (= importance)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036185557,
+      "nextReview": 1782122585557,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.8269887098112894",
+      "en": "a crucial moment",
+      "ja": "[熟]決定的な瞬間",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036260814,
+      "nextReview": 1782122660814,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.22796847496659767",
+      "en": "正しいスペルは？ (1. essential / 2. essencial)",
+      "ja": "[Ans]1",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036280057,
+      "nextReview": 1782122680057,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.7971162317663036",
+      "en": "hold one's breath",
+      "ja": "[熟]息を止める、固唾を呑む",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036216803,
+      "nextReview": 1782122616803,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.7420019531759378",
+      "en": "Everyone held their breath at a crucial moment in the negotiations.",
+      "ja": "「交渉の決定的な瞬間には誰もが固唾を呑んだ。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036204090,
+      "nextReview": 1782122604090,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.34628457957787195",
+      "en": "crucial",
+      "ja": "[形]決定的な、極めて重要な",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036363537,
+      "nextReview": 1782122763537,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.12224458611088107",
+      "en": "formality",
+      "ja": "[名]形式的なこと[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036368616,
+      "nextReview": 1782122768616,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.43340512856200974",
+      "en": "Let's dispense with formalities and get right down to business.",
+      "ja": "「形式的なことは抜きにして本題に入りましょう。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036413751,
+      "nextReview": 1782122813751,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.3434728506180553",
+      "en": "dispense ( )",
+      "ja": "with [熟]～なしで済ます (= do without)",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036142824,
+      "nextReview": 1782122542824,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.6809482550294853",
+      "en": "The secretary had become indispensable ( ) the company.",
+      "ja": "to 訳.「その秘書は、会社にとって必要不可欠になっていた。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036423494,
+      "nextReview": 1782122823494,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820358336310.9887788529997321",
+      "en": "be indispensable ( )",
+      "ja": "to, for [形]（～にとって）重要な、必要不可欠な",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "miss",
+      "missCount": 1,
+      "lastTested": 1782036224193,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": 1782036224193,
+      "inRecentMissList": true
+    },
+    {
+      "id": "w-17820357634300.610821697921007",
+      "en": "The pursuit of truth is the essence of science.",
+      "ja": "「真実の追究が科学の本質だ。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036382581,
+      "nextReview": 1782122782581,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.7487525943588894",
+      "en": "( ) essence",
+      "ja": "in [熟]本質的には",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036208487,
+      "nextReview": 1782122608487,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.8561233130090767",
+      "en": "essence",
+      "ja": "[名]本質[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036456734,
+      "nextReview": 1782122856734,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.10167288934530616",
+      "en": "essentially",
+      "ja": "[副]本質的に[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036375307,
+      "nextReview": 1782122775307,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.11818102305527511",
+      "en": "Did you understand the essential theme of the novel?",
+      "ja": "「君はその小説の重要なテーマを理解したのか？」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036465888,
+      "nextReview": 1782122865888,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.9977102572560369",
+      "en": "be essential ( )",
+      "ja": "to, for [形]①（～にとって）重要な、必要不可欠な (= vital, important) ②本質的な",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036272777,
+      "nextReview": 1782122672777,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.6001761302215629",
+      "en": "re-",
+      "ja": "[語根]再び",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036149215,
+      "nextReview": 1782122549215,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.1508996918074833",
+      "en": "viv / vit",
+      "ja": "[語根]生命",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036265408,
+      "nextReview": 1782122665408,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.8219948568631105",
+      "en": "revival",
+      "ja": "[名]生き返り、蘇生[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036248894,
+      "nextReview": 1782122648894,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.5203196753042091",
+      "en": "Cloning technology will make it possible to revive extinct species.",
+      "ja": "「クローン技術によって絶滅した生物種を蘇らせることが可能になるだろう。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036432725,
+      "nextReview": 1782122832725,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.0816674553744452",
+      "en": "revive",
+      "ja": "[他]～を生き返らせる [自]生き返る",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036293364,
+      "nextReview": 1782122693364,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357634300.8288847908377501",
+      "en": "I still have a vivid memory of the day when I first met my husband.",
+      "ja": "「私はまだ夫に初めて出会った日の鮮明な記憶を持っている。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036392342,
+      "nextReview": 1782122792342,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357312890.40815866939352985",
+      "en": "vivid color",
+      "ja": "[熟]鮮やかな色",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036212975,
+      "nextReview": 1782122612975,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357312890.9519423898076275",
+      "en": "vivid",
+      "ja": "[形]生き生きとした、鮮やかな",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036173413,
+      "nextReview": 1782122573413,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357312890.49813132828778806",
+      "en": "vitality",
+      "ja": "[名]生命力、活力 (= vigor, energy)[記載用]",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036288355,
+      "nextReview": 1782122688355,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357312890.9996103797179157",
+      "en": "Foreign workers have come to play a vital role in Japan's economy.",
+      "ja": "「外国人労働者は、日本経済で非常に重要な役割を果たすようになった。」",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036451554,
+      "nextReview": 1782122851554,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357312890.056258005279366974",
+      "en": "vital organs",
+      "ja": "[熟]生命維持に必要な器官",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036400664,
+      "nextReview": 1782122800664,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357312890.9523114875355734",
+      "en": "vital issues",
+      "ja": "[熟]非常に重要な問題",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036236345,
+      "nextReview": 1782122636345,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17820357312890.16020139728896554",
+      "en": "be vital ( )",
+      "ja": "to, for [形]①（～にとって）非常に重要な、不可欠な (= very important) ②生命の",
+      "playlists": [
+        "section1 26/06/21",
+        "全て"
+      ],
+      "status": "wait",
+      "missCount": 0,
+      "lastTested": 1782036256542,
+      "nextReview": 1782122656542,
+      "interval": 1,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
       "id": "w-17819669803620.4083374634179613",
       "en": "O",
       "ja": "お",
@@ -82,6 +594,7 @@
     "最近間違えたリスト",
     "一度でも間違えた単語",
     "a",
-    "A"
+    "A",
+    "section1 26/06/21"
   ]
 }
