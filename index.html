@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v77 - Advanced Learning Highway</title>
+    <title>Domemory v78 - Neon Highway</title>
     <style>
-        /* ==================== さわやかポップサイバー テーマ定義 ==================== */
+        /* ==================== ネオン街 テーマ定義 (視認性最優先) ==================== */
         :root { 
-            --p: #ff0c00;            
-            --p-dark: #ff4733;       
-            --bg: #f9f2e9;           
-            --acc: #00ff80;          
-            --danger: #00cccc;       
-            --new: #ff0033;          
-            --text: #000000;         
-            --text-dark: #eeeffd;    
-            --gold: #0019ff;         
-            --shuffle: #4fd900;      
-            --card-bg: rgba(239, 231, 219, 0.85); 
+            --p: #ff0055;            /* ネオンピンク */
+            --p-dark: #cc0044;       
+            --bg: #0d0e15;           /* 深夜のメイン背景 */
+            --acc: #00ffaa;          /* ネオングリーン */
+            --danger: #00f0ff;       /* ネオンシアン */
+            --new: #ffcc00;          /* ネオンイエロー */
+            --text: #ffffff;         /* メ意・基本文字（白） */
+            --text-dark: #ffffff;    
+            --gold: #7000ff;         /* ネオンパープル */
+            --shuffle: #99ff00;      
+            --card-bg: rgba(20, 22, 34, 0.92); /* カード背景（視認性のために濃く） */
+            --input-bg: #05060b;
         }
         
         * { 
@@ -52,14 +53,15 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: url('http://googleusercontent.com/image_generation_content/16') center center / cover no-repeat;
             z-index: 1;
-            opacity: 0.6;
+            opacity: 0.15; /* ネオン街の雰囲気を残しつつ文字を邪魔しない透過度 */
+            filter: grayscale(30%) brightness(50%);
         }
         #highway-canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 2;
-            mix-blend-mode: multiply;
-            opacity: 0.1;
+            mix-blend-mode: screen;
+            opacity: 0.4;
         }
 
         .page { 
@@ -89,39 +91,39 @@
 
         .card { 
             background: var(--card-bg); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 16px; 
             border-radius: 14px; 
-            box-shadow: 0 6px 24px rgba(255, 12, 0, 0.12); 
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.2); 
             margin-bottom: 12px; 
-            border: 1px solid rgba(255, 12, 0, 0.22); 
+            border: 1px solid rgba(255, 0, 85, 0.4); 
             position: relative; 
             transition: all 0.3s ease; 
             width: 100%; 
             max-width: 100%;
             z-index: 10; 
-            color: #000000; 
+            color: var(--text); 
         }
 
         .menu { 
-            background: rgba(249, 242, 233, 0.95); 
+            background: rgba(13, 14, 21, 0.96); 
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px); 
-            color: #000; 
+            color: #fff; 
             position: fixed; 
             bottom: 0; left: 0; right: 0; 
             display: flex; 
             justify-content: space-around; 
             padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 12px)) 0; 
             z-index: 2000; 
-            border-top: 2px solid rgba(255, 12, 0, 0.3); 
-            box-shadow: 0 -4px 20px rgba(255, 12, 0, 0.1); 
+            border-top: 2px solid rgba(255, 0, 85, 0.6); 
+            box-shadow: 0 -4px 25px rgba(255, 0, 85, 0.3); 
         }
         .menu button { 
             height: 44px;
             background: none; 
-            color: #8f7764; 
+            color: #7e84a3; 
             font-size: 11px; 
             font-weight: bold;
             border: none; 
@@ -136,13 +138,13 @@
         .menu button span-icon { font-size: 18px; }
         .menu button.active-nav { 
             color: var(--p); 
-            text-shadow: 0 0 8px rgba(255, 12, 0, 0.5); 
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.8); 
         }
 
-        .status-miss { background-color: rgba(0, 255, 128, 0.12) !important; border-left: 5px solid var(--acc); } 
-        .status-new { background-color: rgba(255, 0, 51, 0.08) !important; border-left: 5px solid var(--new); } 
-        .status-wait { background-color: rgba(255, 12, 0, 0.08) !important; border-left: 5px solid var(--p); } 
-        .status-veteran { background-color: rgba(0, 25, 255, 0.08) !important; border-left: 5px solid var(--gold); border: 1px solid var(--gold); } 
+        .status-miss { background-color: rgba(0, 240, 255, 0.08) !important; border-left: 5px solid var(--danger); } 
+        .status-new { background-color: rgba(255, 204, 0, 0.06) !important; border-left: 5px solid var(--new); } 
+        .status-wait { background-color: rgba(255, 0, 85, 0.08) !important; border-left: 5px solid var(--p); } 
+        .status-veteran { background-color: rgba(112, 0, 255, 0.08) !important; border-left: 5px solid var(--gold); border: 1px solid var(--gold); } 
 
         input, select, textarea { 
             width: 100%; 
@@ -150,22 +152,22 @@
             padding: 11px 14px; 
             margin: 6px 0; 
             font-size: 15px !important; 
-            border: 2px solid rgba(255, 12, 0, 0.25); 
+            border: 2px solid rgba(255, 0, 85, 0.4); 
             border-radius: 9px; 
             outline: none; 
             scroll-margin-top: 80px;
-            background: rgba(0, 0, 0, 0.95); 
-            color: var(--text-dark);
+            background: var(--input-bg); 
+            color: #ffffff;
             font-family: inherit; 
         }
         input:focus, select:focus, textarea:focus {
             border-color: var(--p);
-            box-shadow: 0 0 6px rgba(255, 12, 0, 0.4); 
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.6); 
         }
         textarea { resize: vertical; min-height: 100px; }
 
         .search-bar-container { margin-bottom: 10px; width: 100%; }
-        .search-input { background: rgba(255, 255, 255, 0.9); color: #000; border: 2px solid rgba(255, 12, 0, 0.3); font-weight: 500; }
+        .search-input { background: var(--card-bg); color: #fff; border: 2px solid rgba(255, 0, 85, 0.5); font-weight: 500; }
 
         .main-btn { 
             width: 100%; 
@@ -180,32 +182,32 @@
         }
         .main-btn:active { transform: scale(0.98); }
         
-        .btn-p { background: linear-gradient(135deg, var(--p), var(--p-dark)); color: var(--text-dark); }
-        .btn-sub { background: rgba(0, 0, 0, 0.08); color: #000; padding: 5px 8px; font-size: 11px; border: 1px solid rgba(0,0,0,0.15); border-radius: 5px; cursor: pointer; } 
-        .btn-edit { background: linear-gradient(135deg, var(--gold), #1122cc); color: var(--text-dark); padding: 5px 8px; font-size: 11px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; } 
-        .btn-d { background: linear-gradient(135deg, var(--danger), #33dbdb); color: #000; padding: 5px 8px; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: bold; } 
+        .btn-p { background: linear-gradient(135deg, var(--p), var(--p-dark)); color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .btn-sub { background: rgba(255, 255, 255, 0.1); color: #ffffff; padding: 5px 8px; font-size: 11px; border: 1px solid rgba(255,255,255,0.2); border-radius: 5px; cursor: pointer; } 
+        .btn-edit { background: linear-gradient(135deg, var(--gold), #5500cc); color: #ffffff; padding: 5px 8px; font-size: 11px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; } 
+        .btn-d { background: linear-gradient(135deg, var(--danger), #00b0cc); color: #000000; padding: 5px 8px; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: bold; } 
         
-        .q-text { font-size: 28px; font-weight: bold; margin: 20px 0; text-align: center; word-break: break-all; color: #000000; } 
-        .countdown { font-size: 70px; color: var(--p); text-align: center; font-weight: bold; margin: 15px 0; text-shadow: 0 0 15px rgba(255, 12, 0, 0.6); } 
+        .q-text { font-size: 28px; font-weight: bold; margin: 20px 0; text-align: center; word-break: break-all; color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.5); } 
+        .countdown { font-size: 70px; color: var(--p); text-align: center; font-weight: bold; margin: 15px 0; text-shadow: 0 0 20px rgba(255, 0, 85, 0.8); } 
         
         #quiz-ui-container { position: relative; width: 100%; }
 
         .choices-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; width: 100%; }
-        .choice-btn { background: rgba(0, 0, 0, 0.95); border: 2px solid rgba(255, 12, 0, 0.15); padding: 14px; border-radius: 10px; font-size: 15px; font-weight: bold; color: var(--text-dark); text-align: center; cursor: pointer; } 
-        .choice-btn:active { transform: scale(0.97); background: var(--p); color: var(--text-dark); }
+        .choice-btn { background: var(--input-bg); border: 2px solid rgba(255, 0, 85, 0.4); padding: 14px; border-radius: 10px; font-size: 15px; font-weight: bold; color: #ffffff; text-align: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); } 
+        .choice-btn:active { transform: scale(0.97); background: var(--p); color: #ffffff; }
         .choices-disabled .choice-btn { pointer-events: none; opacity: 0.4; } 
 
-        .wait-timer { font-size: 14px; color: var(--new); text-align: center; margin-bottom: 8px; font-weight: bold; } 
+        .wait-timer { font-size: 14px; color: var(--new); text-align: center; margin-bottom: 8px; font-weight: bold; text-shadow: 0 0 5px rgba(255,204,0,0.4); } 
 
         .tabs { display: flex; overflow-x: auto; overflow-y: hidden; gap: 6px; padding: 6px 2px; width: 100%; -webkit-overflow-scrolling: touch; }
         .tabs::-webkit-scrollbar { display: none; }
         
-        .tab { display: inline-block; white-space: nowrap; background: rgba(0,0,0,0.06); border: 1px solid rgba(255,12,0,0.15); padding: 6px 12px; border-radius: 16px; font-size: 12px; color: #000; cursor: pointer; flex-shrink: 0; }
-        .tab-active { background: var(--p); color: var(--text-dark); font-weight: bold; border-color: var(--p); } 
+        .tab { display: inline-block; white-space: nowrap; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,0,85,0.3); padding: 6px 12px; border-radius: 16px; font-size: 12px; color: #ffffff; cursor: pointer; flex-shrink: 0; }
+        .tab-active { background: var(--p); color: #ffffff; font-weight: bold; border-color: var(--p); box-shadow: 0 0 8px rgba(255,0,85,0.6); } 
 
-        .sub-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.4); padding: 3px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(0,0,0,0.08); width: 100%; } 
-        .sub-tab { flex: 1; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; color: #5f4f3f; border-radius: 6px; cursor: pointer; } 
-        .sub-tab-active { background: var(--p); color: var(--text-dark); } 
+        .sub-tabs { display: flex; gap: 4px; background: rgba(0,0,0,0.3); padding: 3px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(255,0,85,0.3); width: 100%; } 
+        .sub-tab { flex: 1; text-align: center; padding: 8px; font-size: 12px; font-weight: bold; color: #a0a5c0; border-radius: 6px; cursor: pointer; } 
+        .sub-tab-active { background: var(--p); color: #ffffff; } 
 
         .li-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; position: relative; padding: 12px; width: 100%; }
         .li-checkbox-area { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -214,42 +216,42 @@
         .action-btns { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; justify-content: center; width: 66px; } 
         .action-btns button { text-align: center; width: 100%; padding: 5px 2px; font-size: 10px; }
 
-        .badge { display: inline-block; padding: 2px 6px; font-size: 10px; border-radius: 3px; margin-top: 4px; font-weight: bold; background: rgba(0,0,0,0.1); color: #000; } 
-        .due-timer { font-size: 10px; color: #543f2f; margin-top: 4px; margin-left: 4px; display: inline-block; } 
+        .badge { display: inline-block; padding: 2px 6px; font-size: 10px; border-radius: 3px; margin-top: 4px; font-weight: bold; background: rgba(255,255,255,0.15); color: #ffffff; } 
+        .due-timer { font-size: 10px; color: var(--danger); margin-top: 4px; margin-left: 4px; display: inline-block; } 
 
-        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100dvh; background:rgba(251, 247, 240, 0.8); z-index:3000; align-items:center; justify-content:center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 20px; } 
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100dvh; background:rgba(5, 6, 11, 0.85); z-index:3000; align-items:center; justify-content:center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 20px; } 
         .hidden { display: none !important; }
-        .abort-container { margin-top: 15px; text-align: center; border-top: 1px dashed rgba(255,12,0,0.2); padding-top: 10px; width: 100%; } 
+        .abort-container { margin-top: 15px; text-align: center; border-top: 1px dashed rgba(255,0,85,0.3); padding-top: 10px; width: 100%; } 
         
         .pl-actions-container { display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 10px; width: 100%; margin-top:4px; }
-        .bulk-action-bar { background: rgba(239, 231, 219, 0.95); border: 2px solid var(--p); border-radius: 12px; padding: 12px; margin-bottom: 12px; width: 100%; } 
+        .bulk-action-bar { background: var(--card-bg); border: 2px solid var(--p); border-radius: 12px; padding: 12px; margin-bottom: 12px; width: 100%; } 
 
         #toast-container { position: fixed; top: 20px; left: 0; right: 0; margin: 0 auto; z-index: 9999; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
-        .toast { background: rgba(239, 231, 219, 0.95); color: #000; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: bold; box-shadow: 0 6px 20px rgba(255,12,0,0.2); display: flex; align-items: center; justify-content: center; animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, toastOut 0.3s ease 2.7s forwards; border-left: 5px solid var(--p); pointer-events: auto; width: 100%; text-align: center; } 
+        .toast { background: var(--card-bg); color: #ffffff; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: bold; box-shadow: 0 0 15px rgba(255,0,85,0.4); display: flex; align-items: center; justify-content: center; animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, toastOut 0.3s ease 2.7s forwards; border-left: 5px solid var(--p); pointer-events: auto; width: 100%; text-align: center; border-top: 1px solid rgba(255,0,85,0.3); } 
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
         #bg-effect-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; pointer-events: none; z-index: 5; opacity: 0; transition: all 0.2s ease; }
-        .bg-correct-active { opacity: 1 !important; background: rgba(255, 0, 51, 0.1); } 
-        .bg-miss-active { opacity: 1 !important; background: rgba(0, 255, 128, 0.15) !important; } 
+        .bg-correct-active { opacity: 1 !important; background: rgba(255, 0, 85, 0.15); } 
+        .bg-miss-active { opacity: 1 !important; background: rgba(0, 240, 255, 0.15) !important; } 
 
         #quiz-effect-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1500; display: flex; justify-content: center; align-items: center; }
-        .quiz-effect-box { background: rgba(244, 235, 221, 0.96); padding: 14px 20px; border-radius: 10px; box-shadow: 0 6px 24px rgba(255,12,0,0.25); border: 1px solid rgba(255,12,0,0.25); display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+        .quiz-effect-box { background: var(--card-bg); padding: 14px 20px; border-radius: 10px; box-shadow: 0 0 25px rgba(255,0,85,0.5); border: 2px solid var(--p); display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
         .quiz-effect-txt { font-size: 34px; font-weight: 900; letter-spacing: 1px; text-align: center; width: 100%; }
         
-        .txt-correct { background: linear-gradient(90deg, #ff0033, #ff1200, #0019ff, #ff1200, #ff0033); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: correctPop 800ms ease-out forwards; } 
+        .txt-correct { background: linear-gradient(90deg, #ff0055, #ff5500, #00ffaa, #ff5500, #ff0055); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: correctPop 800ms ease-out forwards; } 
         @keyframes correctPop { 0% { transform: scale(0.6); opacity: 0; } 25% { transform: scale(1.05); opacity: 1; } 85% { transform: scale(1.0); opacity: 1; } 100% { transform: scale(0.95); opacity: 0; } }
         
         .particle { position: absolute; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; animation: particleBlow 0.5s forwards; left: 50%; top: 50%; }
         @keyframes particleBlow { 0% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(calc(-50% + var(--mx)), calc(-50% + var(--my))) scale(0); opacity: 0; } }
 
-        .txt-miss { background: linear-gradient(135deg, #00ff80, #00cccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; animation: missShake 1950ms ease-in-out forwards; width: 100%; text-align: center; } 
-        .miss-ans-subtext { display: block; font-size: 14px; color: #000; font-weight: bold; background: rgba(0,0,0,0.08); padding: 8px 12px; border-radius: 6px; margin-top: 6px; border: 1px solid rgba(255,12,0,0.15); width: 100%; text-align: center; word-break: break-all; } 
+        .txt-miss { background: linear-gradient(135deg, #00f0ff, #00ffaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; animation: missShake 1950ms ease-in-out forwards; width: 100%; text-align: center; } 
+        .miss-ans-subtext { display: block; font-size: 15px; color: #ffffff; font-weight: bold; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 6px; margin-top: 6px; border: 1px solid rgba(0,240,255,0.4); width: 100%; text-align: center; word-break: break-all; } 
         @keyframes missShake { 0% { transform: translateX(0) scale(0.9); opacity: 0; } 4%, 12%, 20%, 28% { transform: translateX(-4px); opacity: 1; } 8%, 16%, 24%, 32% { transform: translateX(4px); } 36% { transform: translateX(0) translateY(0); opacity: 1; } 88% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(15px); opacity: 0; } }
 
-        .txt-complete { background: linear-gradient(90deg, var(--acc), var(--shuffle), var(--p), var(--new), var(--gold)); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 34px; font-weight: 900; text-align: center; margin-bottom: 12px; }
+        .txt-complete { background: linear-gradient(90deg, var(--acc), var(--shuffle), var(--p), var(--new), var(--danger)); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 34px; font-weight: 900; text-align: center; margin-bottom: 12px; }
         .confirm-btn-grid { display: flex; gap: 8px; margin-top: 15px; width: 100%; }
-        .confirm-btn { flex: 1; padding: 10px; border: none; border-radius: 7px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .confirm-btn { flex: 1; padding: 10px; border: none; border-radius: 7px; font-size: 14px; font-weight: bold; cursor: pointer; color: #fff; }
     </style>
 </head>
 <body>
@@ -265,10 +267,10 @@
     <div id="confirm-modal" class="modal-overlay" style="z-index: 5000;">
         <div class="card" style="width:85%; max-width:330px; text-align: center;">
             <h3 style="margin-top:0;" id="confirm-title">確認</h3> 
-            <p id="confirm-msg" style="font-size:13px; color:#342a1e; line-height:1.5; margin-bottom:15px;"></p> 
+            <p id="confirm-msg" style="font-size:13px; color:#c0c5e0; line-height:1.5; margin-bottom:15px;"></p> 
             <div class="confirm-btn-grid">
-                <button class="confirm-btn" style="background:rgba(0,0,0,0.15);" id="confirm-cancel-btn">いいえ</button> 
-                <button class="confirm-btn" style="background:linear-gradient(135deg, var(--danger), #33dbdb);" id="confirm-ok-btn">はい</button> 
+                <button class="confirm-btn" style="background:rgba(255,255,255,0.15);" id="confirm-cancel-btn">いいえ</button> 
+                <button class="confirm-btn" style="background:linear-gradient(135deg, var(--danger), #00b0cc); color:#000;" id="confirm-ok-btn">はい</button> 
             </div>
         </div>
     </div>
@@ -286,7 +288,7 @@
             <h3 style="margin-top:0">移動先のフォルダを選択</h3>
             <select id="modal-pl-select"></select>
             <div style="display:flex; gap:8px; margin-top:10px;">
-                <button class="main-btn" style="background:rgba(0,0,0,0.15); flex:1;" onclick="closeModal('list-modal')">戻る</button> 
+                <button class="main-btn" style="background:rgba(255,255,255,0.15); flex:1;" onclick="closeModal('list-modal')">戻る</button> 
                 <button class="main-btn btn-p" style="flex:1;" onclick="executeAddToList()">移動する</button>
             </div>
         </div>
@@ -295,10 +297,10 @@
     <div id="edit-modal" class="modal-overlay">
         <div class="card" style="width:85%; max-width:330px;">
             <h3 style="margin-top:0">単語を編集</h3>
-            <label style="font-size:11px; color:#543f2f;">English</label> <input id="edit-en-in" type="text" autocomplete="off">
-            <label style="font-size:11px; color:#543f2f;">日本語</label> <input id="edit-ja-in" type="text" autocomplete="off">
+            <label style="font-size:11px; color:#a0a5c0;">English</label> <input id="edit-en-in" type="text" autocomplete="off">
+            <label style="font-size:11px; color:#a0a5c0;">日本語</label> <input id="edit-ja-in" type="text" autocomplete="off">
             <div style="display:flex; gap:8px; margin-top:12px;">
-                <button class="main-btn" style="background:rgba(0,0,0,0.15); flex:1;" onclick="closeModal('edit-modal')">戻る</button> 
+                <button class="main-btn" style="background:rgba(255,255,255,0.15); flex:1;" onclick="closeModal('edit-modal')">戻る</button> 
                 <button class="main-btn btn-edit" style="flex:1;" onclick="executeEditWord()">更新</button>
             </div>
         </div>
@@ -306,8 +308,8 @@
 
     <div id="page-add" class="page">
         <div class="card">
-            <h2 style="margin:0 0 12px 0; color:var(--p); text-shadow:0 0 6px rgba(255,12,0,0.2)">単語を登録</h2> 
-            <label style="font-size:11px; color:#543f2f; font-weight:bold;">追加先フォルダ</label> 
+            <h2 style="margin:0 0 12px 0; color:var(--p); text-shadow:0 0 10px rgba(255,0,85,0.4)">単語を登録</h2> 
+            <label style="font-size:11px; color:#a0a5c0; font-weight:bold;">追加先フォルダ</label> 
             <select id="add-to-playlist" style="margin-top:4px; margin-bottom:12px;"></select>
 
             <div class="sub-tabs">
@@ -323,7 +325,7 @@
 
             <div id="add-bulk-container" class="hidden" style="width: 100%;">
                 <textarea id="bulk-import-area" placeholder="rational, 合理的な&#10;irrational, 非合理的な"></textarea>
-                <button class="main-btn btn-p" style="background:linear-gradient(135deg, var(--new), #ff4c70); margin-bottom: 8px;" onclick="saveBulkWords()">一括保存する</button> 
+                <button class="main-btn btn-p" style="background:linear-gradient(135deg, #ff5500, #ff0055); margin-bottom: 8px;" onclick="saveBulkWords()">一括保存する</button> 
             </div>
         </div>
     </div>
@@ -350,24 +352,24 @@
             </div>
 
             <div id="abort-ui" class="abort-container hidden">
-                <button class="btn-sub" style="background:none; border:none; text-decoration:underline;" onclick="triggerAbortQuiz()">クイズを中止する</button>
+                <button class="btn-sub" style="background:none; border:none; text-decoration:underline; color:#a0a5c0;" onclick="triggerAbortQuiz()">クイズを中止する</button>
             </div>
 
             <div id="quiz-setup" style="width: 100%;">
-                <p style="text-align:center; font-weight: bold;">対象: <select id="quiz-from-playlist" style="width:auto; display:inline-block; padding:6px 10px; margin:0; background:rgba(0,0,0,0.95); color:var(--text-dark);"></select></p>
+                <p style="text-align:center; font-weight: bold;">対象: <select id="quiz-from-playlist" style="width:auto; display:inline-block; padding:6px 10px; margin:0; background:var(--input-bg); color:#ffffff;"></select></p>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom:8px;">
-                    <button class="main-btn" style="background: linear-gradient(135deg, #cb8b4a, #d6a470);" onclick="startQuizWithCountdown('new')">新規(4択)</button>
-                    <button class="main-btn" style="background: linear-gradient(135deg, #bb738b, #ca94a6);" onclick="startQuizWithCountdown('srs')">復習(6択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, #cb8b4a, #d6a470); color:#fff;" onclick="startQuizWithCountdown('new')">新規(4択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, #bb738b, #ca94a6); color:#fff;" onclick="startQuizWithCountdown('srs')">復習(6択)</button>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom:8px;">
                     <button class="main-btn" style="background: linear-gradient(135deg, #00cccc, #008080); color:#000;" onclick="startQuizWithCountdown('today')">その日モード</button>
-                    <button class="main-btn" style="background: linear-gradient(135deg, #bb738b, #704060);" onclick="startQuizWithCountdown('yesterday')">昨日の復習</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, #bb738b, #704060); color:#fff;" onclick="startQuizWithCountdown('yesterday')">昨日の復習</button>
                 </div>
-                <button class="main-btn" style="background: linear-gradient(135deg, #4196af, #69b4c8); margin-bottom: 8px;" onclick="startQuizWithCountdown('miss')">苦手特訓(4択)</button>
+                <button class="main-btn" style="background: linear-gradient(135deg, var(--danger), #00b0cc); color:#000; margin-bottom: 8px;" onclick="startQuizWithCountdown('miss')">苦手特訓(4択)</button>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <button class="main-btn" style="background: linear-gradient(135deg, #919b73, #aab491);" onclick="startQuizWithCountdown('all_choice')">既習(選択)</button>
-                    <button class="main-btn" style="background: linear-gradient(135deg, #d2691e, #cd853f);" onclick="startQuizWithCountdown('all_reverse')">既習(あべこべ)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, #919b73, #aab491); color:#fff;" onclick="startQuizWithCountdown('all_choice')">既習(選択)</button>
+                    <button class="main-btn" style="background: linear-gradient(135deg, #d2691e, #cd853f); color:#fff;" onclick="startQuizWithCountdown('all_reverse')">既習(あべこべ)</button>
                 </div>
                 <p id="limit-msg" style="font-size:11px; color: #cb8b4a; text-align:center; margin-top:8px; font-weight:bold;"></p>
             </div>
@@ -376,7 +378,7 @@
 
     <div id="page-list" class="page">
         <div class="card" style="margin-bottom: 12px; padding: 10px 14px;">
-            <div style="font-size:11px; font-weight:bold; margin-bottom:4px;">📁 新規フォルダ作成</div>
+            <div style="font-size:11px; font-weight:bold; margin-bottom:4px; color:#a0a5c0;">📁 新規フォルダ作成</div>
             <div style="display:flex; gap:6px;">
                 <input id="new-playlist-name" type="text" placeholder="例: Eiken Pre-1" autocomplete="off" style="margin:0; padding:6px 10px;">
                 <button class="main-btn btn-p" style="width:auto; padding:0 12px; white-space:nowrap; font-size:13px;" onclick="createPlaylist()">作成</button>
@@ -396,8 +398,8 @@
         <div id="bulk-action-bar" class="bulk-action-bar hidden">
             <div style="font-size:11px; font-weight:bold; margin-bottom:6px; color:var(--p);">一括操作メニュー (<span id="selected-count">0</span>件選択中)</div>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                <button class="btn-sub" style="background:var(--p); color:var(--text-dark); border:none;" onclick="openBulkMoveModal()">フォルダ移動</button>
-                <button class="btn-sub" style="background:var(--shuffle); color:var(--text-dark); border:none;" onclick="executeBulkResetSRS()">SRS初期化</button>
+                <button class="btn-sub" style="background:var(--p); color:#ffffff; border:none;" onclick="openBulkMoveModal()">フォルダ移動</button>
+                <button class="btn-sub" style="background:var(--shuffle); color:#000000; border:none;" onclick="executeBulkResetSRS()">SRS初期化</button>
                 <button class="btn-d" onclick="executeBulkDelete()">削除</button>
                 <button class="btn-sub" onclick="toggleSelectAllItems()">全選択/解除</button>
             </div>
@@ -407,26 +409,26 @@
     </div>
 
     <div id="page-settings" class="page">
-        <div class="card" style="border: 2px solid var(--gold);">
-            <h3 style="margin:0 0 8px 0; color:var(--gold);">☁️ GitHub クラウド同期設定</h3>
+        <div class="card" style="border: 2px solid var(--gold); box-shadow: 0 0 15px rgba(112,0,255,0.4);">
+            <h3 style="margin:0 0 8px 0; color:var(--danger);">☁️ GitHub クラウド同期設定</h3>
             
-            <label style="font-size:11px; font-weight:bold;">GitHub ユーザー名</label>
+            <label style="font-size:11px; font-weight:bold; color:#a0a5c0;">GitHub ユーザー名</label>
             <input id="gh-user" type="text" placeholder="example-user" autocomplete="off" style="padding:8px; margin:2px 0 8px 0;">
             
-            <label style="font-size:11px; font-weight:bold;">リポジトリ名</label>
+            <label style="font-size:11px; font-weight:bold; color:#a0a5c0;">リポジトリ名</label>
             <input id="gh-repo" type="text" placeholder="my-domemory-db" autocomplete="off" style="padding:8px; margin:2px 0 8px 0;">
             
-            <label style="font-size:11px; font-weight:bold;">パーソナルアクセストークン (ghp_...)</label>
+            <label style="font-size:11px; font-weight:bold; color:#a0a5c0;">パーソナルアクセストークン (ghp_...)</label>
             <input id="gh-token" type="password" placeholder="ghp_xxxxxxxx" autocomplete="off" style="padding:8px; margin:2px 0 8px 0;">
 
             <label style="font-size:11px; color:var(--p); font-weight:bold;">あなたのなまえ（データ識別キー）</label>
             <input id="gh-name" type="text" placeholder="me" autocomplete="off" style="padding:8px; margin:2px 0 10px 0; border-color:var(--p);">
             
-            <button class="main-btn btn-edit" style="width:100%; margin-bottom:8px; background:linear-gradient(135deg, var(--gold), #001299);" onclick="saveGitHubSettings()">設定を保存</button>
+            <button class="main-btn btn-edit" style="width:100%; margin-bottom:8px;" onclick="saveGitHubSettings()">設定を保存</button>
             
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:4px;">
-                <button class="main-btn" style="background:linear-gradient(135deg, #00ff80, #00994d); color:#000; padding:10px 4px; font-size:13px;" onclick="syncToGitHubCloud()">クラウドへ保存</button>
-                <button class="main-btn" style="background:linear-gradient(135deg, #00cccc, #008080); color:#000; padding:10px 4px; font-size:13px;" onclick="loadFromGitHubCloud()">クラウドから読込</button>
+                <button class="main-btn" style="background:linear-gradient(135deg, #00ffaa, #009966); color:#000000; padding:10px 4px; font-size:13px;" onclick="syncToGitHubCloud()">クラウドへ保存</button>
+                <button class="main-btn" style="background:linear-gradient(135deg, #00f0ff, #008099); color:#000000; padding:10px 4px; font-size:13px;" onclick="loadFromGitHubCloud()">クラウドから読込</button>
             </div>
         </div>
     </div>
@@ -442,7 +444,7 @@
         // 固定のベースリスト構造
         let data = {
             words: [],
-            playlists: ["全て", "一度でも間違えた単語"]
+            playlists: ["全て", "最近間違えたリスト", "一度でも間違えた単語"]
         };
         let currentPlaylist = "全て";
         let selectedWordIds = new Set();
@@ -453,36 +455,45 @@
         let quizMode = 'new'; 
         let countdownInterval = null;
         let quizTimerTimeout = null;
-        let isProcessingResult = false; // 演出中の割り込み・バグ防止フラグ
+        let isProcessingResult = false; 
 
         let gitHubConfig = { username: "", repo: "", token: "", name: "me" };
 
         function saveData() {
-            localStorage.setItem("domemory_v77_unified_data", JSON.stringify(data));
+            localStorage.setItem("domemory_v78_unified_data", JSON.stringify(data));
+        }
+
+        // 動的・一時的間違えフォルダ用カスタム個別プロパティの完全同期保証
+        function ensureCustomPlaylists(w) {
+            if (!w.hasOwnProperty('inRecentMissList')) {
+                w.inRecentMissList = (w.missCount > 0); 
+            }
         }
 
         function loadData() {
-            const local = localStorage.getItem("domemory_v77_unified_data");
+            const local = localStorage.getItem("domemory_v78_unified_data");
             if (local) {
                 try {
                     let parsed = JSON.parse(local);
-                    if (parsed && Array.isArray(parsed.words)) {
-                        data.words = parsed.words;
-                    }
-                    if (parsed && Array.isArray(parsed.playlists)) {
-                        data.playlists = parsed.playlists;
-                    }
+                    if (parsed && Array.isArray(parsed.words)) data.words = parsed.words;
+                    if (parsed && Array.isArray(parsed.playlists)) data.playlists = parsed.playlists;
                 } catch(e) { console.error(e); }
             }
-            // 「全て」「一度でも間違えた単語」を確実に保証
+            
+            // 固定初期フォルダの完全ガード生成
             if (!data.playlists.includes("全て")) data.playlists.unshift("全て");
-            if (!data.playlists.includes("一度でも間違えた単語")) {
-                data.playlists.splice(1, 0, "一度でも間違えた単語");
+            if (!data.playlists.includes("最近間違えたリスト")) {
+                data.playlists.splice(1, 0, "最近間違えたリスト");
             }
-            // 不要になった「デフォルト」のクリーンアップ処理
+            if (!data.playlists.includes("一度でも間違えた単語")) {
+                const idx = data.playlists.indexOf("最近間違えたリスト");
+                data.playlists.splice(idx + 1, 0, "一度でも間違えた単語");
+            }
+
             data.playlists = data.playlists.filter(p => p !== "デフォルト");
             data.words.forEach(w => {
                 if(w.playlist === "デフォルト" || !w.playlist) w.playlist = "全て";
+                ensureCustomPlaylists(w);
             });
 
             const ghLocal = localStorage.getItem("domemory_github_config");
@@ -567,7 +578,7 @@
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
             toast.className = `toast`;
-            if(isError) toast.style.borderLeftColor = "var(--danger)";
+            if(isError) toast.style.borderLeftColor = "var(--p)";
             toast.innerText = message;
             container.appendChild(toast);
             setTimeout(() => { toast.remove(); }, 3000);
@@ -585,7 +596,7 @@
         function closeModal(id) { document.getElementById(id).style.display = "none"; }
 
         function showPage(pageId) {
-            if(isProcessingResult) return; // 演出アニメーション中の誤遷移を完全にロック
+            if(isProcessingResult) return; 
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active-nav'));
             
@@ -618,7 +629,8 @@
                 const opt2 = document.createElement("option"); opt2.value = pl; opt2.innerText = pl; quizSelect.appendChild(opt2);
             });
 
-            addSelect.value = (currentPlaylist === "全て" || currentPlaylist === "一度でも間違えた単語") ? "全て" : currentPlaylist;
+            const currentForbidden = (currentPlaylist === "全て" || currentPlaylist === "一度でも間違えた単語" || currentPlaylist === "最近間違えたリスト");
+            addSelect.value = currentForbidden ? "全て" : currentPlaylist;
             quizSelect.value = prevQuizVal && [...quizSelect.options].some(o => o.value === prevQuizVal) ? prevQuizVal : "全て";
         }
 
@@ -643,7 +655,7 @@
             data.words.unshift({
                 id: "w-" + Date.now() + Math.random(), en, ja, playlist,
                 status: "new", missCount: 0, lastTested: null, nextReview: null, interval: 0,
-                recentMissTimestamp: null // その日モード管理用拡張型プロパティ
+                recentMissTimestamp: null, inRecentMissList: false
             });
             saveData();
             document.getElementById("en-in").value = ""; document.getElementById("ja-in").value = "";
@@ -669,7 +681,7 @@
                         data.words.unshift({
                             id: "w-" + Date.now() + Math.random(), en, ja, playlist,
                             status: "new", missCount: 0, lastTested: null, nextReview: null, interval: 0,
-                            recentMissTimestamp: null
+                            recentMissTimestamp: null, inRecentMissList: false
                         });
                         successCount++;
                     }
@@ -697,7 +709,6 @@
             const w = data.words.find(item => item.id === editingWordId);
             if(w) { 
                 w.en = en; w.ja = ja; 
-                // statusやsrsデータプロパティはそのまま維持され不変
                 saveData(); updateUI(); showToast("変更を適用しました"); 
             }
             closeModal('edit-modal');
@@ -714,7 +725,7 @@
             showConfirm("SRSリセット", "この単語の学習進捗状態を本当に初期化しますか？", () => {
                 const w = data.words.find(item => item.id === id);
                 if(w) {
-                    w.status = "new"; w.missCount = 0; w.lastTested = null; w.nextReview = null; w.interval = 0; w.recentMissTimestamp = null;
+                    w.status = "new"; w.missCount = 0; w.lastTested = null; w.nextReview = null; w.interval = 0; w.recentMissTimestamp = null; w.inRecentMissList = false;
                     saveData(); updateUI(); showToast("進行状況をリセットしました");
                 }
             });
@@ -728,7 +739,7 @@
         function toggleSelectAllItems() {
             const query = document.getElementById("word-search-input").value.toLowerCase().trim();
             const filtered = data.words.filter(w => {
-                const matchTab = (currentPlaylist === "全て" || (currentPlaylist === "一度でも間違えた単語" && w.missCount > 0) || w.playlist === currentPlaylist);
+                const matchTab = (currentPlaylist === "全て" || (currentPlaylist === "一度でも間違えた単語" && w.missCount > 0) || (currentPlaylist === "最近間違えたリスト" && w.inRecentMissList) || w.playlist === currentPlaylist);
                 const matchQuery = !query || w.en.toLowerCase().includes(query) || w.ja.toLowerCase().includes(query);
                 return matchTab && matchQuery;
             });
@@ -746,7 +757,7 @@
             if(selectedWordIds.size === 0) return;
             const select = document.getElementById("modal-pl-select"); select.innerHTML = "";
             data.playlists.forEach(pl => {
-                if(pl !== "一度でも間違えた単語") {
+                if(pl !== "一度でも間違えた単語" && pl !== "最近間違えたリスト") {
                     const opt = document.createElement("option"); opt.value = pl; opt.innerText = pl; select.appendChild(opt);
                 }
             });
@@ -769,7 +780,7 @@
             showConfirm("一括リセット確認", `${selectedWordIds.size}件の進捗ステータスを初期化しますか？`, () => {
                 data.words.forEach(w => {
                     if(selectedWordIds.has(w.id)) {
-                        w.status = "new"; w.missCount = 0; w.lastTested = null; w.nextReview = null; w.interval = 0; w.recentMissTimestamp = null;
+                        w.status = "new"; w.missCount = 0; w.lastTested = null; w.nextReview = null; w.interval = 0; w.recentMissTimestamp = null; w.inRecentMissList = false;
                     }
                 });
                 saveData(); selectedWordIds.clear(); updateUI(); showToast("初期化しました");
@@ -784,6 +795,7 @@
                 let count = 0;
                 if(tabName === "全て") count = data.words.length;
                 else if(tabName === "一度でも間違えた単語") count = data.words.filter(w => w.missCount > 0).length;
+                else if(tabName === "最近間違えたリスト") count = data.words.filter(w => w.inRecentMissList).length;
                 else count = data.words.filter(w => w.playlist === tabName).length;
                 
                 const btn = document.createElement("div");
@@ -800,13 +812,13 @@
 
             const searchQuery = document.getElementById("word-search-input") ? document.getElementById("word-search-input").value.toLowerCase().trim() : "";
             const filtered = data.words.filter(w => {
-                const matchTab = (currentPlaylist === "全て" || (currentPlaylist === "一度でも間違えた単語" && w.missCount > 0) || w.playlist === currentPlaylist);
+                const matchTab = (currentPlaylist === "全て" || (currentPlaylist === "一度でも間違えた単語" && w.missCount > 0) || (currentPlaylist === "最近間違えたリスト" && w.inRecentMissList) || w.playlist === currentPlaylist);
                 const matchSearch = !searchQuery || w.en.toLowerCase().includes(searchQuery) || w.ja.toLowerCase().includes(searchQuery);
                 return matchTab && matchSearch;
             });
 
             if(filtered.length === 0) {
-                container.innerHTML = `<p style="text-align:center; color:#543f2f; font-size:13px; margin-top:15px;">単語データがありません</p>`;
+                container.innerHTML = `<p style="text-align:center; color:#a0a5c0; font-size:13px; margin-top:15px;">単語データがありません</p>`;
                 return;
             }
 
@@ -825,17 +837,18 @@
                     }
                 }
                 if(w.missCount > 0) badgeTxt += ` (誤×${w.missCount})`;
+                if(w.inRecentMissList) badgeTxt += " [最近の間違い]";
 
                 const isChecked = selectedWordIds.has(w.id) ? "checked" : "";
                 card.innerHTML = `
                     <div class="li-checkbox-area"><input type="checkbox" class="li-checkbox" ${isChecked} onchange="toggleItemSelection('${w.id}')"></div>
                     <div class="li-info" onclick="openEditModal('${w.id}')">
-                        <div style="font-weight:bold; font-size:17px; color:#000;">${w.en}</div>
-                        <div style="font-size:13px; color:#342a1e; margin-top:1px;">${w.ja}</div>
+                        <div style="font-weight:bold; font-size:17px; color:#ffffff;">${w.en}</div>
+                        <div style="font-size:13px; color:#c0c5e0; margin-top:1px;">${w.ja}</div>
                         <div>
                             <span class="badge">${badgeTxt}</span>
                             ${dueTxt ? `<span class="due-timer">${dueTxt}</span>` : ''}
-                            <span class="badge" style="background:rgba(0,0,0,0.04); color:#555;">📁 ${w.playlist}</span>
+                            <span class="badge" style="background:rgba(255,255,255,0.05); color:#a0a5c0;">📁 ${w.playlist}</span>
                         </div>
                     </div>
                     <div class="action-btns">
@@ -855,7 +868,13 @@
             renderWordList();
             
             const quizTarget = document.getElementById("quiz-from-playlist") ? document.getElementById("quiz-from-playlist").value : "全て";
-            const pool = data.words.filter(w => quizTarget === "全て" || w.playlist === quizTarget);
+            let pool = data.words.filter(w => quizTarget === "全て" || w.playlist === quizTarget);
+            
+            // 苦手特訓選択時はプール数を「最近間違えたリスト」単語数に固定してラベル表示
+            if (document.getElementById("quiz-setup") && !document.getElementById("quiz-setup").classList.contains("hidden")) {
+                const isMissModeActive = (quizMode === 'miss');
+            }
+            
             const msgEl = document.getElementById("limit-msg");
             if(msgEl) msgEl.innerText = pool.length < 4 ? `⚠️ 単語数が不足しています (現在:${pool.length}/4件必要)` : `✅ 出題可能エリア (対象:${pool.length}件)`;
         }
@@ -864,24 +883,29 @@
         function startQuizWithCountdown(mode) {
             if(isProcessingResult) return;
             const targetPl = document.getElementById("quiz-from-playlist").value;
-            let pool = data.words.filter(w => targetPl === "全て" || w.playlist === targetPl);
-            if(pool.length < 4) { showToast("対象フォルダ内の単語が4件未満です", true); return; }
+            
+            // 苦手特訓は「最近間違えたリスト」に入っている単語だけを抽出対象にする
+            let pool = [];
+            if(mode === 'miss') {
+                pool = data.words.filter(w => w.inRecentMissList);
+                if(pool.length < 4) { showToast("「最近間違えたリスト」内の単語が4件未満です", true); return; }
+            } else {
+                pool = data.words.filter(w => targetPl === "全て" || w.playlist === targetPl);
+                if(pool.length < 4) { showToast("対象フォルダ内の単語が4件未満です", true); return; }
+            }
 
             quizMode = mode; 
             const now = Date.now();
 
-            // モード別抽出フィルター
             if(mode === 'new') {
                 quizWords = pool.filter(w => !w.status || w.status === 'new');
             } else if(mode === 'srs') {
                 quizWords = pool.filter(w => w.status === 'wait' && w.nextReview && w.nextReview <= now);
             } else if(mode === 'miss') {
-                quizWords = pool.filter(w => w.missCount && w.missCount > 0).sort((a,b) => b.missCount - a.missCount);
+                quizWords = [...pool].sort((a,b) => (b.missCount || 0) - (a.missCount || 0));
             } else if(mode === 'today') {
-                // その日モード: 14時間以内に間違えたレコードのみ
                 quizWords = pool.filter(w => w.recentMissTimestamp && (now - w.recentMissTimestamp <= 14 * 60 * 60 * 1000));
             } else if(mode === 'yesterday') {
-                // 昨日の復習モード: 14時間超〜19時間以内のレコード
                 quizWords = pool.filter(w => w.recentMissTimestamp && (now - w.recentMissTimestamp > 14 * 60 * 60 * 1000) && (now - w.recentMissTimestamp <= 19 * 60 * 60 * 1000));
             } else {
                 quizWords = [...pool];
@@ -895,7 +919,6 @@
             currentQuizIndex = 0;
             document.getElementById("quiz-setup").classList.add("hidden");
             
-            // カウントダウン演出開始
             const countArea = document.getElementById("count-area");
             const qDisplay = document.getElementById("q-display");
             countArea.classList.remove("hidden");
@@ -919,7 +942,6 @@
         }
 
         function triggerAbortQuiz() {
-            // 演出中の中止連打バグ完全防止ガード
             if(isProcessingResult) return;
             showConfirm("クイズ中止", "本当に現在のクイズセッションを終了しますか？", () => {
                 forceAbortQuizRaw();
@@ -946,7 +968,6 @@
             const w = quizWords[currentQuizIndex];
             isProcessingResult = false;
 
-            // あべこべモード判定：問題として日本語を表示
             if(quizMode === 'all_reverse') {
                 document.getElementById("q-display").innerText = w.ja;
                 document.getElementById("quiz-ui").classList.remove("hidden");
@@ -954,7 +975,6 @@
                 const inEl = document.getElementById("ans-in"); inEl.value = "";
                 setTimeout(() => { inEl.focus(); }, 50);
             }
-            // 通常のテキスト記述タイピングモード
             else if(quizMode === 'all') {
                 document.getElementById("q-display").innerText = w.en;
                 document.getElementById("quiz-ui").classList.remove("hidden");
@@ -962,7 +982,6 @@
                 const inEl = document.getElementById("ans-in"); inEl.value = "";
                 setTimeout(() => { inEl.focus(); }, 50);
             } 
-            // 選択肢4択/6択モード判定 (苦手特訓は常に4択固定)
             else {
                 document.getElementById("q-display").innerText = w.en;
                 document.getElementById("quiz-ui").classList.add("hidden");
@@ -978,10 +997,8 @@
 
             grid.classList.add("hidden"); grid.classList.remove("choices-disabled"); waitArea.classList.remove("hidden");
             
-            // 復習(srs)なら6択、それ以外（苦手含む）は4択固定
             const choiceCount = quizMode === 'srs' ? 6 : 4;
             
-            let targetPl = document.getElementById("quiz-from-playlist").value;
             let siblings = data.words.filter(w => w.id !== correctWord.id);
             siblings.sort(() => Math.random() - 0.5);
             
@@ -995,7 +1012,6 @@
                 grid.appendChild(btn);
             });
 
-            // 待機秒数（タメ時間）の再調整
             let waitSeconds = correctWord.missCount ? 2 + Math.min(6, correctWord.missCount * 1.5) : 2;
             timerTxt.innerText = `選択肢表示まであと ${Math.ceil(waitSeconds)} 秒`;
             
@@ -1022,7 +1038,6 @@
 
             let isCorrect = false;
             if(quizMode === 'all_reverse') {
-                // あべこべモードは全て大文字化して完全一致チェック
                 isCorrect = (userAns.toUpperCase() === w.en.toUpperCase());
             } else {
                 isCorrect = (w.ja.toLowerCase().includes(userAns.toLowerCase()) || userAns.toLowerCase() === w.ja.toLowerCase());
@@ -1037,7 +1052,7 @@
         }
 
         function processResult(isCorrect, w) {
-            isProcessingResult = true; // ボタン入力を一時ロック
+            isProcessingResult = true; 
             clearInterval(countdownInterval); clearTimeout(quizTimerTimeout);
             
             const overlay = document.getElementById("bg-effect-overlay");
@@ -1045,13 +1060,17 @@
             const mainDataWord = data.words.find(item => item.id === w.id);
             const now = Date.now();
 
-            // 正解・不正解別の判定フラグ・状況の条件
+            // 修正1の条件分岐：SRS更新をかけるかどうかのフラグ制御
             let canUpdateSRS = false;
             if (quizMode === 'new' || quizMode === 'srs') {
                 canUpdateSRS = true;
-            } else if (quizMode === 'miss' && mainDataWord && mainDataWord.nextReview && mainDataWord.nextReview <= now) {
-                // 苦手特訓であっても既に復習時間を迎えていれば更新を許可
-                canUpdateSRS = true;
+            } else if (quizMode === 'miss' && mainDataWord) {
+                // 苦手特訓で正解した際、ステータスが「new」なら更新可能に、「wait」なら更新しないように制御
+                if (mainDataWord.status === 'new' || !mainDataWord.status) {
+                    canUpdateSRS = true;
+                } else if (mainDataWord.status === 'wait') {
+                    canUpdateSRS = false;
+                }
             }
 
             if(isCorrect) {
@@ -1068,7 +1087,9 @@
                 }
 
                 if(mainDataWord) {
-                    // その日/昨日の復習モードなら正解でタイムスタンプをクリア（その日リストから消える）
+                    // 追加1の仕様：正解したら「最近間違えたリスト」から自動で除去
+                    mainDataWord.inRecentMissList = false;
+
                     if (quizMode === 'today' || quizMode === 'yesterday') {
                         mainDataWord.recentMissTimestamp = null;
                     }
@@ -1076,10 +1097,10 @@
                     if (canUpdateSRS) {
                         mainDataWord.lastTested = now;
                         if(mainDataWord.status === 'new' || !mainDataWord.status || mainDataWord.status === 'miss') {
-                            mainDataWord.interval = 1; // 1回目は1日後（1440分後）へ
+                            mainDataWord.interval = 1; 
                             mainDataWord.status = 'wait';
                         } else { 
-                            mainDataWord.interval = mainDataWord.interval * 2; // 1日 → 2日 → 4日 → 8日
+                            mainDataWord.interval = mainDataWord.interval * 2; 
                         }
                         mainDataWord.nextReview = now + (mainDataWord.interval * 24 * 60 * 60 * 1000); 
                     }
@@ -1093,9 +1114,11 @@
                 if(mainDataWord) {
                     mainDataWord.lastTested = now;
                     mainDataWord.missCount = (mainDataWord.missCount || 0) + 1;
-                    mainDataWord.recentMissTimestamp = now; // 当日間違えた証跡スタンプを更新
+                    mainDataWord.recentMissTimestamp = now; 
+                    
+                    // 追加1の仕様：間違えたら「最近間違えたリスト」フォルダの対象に追加
+                    mainDataWord.inRecentMissList = true;
 
-                    // SRS更新対象モードでのミス時のみペナルティ適用
                     if (quizMode === 'new' || quizMode === 'srs' || quizMode === 'miss') {
                         mainDataWord.status = 'miss'; 
                         mainDataWord.interval = 0; 
@@ -1107,7 +1130,7 @@
             saveData();
             setTimeout(() => { 
                 effectLayer.innerHTML = ""; 
-                if (isProcessingResult) { // 中止ボタンがすでに押されていない場合のみ次へ
+                if (isProcessingResult) { 
                     currentQuizIndex++; 
                     nextQuestion(); 
                 }
@@ -1124,7 +1147,7 @@
                 backgroundLines.push({
                     x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
                     length: Math.random() * 50 + 30, speed: Math.random() * 2 + 1.5,
-                    color: Math.random() > 0.5 ? '#ff0c00' : '#00ff80' 
+                    color: Math.random() > 0.5 ? '#ff0055' : '#00f0ff' 
                 });
             }
         }
