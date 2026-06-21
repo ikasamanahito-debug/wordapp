@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v80 - Neon Highway (SRS Fix)</title>
+    <title>Domemory v81 - Neon Highway (Multi-Playlist)</title>
     <style>
         /* ==================== ネオン街 テーマ定義 ==================== */
         :root { 
@@ -23,7 +23,7 @@
         
         * { 
             -webkit-tap-highlight-color: transparent; 
-            box-sizing: border-box; 
+            box-shadow: border-box; 
         }
         
         body { 
@@ -166,6 +166,11 @@
         }
         textarea { resize: vertical; min-height: 100px; }
 
+        select[multiple] {
+            min-height: 85px;
+            padding: 6px;
+        }
+
         .search-bar-container { margin-bottom: 10px; width: 100%; }
         .search-input { background: var(--card-bg); color: #fff; border: 2px solid rgba(255, 0, 85, 0.5); font-weight: 500; }
 
@@ -285,11 +290,12 @@
 
     <div id="list-modal" class="modal-overlay">
         <div class="card" style="width:85%; max-width:330px;">
-            <h3 style="margin-top:0">移動先のフォルダを選択</h3>
-            <select id="modal-pl-select"></select>
+            <h3 style="margin-top:0" id="modal-title">フォルダを適用</h3>
+            <select id="modal-pl-select" multiple style="font-size: 13px;"></select>
+            <p style="font-size:11px; color:#a0a5c0; margin: 4px 0;">※複数選択可 (スマホはタップ、PCはCtrlやCmdキーを押しながら)</p>
             <div style="display:flex; gap:8px; margin-top:10px;">
                 <button class="main-btn" style="background:rgba(255,255,255,0.15); flex:1;" onclick="closeModal('list-modal')">戻る</button> 
-                <button class="main-btn btn-p" style="flex:1;" onclick="executeAddToList()">移動する</button>
+                <button class="main-btn btn-p" style="flex:1;" id="modal-execute-btn">適用する</button>
             </div>
         </div>
     </div>
@@ -299,6 +305,8 @@
             <h3 style="margin-top:0">単語を編集</h3>
             <label style="font-size:11px; color:#a0a5c0;">English</label> <input id="edit-en-in" type="text" autocomplete="off">
             <label style="font-size:11px; color:#a0a5c0;">日本語</label> <input id="edit-ja-in" type="text" autocomplete="off">
+            <label style="font-size:11px; color:#a0a5c0; font-weight:bold; margin-top:4px; display:block;">所属フォルダ（複数選択可）</label>
+            <select id="edit-playlists-select" multiple style="font-size:13px; margin-top:4px;"></select>
             <div style="display:flex; gap:8px; margin-top:12px;">
                 <button class="main-btn" style="background:rgba(255,255,255,0.15); flex:1;" onclick="closeModal('edit-modal')">戻る</button> 
                 <button class="main-btn btn-edit" style="flex:1;" onclick="executeEditWord()">更新</button>
@@ -309,8 +317,8 @@
     <div id="page-add" class="page">
         <div class="card">
             <h2 style="margin:0 0 12px 0; color:var(--p); text-shadow:0 0 10px rgba(255,0,85,0.4)">単語を登録</h2> 
-            <label style="font-size:11px; color:#a0a5c0; font-weight:bold;">追加先フォルダ</label> 
-            <select id="add-to-playlist" style="margin-top:4px; margin-bottom:12px;"></select>
+            <label style="font-size:11px; color:#a0a5c0; font-weight:bold;">追加先フォルダ（複数選択可）</label> 
+            <select id="add-to-playlist" multiple style="margin-top:4px; margin-bottom:12px; font-size:13px;"></select>
 
             <div class="sub-tabs">
                 <div id="sub-tab-single" class="sub-tab sub-tab-active" onclick="switchAddMode('single')">1件ずつ登録</div>
@@ -398,7 +406,8 @@
         <div id="bulk-action-bar" class="bulk-action-bar hidden">
             <div style="font-size:11px; font-weight:bold; margin-bottom:6px; color:var(--p);">一括操作メニュー (<span id="selected-count">0</span>件選択中)</div>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                <button class="btn-sub" style="background:var(--p); color:#ffffff; border:none;" onclick="openBulkMoveModal()">フォルダ移動</button>
+                <button class="btn-sub" style="background:var(--p); color:#ffffff; border:none;" onclick="openBulkPlaylistModal(true)">フォルダ追加</button>
+                <button class="btn-sub" style="background:rgba(255,255,255,0.2); color:#ffffff; border:none;" onclick="openBulkPlaylistModal(false)">フォルダから除外</button>
                 <button class="btn-sub" style="background:var(--shuffle); color:#000000; border:none;" onclick="executeBulkResetSRS()">SRS初期化</button>
                 <button class="btn-d" onclick="executeBulkDelete()">削除</button>
                 <button class="btn-sub" onclick="toggleSelectAllItems()">全選択/解除</button>
@@ -471,7 +480,6 @@
             }
         }
 
-        // データの平坦化（サーバーデータのネスト構造崩れを修復する防衛処理）
         function sanitizeAndUnwrapData(obj) {
             if (!obj) return null;
             if (obj.data && Array.isArray(obj.data.words)) return sanitizeAndUnwrapData(obj.data);
@@ -502,8 +510,25 @@
             }
 
             data.playlists = data.playlists.filter(p => p !== "デフォルト");
+            
+            // === [重要] 複数所属対応へのデータ互換コンバーター ===
             data.words.forEach(w => {
-                if(w.playlist === "デフォルト" || !w.playlist) w.playlist = "全て";
+                // playlistプロパティ(文字列)があり、playlists(配列)がない場合、配列に自動変換
+                if (!w.playlists) {
+                    if (w.playlist && w.playlist !== "デフォルト") {
+                        w.playlists = [w.playlist];
+                    } else {
+                        w.playlists = ["全て"];
+                    }
+                }
+                // 配列の中に"全て"が入っていなければ追加、空配列なら"全て"を入れる
+                if (!Array.isArray(w.playlists) || w.playlists.length === 0) {
+                    w.playlists = ["全て"];
+                }
+                if (!w.playlists.includes("全て")) {
+                    w.playlists.push("全て");
+                }
+                delete w.playlist; // 旧プロパティを破棄
                 ensureCustomPlaylists(w);
             });
 
@@ -636,21 +661,33 @@
             document.getElementById('add-bulk-container').classList.toggle('hidden', mode !== 'bulk');
         }
 
+        function getSelectedOptions(selectElement) {
+            return Array.from(selectElement.selectedOptions).map(option => option.value);
+        }
+
         function updatePlaylistDropdowns() {
             const addSelect = document.getElementById("add-to-playlist");
             const quizSelect = document.getElementById("quiz-from-playlist");
-            if(!addSelect || !quizSelect) return;
+            const editSelect = document.getElementById("edit-playlists-select");
+            if(!addSelect || !quizSelect || !editSelect) return;
 
             const prevQuizVal = quizSelect.value;
-            addSelect.innerHTML = ""; quizSelect.innerHTML = "";
+            addSelect.innerHTML = ""; quizSelect.innerHTML = ""; editSelect.innerHTML = "";
 
             data.playlists.forEach(pl => {
-                const opt1 = document.createElement("option"); opt1.value = pl; opt1.innerText = pl; addSelect.appendChild(opt1);
+                if (pl !== "一度でも間違えた単語" && pl !== "最近間違えたリスト") {
+                    const opt1 = document.createElement("option"); opt1.value = pl; opt1.innerText = pl; addSelect.appendChild(opt1);
+                    const opt3 = document.createElement("option"); opt3.value = pl; opt3.innerText = pl; editSelect.appendChild(opt3);
+                }
                 const opt2 = document.createElement("option"); opt2.value = pl; opt2.innerText = pl; quizSelect.appendChild(opt2);
             });
 
-            const currentForbidden = (currentPlaylist === "全て" || currentPlaylist === "一度でも間違えた単語" || currentPlaylist === "最近間違えたリスト");
-            addSelect.value = currentForbidden ? "全て" : currentPlaylist;
+            // 登録先の初期化設定
+            if(currentPlaylist !== "全て" && currentPlaylist !== "一度でも間違えた単語" && currentPlaylist !== "最近間違えたリスト") {
+                addSelect.value = currentPlaylist;
+            } else {
+                addSelect.value = "全て";
+            }
             quizSelect.value = prevQuizVal && [...quizSelect.options].some(o => o.value === prevQuizVal) ? prevQuizVal : "全て";
         }
 
@@ -669,11 +706,14 @@
         function saveWord() {
             const en = document.getElementById("en-in").value.trim();
             const ja = document.getElementById("ja-in").value.trim();
-            const playlist = document.getElementById("add-to-playlist").value;
+            let selectedPls = getSelectedOptions(document.getElementById("add-to-playlist"));
+            if(selectedPls.length === 0) selectedPls = ["全て"];
+            if(!selectedPls.includes("全て")) selectedPls.push("全て");
+
             if(!en || !ja) { showToast("両方入力してください", true); return; }
 
             data.words.unshift({
-                id: "w-" + Date.now() + Math.random(), en, ja, playlist,
+                id: "w-" + Date.now() + Math.random(), en, ja, playlists: selectedPls,
                 status: "new", missCount: 0, lastTested: null, nextReview: null, interval: 0,
                 recentMissTimestamp: null, inRecentMissList: false
             });
@@ -686,7 +726,9 @@
 
         function saveBulkWords() {
             const text = document.getElementById("bulk-import-area").value;
-            const playlist = document.getElementById("add-to-playlist").value;
+            let selectedPls = getSelectedOptions(document.getElementById("add-to-playlist"));
+            if(selectedPls.length === 0) selectedPls = ["全て"];
+            if(!selectedPls.includes("全て")) selectedPls.push("全て");
             if(!text.trim()) return;
 
             const lines = text.split('\n');
@@ -699,7 +741,7 @@
                     const en = parts[0].trim(); const ja = parts.slice(1).join(',').trim();
                     if(en && ja) {
                         data.words.unshift({
-                            id: "w-" + Date.now() + Math.random(), en, ja, playlist,
+                            id: "w-" + Date.now() + Math.random(), en, ja, playlists: [...selectedPls],
                             status: "new", missCount: 0, lastTested: null, nextReview: null, interval: 0,
                             recentMissTimestamp: null, inRecentMissList: false
                         });
@@ -720,22 +762,32 @@
             if(!w) return;
             document.getElementById("edit-en-in").value = w.en;
             document.getElementById("edit-ja-in").value = w.ja;
+
+            const editSelect = document.getElementById("edit-playlists-select");
+            Array.from(editSelect.options).forEach(opt => {
+                opt.selected = w.playlists && w.playlists.includes(opt.value);
+            });
+
             document.getElementById("edit-modal").style.display = "flex";
         }
         function executeEditWord() {
             const en = document.getElementById("edit-en-in").value.trim();
             const ja = document.getElementById("edit-ja-in").value.trim();
+            let selectedPls = getSelectedOptions(document.getElementById("edit-playlists-select"));
+            if(selectedPls.length === 0) selectedPls = ["全て"];
+            if(!selectedPls.includes("全て")) selectedPls.push("全て");
+
             if(!en || !ja) return;
             const w = data.words.find(item => item.id === editingWordId);
             if(w) { 
-                w.en = en; w.ja = ja; 
+                w.en = en; w.ja = ja; w.playlists = selectedPls;
                 saveData(); updateUI(); showToast("変更を適用しました"); 
             }
             closeModal('edit-modal');
         }
 
         function deleteWord(id) {
-            showConfirm("削除確認", "この単語を削除しますか？", () => {
+            showConfirm("削除確認", "この単語を完全に削除しますか？(すべてのフォルダから消去されます)", () => {
                 data.words = data.words.filter(w => w.id !== id);
                 selectedWordIds.delete(id); saveData(); updateUI(); showToast("削除しました");
             });
@@ -759,7 +811,7 @@
         function toggleSelectAllItems() {
             const query = document.getElementById("word-search-input").value.toLowerCase().trim();
             const filtered = data.words.filter(w => {
-                const matchTab = (currentPlaylist === "全て" || (currentPlaylist === "一度でも間違えた単語" && w.missCount > 0) || (currentPlaylist === "最近間違えたリスト" && w.inRecentMissList) || w.playlist === currentPlaylist);
+                const matchTab = (currentPlaylist === "全て" || (currentPlaylist === "一度でも間違えた単語" && w.missCount > 0) || (currentPlaylist === "最近間違えたリスト" && w.inRecentMissList) || (w.playlists && w.playlists.includes(currentPlaylist)));
                 const matchQuery = !query || w.en.toLowerCase().includes(query) || w.ja.toLowerCase().includes(query);
                 return matchTab && matchQuery;
             });
@@ -773,21 +825,43 @@
         function toggleBulkActionBar() { document.getElementById("bulk-action-bar").classList.toggle("hidden"); }
         function updateBulkActionBarUI() { document.getElementById("selected-count").innerText = selectedWordIds.size; }
         
-        function openBulkMoveModal() {
+        // 一括フォルダ追加・削除の共通モーダル展開
+        function openBulkPlaylistModal(isAddMode) {
             if(selectedWordIds.size === 0) return;
+            document.getElementById("modal-title").innerText = isAddMode ? "選択した単語にフォルダを追加" : "選択した単語からフォルダを除外";
+            
             const select = document.getElementById("modal-pl-select"); select.innerHTML = "";
             data.playlists.forEach(pl => {
-                if(pl !== "一度でも間違えた単語" && pl !== "最近間違えたリスト") {
+                if(pl !== "一度でも間違えた単語" && pl !== "最近間違えたリスト" && pl !== "全て") {
                     const opt = document.createElement("option"); opt.value = pl; opt.innerText = pl; select.appendChild(opt);
                 }
             });
+
+            document.getElementById("modal-execute-btn").onclick = () => {
+                const targetPls = getSelectedOptions(select);
+                if(targetPls.length === 0) { showToast("フォルダを選択してください", true); return; }
+                
+                data.words.forEach(w => {
+                    if(selectedWordIds.has(w.id)) {
+                        if(!w.playlists) w.playlists = ["全て"];
+                        targetPls.forEach(pl => {
+                            if(isAddMode) {
+                                if(!w.playlists.includes(pl)) w.playlists.push(pl);
+                            } else {
+                                w.playlists = w.playlists.filter(p => p !== pl);
+                            }
+                        });
+                        if(w.playlists.length === 0 || (w.playlists.length === 1 && w.playlists[0] === "全て")) {
+                            w.playlists = ["全て"];
+                        }
+                    }
+                });
+                saveData(); selectedWordIds.clear(); closeModal('list-modal'); updateUI(); 
+                showToast(isAddMode ? "フォルダ一括追加完了" : "フォルダ一括除外完了");
+            };
             document.getElementById("list-modal").style.display = "flex";
         }
-        function executeAddToList() {
-            const targetPl = document.getElementById("modal-pl-select").value;
-            data.words.forEach(w => { if(selectedWordIds.has(w.id)) w.playlist = targetPl; });
-            saveData(); selectedWordIds.clear(); closeModal('list-modal'); updateUI(); showToast("フォルダ移動完了");
-        }
+
         function executeBulkDelete() {
             if(selectedWordIds.size === 0) return;
             showConfirm("一括削除確認", `${selectedWordIds.size}件の単語データを完全に削除しますか？`, () => {
@@ -797,7 +871,7 @@
         }
         function executeBulkResetSRS() {
             if(selectedWordIds.size === 0) return;
-            showConfirm("一括リセット確認", `${selectedWordIds.size}件の進捗ステータスを初期化しますか？`, () => {
+            showConfirm("一括リセット確認", `${selectedWordIds.size}件 of 進捗ステータスを初期化しますか？`, () => {
                 data.words.forEach(w => {
                     if(selectedWordIds.has(w.id)) {
                         w.status = "new"; w.missCount = 0; w.lastTested = null; w.nextReview = null; w.interval = 0; w.recentMissTimestamp = null; w.inRecentMissList = false;
@@ -816,7 +890,7 @@
                 if(tabName === "全て") count = data.words.length;
                 else if(tabName === "一度でも間違えた単語") count = data.words.filter(w => w.missCount > 0).length;
                 else if(tabName === "最近間違えたリスト") count = data.words.filter(w => w.inRecentMissList).length;
-                else count = data.words.filter(w => w.playlist === tabName).length;
+                else count = data.words.filter(w => w.playlists && w.playlists.includes(tabName)).length;
                 
                 const btn = document.createElement("div");
                 btn.className = `tab ${currentPlaylist === tabName ? 'tab-active' : ''}`;
@@ -832,7 +906,7 @@
 
             const searchQuery = document.getElementById("word-search-input") ? document.getElementById("word-search-input").value.toLowerCase().trim() : "";
             const filtered = data.words.filter(w => {
-                const matchTab = (currentPlaylist === "全て" || (currentPlaylist === "一度でも間違えた単語" && w.missCount > 0) || (currentPlaylist === "最近間違えたリスト" && w.inRecentMissList) || w.playlist === currentPlaylist);
+                const matchTab = (currentPlaylist === "全て" || (currentPlaylist === "一度でも間違えた単語" && w.missCount > 0) || (currentPlaylist === "最近間違えたリスト" && w.inRecentMissList) || (w.playlists && w.playlists.includes(currentPlaylist)));
                 const matchSearch = !searchQuery || w.en.toLowerCase().includes(searchQuery) || w.ja.toLowerCase().includes(searchQuery);
                 return matchTab && matchSearch;
             });
@@ -860,6 +934,15 @@
                 if(w.inRecentMissList) badgeTxt += " [最近の間違い]";
 
                 const isChecked = selectedWordIds.has(w.id) ? "checked" : "";
+                
+                // 表示用のフォルダタグ文字列の生成
+                let plBadges = "";
+                if(w.playlists) {
+                    w.playlists.filter(p => p !== "全て").forEach(p => {
+                        plBadges += `<span class="badge" style="background:rgba(255,255,255,0.05); color:#a0a5c0; margin-right:2px;">📁 ${p}</span>`;
+                    });
+                }
+
                 card.innerHTML = `
                     <div class="li-checkbox-area"><input type="checkbox" class="li-checkbox" ${isChecked} onchange="toggleItemSelection('${w.id}')"></div>
                     <div class="li-info" onclick="openEditModal('${w.id}')">
@@ -868,7 +951,7 @@
                         <div>
                             <span class="badge">${badgeTxt}</span>
                             ${dueTxt ? `<span class="due-timer">${dueTxt}</span>` : ''}
-                            <span class="badge" style="background:rgba(255,255,255,0.05); color:#a0a5c0;">📁 ${w.playlist}</span>
+                            ${plBadges ? plBadges : `<span class="badge" style="background:rgba(255,255,255,0.05); color:#a0a5c0;">📁 未分類</span>`}
                         </div>
                     </div>
                     <div class="action-btns">
@@ -888,7 +971,12 @@
             renderWordList();
             
             const quizTarget = document.getElementById("quiz-from-playlist") ? document.getElementById("quiz-from-playlist").value : "全て";
-            let pool = data.words.filter(w => quizTarget === "全て" || w.playlist === quizTarget);
+            let pool = data.words.filter(w => {
+                if (quizTarget === "全て") return true;
+                if (quizTarget === "最近間違えたリスト") return w.inRecentMissList;
+                if (quizTarget === "一度でも間違えた単語") return w.missCount > 0;
+                return w.playlists && w.playlists.includes(quizTarget);
+            });
             
             const msgEl = document.getElementById("limit-msg");
             if(msgEl) msgEl.innerText = pool.length < 4 ? `⚠️ 単語数が不足しています (現在:${pool.length}/4件必要)` : `✅ 出題可能エリア (対象:${pool.length}件)`;
@@ -904,8 +992,13 @@
                 pool = data.words.filter(w => w.inRecentMissList);
                 if(pool.length < 4) { showToast("「最近間違えたリスト」内の単語が4件未満です", true); return; }
             } else {
-                pool = data.words.filter(w => targetPl === "全て" || w.playlist === targetPl);
-                if(pool.length < 4) { showToast("対象フォルダ内の単語が4件未満です", true); return; }
+                pool = data.words.filter(w => {
+                    if (targetPl === "全て") return true;
+                    if (targetPl === "最近間違えたリスト") return w.inRecentMissList;
+                    if (targetPl === "一度でも間違えた単語") return w.missCount > 0;
+                    return w.playlists && w.playlists.includes(targetPl);
+                });
+                if(pool.length < 4) { showToast("対象エリア内の単語が4件未満です", true); return; }
             }
 
             quizMode = mode; 
@@ -1074,14 +1167,11 @@
             const mainDataWord = data.words.find(item => item.id === w.id);
             const now = Date.now();
 
-            // === [重要] メリハリをつけたSRS更新条件の厳密化判定 ===
             let canUpdateSRS = false;
             if (mainDataWord) {
-                // 条件A: まだ一度もテストされていない新規、または苦手状態（タイマーなし）のとき
                 if (mainDataWord.status === 'new' || !mainDataWord.status || mainDataWord.status === 'miss') {
                     canUpdateSRS = true;
                 }
-                // 条件B: 復習待ち状態であり、かつタイマー（nextReview）が切れて【復習可能】になっているとき
                 else if (mainDataWord.status === 'wait' && mainDataWord.nextReview && mainDataWord.nextReview <= now) {
                     canUpdateSRS = true;
                 }
@@ -1107,21 +1197,18 @@
                         mainDataWord.recentMissTimestamp = null;
                     }
 
-                    // 条件を満たした場合のみ間隔を進行
                     if (canUpdateSRS) {
                         mainDataWord.lastTested = now;
                         if(mainDataWord.status === 'new' || !mainDataWord.status || mainDataWord.status === 'miss') {
-                            mainDataWord.interval = 1; // ステージ1（1日後）から開始
+                            mainDataWord.interval = 1; 
                             mainDataWord.status = 'wait';
                         } else { 
-                            mainDataWord.interval = mainDataWord.interval * 2; // 間隔を倍に延長
+                            mainDataWord.interval = mainDataWord.interval * 2; 
                         }
                         mainDataWord.nextReview = now + (mainDataWord.interval * 24 * 60 * 60 * 1000); 
                     }
-                    // 「復習待ち中（あと〇時間）」のフライング正解時は、ここをスルーして元のタイマーを完全維持
                 }
             } else {
-                // 間違えた場合はフライング中であってもペナルティを適用して即座に復習可能（miss）にする
                 overlay.className = "bg-miss-active"; setTimeout(() => { overlay.className = ""; }, 250);
                 const box = document.createElement("div"); box.className = "quiz-effect-box";
                 box.innerHTML = `<div class="quiz-effect-txt txt-miss">❌ MISS</div><div class="miss-ans-subtext">正解: ${quizMode === 'all_reverse' ? w.en : w.ja}</div>`;
@@ -1133,7 +1220,6 @@
                     mainDataWord.recentMissTimestamp = now; 
                     mainDataWord.inRecentMissList = true;
 
-                    // 一発で「苦手」状態に落として、タイマーなし（即座に出題可能）にする
                     mainDataWord.status = 'miss'; 
                     mainDataWord.interval = 0; 
                     mainDataWord.nextReview = null; 
