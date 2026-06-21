@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Domemory v81 - Neon Highway (Multi-Playlist)</title>
+    <title>Domemory v82 - Neon Highway (Fix UI)</title>
     <style>
         /* ==================== ネオン街 テーマ定義 ==================== */
         :root { 
@@ -23,7 +23,7 @@
         
         * { 
             -webkit-tap-highlight-color: transparent; 
-            box-shadow: border-box; 
+            box-sizing: border-box; /* ← box-shadowからbox-sizingに修正してズレを解決 */
         }
         
         body { 
@@ -167,7 +167,7 @@
         textarea { resize: vertical; min-height: 100px; }
 
         select[multiple] {
-            min-height: 85px;
+            min-height: 95px;
             padding: 6px;
         }
 
@@ -204,10 +204,23 @@
 
         .wait-timer { font-size: 14px; color: var(--new); text-align: center; margin-bottom: 8px; font-weight: bold; text-shadow: 0 0 5px rgba(255,204,0,0.4); } 
 
-        .tabs { display: flex; overflow-x: auto; overflow-y: hidden; gap: 6px; padding: 6px 2px; width: 100%; -webkit-overflow-scrolling: touch; }
-        .tabs::-webkit-scrollbar { display: none; }
+        /* フォルダ切り替えバー（タブ）の設定 */
+        .tabs { 
+            display: flex; 
+            overflow-x: auto; 
+            overflow-y: hidden; 
+            gap: 6px; 
+            padding: 8px 4px; 
+            width: 100%; 
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 0, 85, 0.2);
+        }
+        /* スクロールバーを見やすく微表示に調整 */
+        .tabs::-webkit-scrollbar { height: 4px; }
+        .tabs::-webkit-scrollbar-thumb { background: rgba(255, 0, 85, 0.3); border-radius: 2px; }
         
-        .tab { display: inline-block; white-space: nowrap; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,0,85,0.3); padding: 6px 12px; border-radius: 16px; font-size: 12px; color: #ffffff; cursor: pointer; flex-shrink: 0; }
+        .tab { display: inline-block; white-space: nowrap; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,0,85,0.3); padding: 6px 14px; border-radius: 16px; font-size: 13px; color: #ffffff; cursor: pointer; flex-shrink: 0; transition: all 0.2s; }
         .tab-active { background: var(--p); color: #ffffff; font-weight: bold; border-color: var(--p); box-shadow: 0 0 8px rgba(255,0,85,0.6); } 
 
         .sub-tabs { display: flex; gap: 4px; background: rgba(0,0,0,0.3); padding: 3px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(255,0,85,0.3); width: 100%; } 
@@ -338,7 +351,7 @@
         </div>
     </div>
 
-    <div id="page-quiz" class="page active">
+    <div id="page-quiz" class="page">
         <div class="card" id="quiz-main-card">
             <div id="count-area" class="countdown hidden"></div>
             <div id="q-display" class="q-text">クイズ道場</div>
@@ -384,7 +397,7 @@
         </div>
     </div>
 
-    <div id="page-list" class="page">
+    <div id="page-list" class="page active">
         <div class="card" style="margin-bottom: 12px; padding: 10px 14px;">
             <div style="font-size:11px; font-weight:bold; margin-bottom:4px; color:#a0a5c0;">📁 新規フォルダ作成</div>
             <div style="display:flex; gap:6px;">
@@ -444,8 +457,8 @@
 
     <nav class="menu">
         <button id="nav-add" onclick="showPage('add')"><span-icon>📝</span-icon><span>登録</span></button>
-        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')"><span-icon>⚔️</span-icon><span>クイズ</span></button>
-        <button id="nav-list" onclick="showPage('list')"><span-icon>🗂️</span-icon><span>一覧</span></button>
+        <button id="nav-quiz" onclick="showPage('quiz')"><span-icon>⚔️</span-icon><span>クイズ</span></button>
+        <button id="nav-list" class="active-nav" onclick="showPage('list')"><span-icon>🗂️</span-icon><span>一覧</span></button>
         <button id="nav-settings" onclick="showPage('settings')"><span-icon>⚙️</span-icon><span>設定</span></button>
     </nav>
 
@@ -511,9 +524,8 @@
 
             data.playlists = data.playlists.filter(p => p !== "デフォルト");
             
-            // === [重要] 複数所属対応へのデータ互換コンバーター ===
+            // 複数所属対応へのデータ互換コンバーター
             data.words.forEach(w => {
-                // playlistプロパティ(文字列)があり、playlists(配列)がない場合、配列に自動変換
                 if (!w.playlists) {
                     if (w.playlist && w.playlist !== "デフォルト") {
                         w.playlists = [w.playlist];
@@ -521,14 +533,13 @@
                         w.playlists = ["全て"];
                     }
                 }
-                // 配列の中に"全て"が入っていなければ追加、空配列なら"全て"を入れる
                 if (!Array.isArray(w.playlists) || w.playlists.length === 0) {
                     w.playlists = ["全て"];
                 }
                 if (!w.playlists.includes("全て")) {
                     w.playlists.push("全て");
                 }
-                delete w.playlist; // 旧プロパティを破棄
+                delete w.playlist; 
                 ensureCustomPlaylists(w);
             });
 
@@ -682,7 +693,6 @@
                 const opt2 = document.createElement("option"); opt2.value = pl; opt2.innerText = pl; quizSelect.appendChild(opt2);
             });
 
-            // 登録先の初期化設定
             if(currentPlaylist !== "全て" && currentPlaylist !== "一度でも間違えた単語" && currentPlaylist !== "最近間違えたリスト") {
                 addSelect.value = currentPlaylist;
             } else {
@@ -825,7 +835,6 @@
         function toggleBulkActionBar() { document.getElementById("bulk-action-bar").classList.toggle("hidden"); }
         function updateBulkActionBarUI() { document.getElementById("selected-count").innerText = selectedWordIds.size; }
         
-        // 一括フォルダ追加・削除の共通モーダル展開
         function openBulkPlaylistModal(isAddMode) {
             if(selectedWordIds.size === 0) return;
             document.getElementById("modal-title").innerText = isAddMode ? "選択した単語にフォルダを追加" : "選択した単語からフォルダを除外";
@@ -935,7 +944,6 @@
 
                 const isChecked = selectedWordIds.has(w.id) ? "checked" : "";
                 
-                // 表示用のフォルダタグ文字列の生成
                 let plBadges = "";
                 if(w.playlists) {
                     w.playlists.filter(p => p !== "全て").forEach(p => {
@@ -1192,11 +1200,9 @@
 
                 if(mainDataWord) {
                     mainDataWord.inRecentMissList = false;
-
                     if (quizMode === 'today' || quizMode === 'yesterday') {
                         mainDataWord.recentMissTimestamp = null;
                     }
-
                     if (canUpdateSRS) {
                         mainDataWord.lastTested = now;
                         if(mainDataWord.status === 'new' || !mainDataWord.status || mainDataWord.status === 'miss') {
@@ -1219,7 +1225,6 @@
                     mainDataWord.missCount = (mainDataWord.missCount || 0) + 1;
                     mainDataWord.recentMissTimestamp = now; 
                     mainDataWord.inRecentMissList = true;
-
                     mainDataWord.status = 'miss'; 
                     mainDataWord.interval = 0; 
                     mainDataWord.nextReview = null; 
@@ -1266,7 +1271,7 @@
         // 起動
         loadData();
         updateUI();
-        showPage('quiz');
+        showPage('list'); // 調整しやすいように最初から一覧を表示
     </script>
 </body>
 </html>
