@@ -6,44 +6,51 @@
       "ja": "お",
       "playlist": "a",
       "status": "miss",
-      "missCount": 3,
-      "lastTested": 1781967802529,
+      "missCount": 5,
+      "lastTested": 1782022232828,
       "nextReview": null,
-      "interval": 0
+      "interval": 0,
+      "inRecentMissList": true,
+      "recentMissTimestamp": 1782022232828
     },
     {
       "id": "w-17819669736680.9503723780972652",
       "en": "E",
       "ja": "え",
       "playlist": "全て",
-      "status": "miss",
-      "missCount": 3,
-      "lastTested": 1781967805201,
-      "nextReview": null,
-      "interval": 0
+      "status": "wait",
+      "missCount": 4,
+      "lastTested": 1782022230152,
+      "nextReview": 1782108630152,
+      "interval": 1,
+      "inRecentMissList": false,
+      "recentMissTimestamp": 1782022181100
     },
     {
       "id": "w-17819669690680.16520927321399104",
       "en": "C",
       "ja": "し",
       "playlist": "全て",
-      "status": "miss",
-      "missCount": 5,
-      "lastTested": 1781970628588,
-      "nextReview": null,
-      "interval": 0,
-      "recentMissTimestamp": 1781970628588
+      "status": "wait",
+      "missCount": 6,
+      "lastTested": 1782022227188,
+      "nextReview": 1782108627188,
+      "interval": 1,
+      "recentMissTimestamp": 1782022187868,
+      "inRecentMissList": false
     },
     {
       "id": "w-17819669656740.6383341434001425",
       "en": "B",
       "ja": "び",
       "playlist": "全て",
-      "status": "miss",
-      "missCount": 3,
-      "lastTested": 1781967798993,
-      "nextReview": null,
-      "interval": 0
+      "status": "wait",
+      "missCount": 5,
+      "lastTested": 1782022222683,
+      "nextReview": 1782108622683,
+      "interval": 1,
+      "inRecentMissList": false,
+      "recentMissTimestamp": 1782022199090
     },
     {
       "id": "w-17819669624110.36957759820206926",
@@ -55,11 +62,13 @@
       "lastTested": 1781970574135,
       "nextReview": 1782056974135,
       "interval": 1,
-      "recentMissTimestamp": null
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
     }
   ],
   "playlists": [
     "全て",
+    "最近間違えたリスト",
     "一度でも間違えた単語",
     "a",
     "A"
