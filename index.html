@@ -744,11 +744,12 @@
             const lines = text.split('\n');
             let successCount = 0;
             lines.forEach(line => {
-                if(!line.trim()) return;
-                let parts = line.split(',');
-                if(parts.length < 2) parts = line.split('，');
+                if(!line.trim()) return;// === ここから書き換え ===
+                let parts = line.split('|'); // パイプライン「|」で分割
                 if(parts.length >= 2) {
-                    const en = parts[0].trim(); const ja = parts.slice(1).join(',').trim();
+                    const en = parts[0].trim(); 
+                    const ja = parts.slice(1).join('|').trim(); // 2つ以上「|」があっても崩れないように結合
+                // === ここまで書き換え ===
                     if(en && ja) {
                         data.words.unshift({
                             id: "w-" + Date.now() + Math.random(), en, ja, playlists: [...selectedPls],
