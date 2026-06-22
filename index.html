@@ -1035,7 +1035,7 @@ function saveBulkWords() {
             if(quizWords.length === 0) { showToast("条件に合致する対象の単語がゼロです"); return; }
 
             quizWords.sort(() => Math.random() - 0.5);
-            if(quizWords.length > 20) quizWords = quizWords.slice(0, 50);
+            if(quizWords.length > 20) quizWords = quizWords.slice(0, 100);
 
             currentQuizIndex = 0;
             document.getElementById("quiz-setup").classList.add("hidden");
