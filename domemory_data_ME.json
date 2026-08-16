@@ -1,12 +1,113 @@
 {
   "words": [
     {
+      "id": "w-17868388949010.09495415151895548",
+      "en": "大気の",
+      "ja": "atmospheric",
+      "playlists": [
+        "sec31-35 厳選",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868388510470.319988809475544",
+      "en": "preserve",
+      "ja": "食料)を保存する 　を保護する",
+      "playlists": [
+        "sec31-35 厳選",
+        "全て",
+        "sec26-30 厳選 re day1"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868387491920.6709890435707918",
+      "en": "sustain ２意味",
+      "ja": "を支える　を維持する",
+      "playlists": [
+        "sec31-35 厳選",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868386131360.21123993483847492",
+      "en": "inherent () A",
+      "ja": "in  A本来備わっている",
+      "playlists": [
+        "全て",
+        "sec31-35 厳選",
+        "sec26-30 厳選 re day1"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868385690870.5509633807057215",
+      "en": "naturally　２意味",
+      "ja": "当然　元来（生まれつき）",
+      "playlists": [
+        "sec31-35 厳選",
+        "全て",
+        "sec26-30 厳選 re day1"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868385121120.6723008126821712",
+      "en": "ecological　２意味",
+      "ja": "環境保護　生態の",
+      "playlists": [
+        "全て",
+        "sec31-35 厳選",
+        "sec26-30 厳選 re day1"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
       "id": "w-17868384635060.6105842274128966",
       "en": "ecology 生態系 と　２意味",
       "ja": "自然環境　環境保護",
       "playlists": [
         "sec31-35 厳選",
-        "全て"
+        "全て",
+        "sec26-30 厳選 re day1"
       ],
       "status": "new",
       "missCount": 0,
@@ -54,7 +155,8 @@
       "ja": "環境保護主義",
       "playlists": [
         "sec31-35 厳選",
-        "全て"
+        "全て",
+        "sec26-30 厳選 re day1"
       ],
       "status": "new",
       "missCount": 0,
