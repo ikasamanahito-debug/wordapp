@@ -1,6 +1,102 @@
 {
   "words": [
     {
+      "id": "w-17868458960230.803984599987648",
+      "en": "be apt to do どういうとき使う",
+      "ja": "わるい傾向",
+      "playlists": [
+        "sec31-35 厳選",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868458719120.26489839221034184",
+      "en": "aptitude",
+      "ja": "適性",
+      "playlists": [
+        "sec31-35 厳選",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868438388070.9057306417492764",
+      "en": "dwell on    dawn on",
+      "ja": "を長々と話す　にこだわる   Aにthatが分かり始める",
+      "playlists": [
+        "sec31-35 厳選",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868437158790.4336927846104197",
+      "en": "for her sake",
+      "ja": "彼女のために",
+      "playlists": [
+        "sec31-35 厳選",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868436541780.14321343931490482",
+      "en": "weird",
+      "ja": "奇妙な",
+      "playlists": [
+        "sec31-35 厳選",
+        "全て"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
+      "id": "w-17868434861850.7318187020770468",
+      "en": "net　意味　対義語は",
+      "ja": "正味の　 gross",
+      "playlists": [
+        "全て",
+        "sec31-35 厳選"
+      ],
+      "status": "new",
+      "missCount": 0,
+      "lastTested": null,
+      "nextReview": null,
+      "interval": 0,
+      "recentMissTimestamp": null,
+      "inRecentMissList": false
+    },
+    {
       "id": "w-17868434712320.9386744513011773",
       "en": "raw material",
       "ja": "原材料",
@@ -444,11 +540,11 @@
     },
     {
       "id": "w-17868415585040.1711451751630183",
-      "en": "dump",
-      "ja": "を捨てる",
+      "en": "dump dumb　意味",
+      "ja": "を捨てる　口がきけない 馬鹿な",
       "playlists": [
-        "sec31-35 厳選",
         "全て",
+        "sec31-35 厳選",
         "sec31-35 厳選 re day1"
       ],
       "status": "new",
